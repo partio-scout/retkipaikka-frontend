@@ -1,0 +1,23 @@
+.map-container{
+    background-color: #ffffff;
+    width: 100%;
+    height: 104%;
+    padding-bottom: 20rem;
+    padding-top:1rem;
+    top: 0;
+    position: relative
+}
+.map{
+    background-color: black;
+    width: 856px;
+    height: 500px;
+    margin-left: 26%;
+    /* border-radius:20px; */
+}
+.main-header{
+    position: absolute;
+    top: 10px;
+    margin-left: 39%;
+    font-size:60px;
+    color:white;
+}

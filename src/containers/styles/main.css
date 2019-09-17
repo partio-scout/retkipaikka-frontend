@@ -1,0 +1,16 @@
+.frontpage-container{
+    width:100%;
+    height:100%;
+}
+.frontpage-image-container{
+    width: 100%;
+    height: 240px;
+    position: relative;
+    top: 60px;
+}
+.frontpage-image-container img{
+    width: 100%;
+    height: inherit;
+    position: relative;
+    top: 0;
+}
