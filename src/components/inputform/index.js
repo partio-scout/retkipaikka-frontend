@@ -12,7 +12,7 @@ class InputContainer extends React.Component {
     // järvi lähellä
     // sisämajoitus
     // sisävessa
-
+    //test for commit
 
     //Laavu
     // Kämppä
