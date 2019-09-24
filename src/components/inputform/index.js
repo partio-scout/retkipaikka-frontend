@@ -49,8 +49,8 @@ class InputContainer extends React.Component {
                 <div className="inputform-container">
                     <div className="inputform-inputs">
                         <TextInput data={results.searchResults} applyFilter={this.addFilter} title="Etsi paikannimen perusteella" />
-                        <SelectInput data={this.typeArr} applyFilter={this.addFilter} title="Retkipaikan tyyppi" />
-                        <SelectInput data={this.filterArr} applyFilter={this.addFilter} title="Suodattimet" />
+                        <SelectInput data={this.typeArr} applyFilter={this.addFilter} title="Retkipaikan tyyppi" useFiltering={true} />
+                        <SelectInput data={this.filterArr} applyFilter={this.addFilter} title="Suodattimet" useFiltering={true} />
                         <span className="inputform-inputs-button">
                             <button onClick={this.filterResults}>Suodata</button>
                         </span>

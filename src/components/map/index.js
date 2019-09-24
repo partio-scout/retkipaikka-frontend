@@ -32,8 +32,8 @@ class Map extends React.Component {
     }
     generateMarkers = () => {
         const { results } = this.props;
-        let markers = results.map(reg => {
-            return <Marker position={reg.geo} onClick={() => this.setState({ selected: reg })} />
+        let markers = results.map((reg, i) => {
+            return <Marker key={reg.text + i} position={reg.geo} onClick={() => this.setState({ selected: reg })} />
         });
         return markers;
     }

@@ -9,11 +9,15 @@ class SelectInput extends React.Component {
         selectedValues: []
     }
     handleSelect = (e) => {
-        const { selectedValues } = this.state;
-        const { applyFilter, data } = this.props;
-        let temp = e.target.value;
-        let value = data.filter(d => d.text === temp);
-        this.props.applyFilter(value[0]);
+        const { data, applyFilter, useFiltering, handleFormSelect } = this.props;
+        if (useFiltering) {
+            let temp = e.target.value;
+            let value = data.filter(d => d.text === temp);
+            applyFilter(value[0]);
+        } else {
+            handleFormSelect(e);
+        }
+
 
 
 
@@ -41,12 +45,14 @@ class SelectInput extends React.Component {
         return mappedData;
     }
     render() {
-        const { data, title } = this.props;
+        const { data, title, customClassName } = this.props;
         let dataForDropDown = this.generateData(data);
+        let className = customClassName ? customClassName : "inputform-select";
+
         return (
-            <div className="inputform-select">
+            <div className={className}>
                 {title !== undefined && <span className="inputform-title">{title}</span>}
-                <select onChange={this.handleSelect} selected="s" className="form-control">
+                <select id="type" onChange={this.handleSelect} selected="s" className="form-control">
                     {dataForDropDown}
                 </select>
                 {/* <Select
