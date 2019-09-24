@@ -1,7 +1,7 @@
 import React from "react";
 import "./map.css";
 import MapHeader from "./header"
-import sideSlider from "./header/sideSlider"
+import SideSlider from "./header/sideSlider"
 import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps"
 import { connect } from "react-redux";
 
@@ -33,9 +33,12 @@ class Map extends React.Component {
     generateMarkers = () => {
         const { results } = this.props;
         let markers = results.map(reg => {
-            return <Marker position={reg.geo} onClick={() => this.renderInfo(reg)} />
+            return <Marker position={reg.geo} onClick={() => this.setState({ selected: reg })} />
         });
         return markers;
+    }
+    handleMarkerClose = () => {
+        this.setState({ selected: null })
     }
 
     render() {
@@ -50,11 +53,10 @@ class Map extends React.Component {
         //         <Marker position={{ lat: -34.397, lng: 150.644 }} />}
         //     </GoogleMap>
         // ))
-
         return (
             <div className="map-container">
                 <div className="map">
-                    <MapHeader results={results} renderMenu resultAmount={results.length} data={results} clickedObj={selected} />
+                    <MapHeader results={results} renderMenu resultAmount={results.length} data={results} />
                     <PartioMap
                         isMarkerShown
                         googleMapURL={"https://maps.googleapis.com/maps/api/js?key=&v=3.exp&libraries=geometry,drawing,places"}
@@ -62,6 +64,7 @@ class Map extends React.Component {
                         containerElement={<div style={{ height: `100%` }} />}
                         mapElement={<div style={{ height: `100%` }} />}
                     />
+                    {selected !== null && <SideSlider class={" map-slider"} handleClose={this.handleMarkerClose} data={selected} />}
                 </div>
 
             </div>

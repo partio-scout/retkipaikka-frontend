@@ -2,10 +2,28 @@ import React from "react";
 import "./mapHeader.css";
 import SideSlider from "./sideSlider";
 
+export const generateFromSingleData = (obj) => {
+    return (
+        <div>
+            <h4>Nimi:</h4>
+            <span>{obj.name}</span>
+            <br />
+            <h4>Kuvaus:</h4>
+            <span> {obj.data.name}</span>
+            <br />
+            <h4>Yhteystiedot:</h4>
+            <span>{obj.data.website}</span>
+            <br />
+            <span>{obj.data.contact}</span>
+
+        </div>
+    )
+}
 class MapHeader extends React.Component {
     state = {
         showSideSlider: false,
-        clickedObj: this.props.clickedObj
+        showInfoSideSlider: false,
+        clickedObj: null
     }
     getText = () => {
         const { showSideSlider } = this.state;
@@ -20,27 +38,11 @@ class MapHeader extends React.Component {
         )
     }
 
-    generateFromSingleData = (obj) => {
-        console.log(obj);
-        return (
-            <div>
-                nimi:
-                <br />
-                <span>{obj.name}</span>
-                <br />
-                kuvaus:
 
-                <span> {obj.data.name}</span>
-                <br />
-                Yhteystiedot:
-                <br />
-                <span>{obj.data.website}</span>
-                <br />
-                <span>{obj.data.contact}</span>
-
-            </div>
-        )
+    handleSideSliderClose = () => {
+        this.setState({ clickedObj: null });
     }
+
     generateAllData = (data) => {
         let shelterData = data.filter(d => d.propertyType === "Laavu");
         let houseData = data.filter(d => d.propertyType === "Kämppä");
@@ -61,9 +63,8 @@ class MapHeader extends React.Component {
     render() {
         const { showSideSlider, clickedObj } = this.state;
         const { resultAmount, data } = this.props;
-        console.log(showSideSlider);
-        let tripPlace = clickedObj === null ? this.generateAllData(data) : this.generateFromSingleData(clickedObj);
-
+        let tripPlace = clickedObj === null ? this.generateAllData(data) : clickedObj;
+        console.log(tripPlace);
         return (
             <div className="mapheader-container">
                 <div className="mapheader-helpers">
@@ -73,7 +74,14 @@ class MapHeader extends React.Component {
                         <span className="mapheader-results">Retkipaikkojen määrä: {resultAmount}</span>
                     </span>
                 </div>
-                {showSideSlider && <SideSlider data={tripPlace} />}
+                {clickedObj !== null &&
+                    <SideSlider handleClose={this.handleSideSliderClose} data={tripPlace} />
+                }
+                {(showSideSlider && clickedObj === null) &&
+                    <div className="map-side-slider">
+                        {tripPlace}
+                    </div>}
+
             </div>
         )
     }

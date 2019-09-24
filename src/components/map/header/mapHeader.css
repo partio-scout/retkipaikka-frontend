@@ -17,6 +17,15 @@
 .mapheader-helpers{
     
 }
+.component{
+    top: -30px !important;
+    height:550px !important;
+    padding-top:10px;
+}
+.component button{
+    margin-left: 20px;
+    background-color: rgb(83, 122, 144);
+}
 .mapheader-results{
     float: right;
     margin-right: 20px;
@@ -28,6 +37,17 @@
     height:50px;
     background-color:rgb(28, 66, 87);
     /* border-radius: 20px 20px 0px 0px; */
+}
+.side-slider-data{
+    padding-top:10px;
+}
+.map-side-slider h4{
+     font-weight: 100;
+    color:gray;
+}
+
+.map-slider{
+    top:-550px !important;
 }
 .map-side-slider{
     width:200px;

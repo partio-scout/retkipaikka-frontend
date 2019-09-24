@@ -3,6 +3,7 @@ import "./styles/main.css";
 import Map from "../components/map"
 import Header from "../components/header"
 import InputContainer from "../components/inputform"
+import LocationForm from "../components/locationform"
 import { connect } from "react-redux";
 import { fetchLocations } from "../actions/SearchResultsActions"
 //import {imagesPath} from "../paths"
@@ -27,6 +28,7 @@ class Main extends React.Component {
                 </div>
                 <InputContainer />
                 <Map />
+                <LocationForm />
             </div>
         )
     }
