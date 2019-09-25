@@ -9,12 +9,16 @@ export const generateFromSingleData = (obj) => {
             <span>{obj.name}</span>
             <br />
             <h4>Kuvaus:</h4>
-            <span> {obj.data.name}</span>
+            <span> {obj.description}</span>
             <br />
             <h4>Yhteystiedot:</h4>
+            <span>{obj.data.ownerName}</span>
+            <br />
             <span>{obj.data.website}</span>
             <br />
-            <span>{obj.data.contact}</span>
+            <span>{obj.data.mail}</span>
+            <br />
+            <span>{obj.data.phone}</span>
 
         </div>
     )
