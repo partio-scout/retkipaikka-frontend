@@ -7,13 +7,8 @@ import "./locationform.css"
 
 
 class TagBar extends React.Component {
-    typeArr = [{ type: "locationtype", text: "Laavu" }, { type: "locationtype", text: "Kämppä" }, { type: "locationtype", text: "Alue" }]
+    typeArr = [{ type: "locationtype", text: "Valitse" }, { type: "locationtype", text: "Laavu" }, { type: "locationtype", text: "Kämppä" }, { type: "locationtype", text: "Alue" }]
     state = {
-        // name: null,
-        // location: { name: null, geo: null },
-        // propertyType: null,
-        // has: [],
-        // data: { name: null, website: null, mail: null, phone: null }
 
     }
     //propertytypes:
@@ -21,24 +16,72 @@ class TagBar extends React.Component {
     //has:
     //sauna, järvi lähellä, sisämajoitus,sisävessa
 
-    //{ type: "city", name: "Testialue", text: "Turku", geo: { lat: 60.45, lng: 22.26 }, propertyType: "Alue", has: ["Järvi lähellä", "Sauna"], 
+    //{ type: "city", name: "Testialue", text: "Turku", geo: { lat: 60.45, lng: 22.26 },
+    // propertyType: "Alue", has: ["Järvi lähellä", "Sauna"], 
     //data: { name: "hehu", website: "www.hehu.fi", contact: "oy@partio.com" } },
     handleFormSubmit = (e) => {
         e.preventDefault();
-        console.log(this.state)
+        // e.stopPropagation();
+        let emptyFound = false;
+        let dataObj = { name: null, text: null, geo: { lat: null, lng: null }, description: null, type: null, has: [], data: { ownerName: null, mail: null, website: null, phone: null } }
+        var forms = document.getElementsByClassName('needs-validation');
+
+        Array.prototype.filter.call(forms, function (form) {
+            if (form.checkValidity() === false) {
+                e.stopPropagation();
+                emptyFound = true;
+            }
+            form.classList.add('was-validated');
+        })
+        if (!emptyFound) {
+            let stateKeys = Object.keys(this.state);
+            for (let i = 0; i < stateKeys.length; i++) {
+                let key = stateKeys[i];
+                //console.log(this.state.key)
+                if (key.includes("box") && this.state[key]) {
+                    let splitted = key.split("-");
+                    dataObj.has.push(splitted[1]);
+                } else if (key === "geo") {
+                    let splittedGeo = this.state[key].split(",");
+                    if (splittedGeo.length === 2) {
+                        let geoObj = { lat: splittedGeo[0], lng: splittedGeo[1] };
+                        dataObj.geo = geoObj;
+                    } else {
+                        let geoItem = document.getElementById("geo")
+                        geoItem.value = ""
+                        return;
+                    }
+                } else {
+                    switch (key) {
+                        case "phone":
+                        case "ownerName":
+                        case "mail":
+                        case "website":
+                            dataObj.data[key] = this.state[key]
+                            break;
+                        default:
+                            dataObj[key] = this.state[key];
+                    }
+
+
+                }
+            }
+            this.submitForm(dataObj);
+        }
     }
 
+    submitForm = (data) => {
+        console.log(data)
+    }
     handleChange = (e) => {
         let value = e.target.type === "checkbox" ? e.target.checked : e.target.value;
         this.setState({ [e.target.id]: value });
     }
-    handleSelectInput = (value) => {
 
-    }
     generateCheckBoxes = (arr) => {
         let boxes = arr.map(item => {
             return (<div className="form-check form-check-inline">
-                <input onClick={this.handleChange} type="checkbox" className="form-check-input" id={item} />
+                <input onClick={this.handleChange} type="checkbox" className="form-check-input" id={"box-" + item} />
                 <label className="form-check-label" htmlFor={item}>{item}</label>
             </div>)
         })
@@ -55,8 +98,8 @@ class TagBar extends React.Component {
     generateLocationForm = () => {
         let arr = ["Järvi lähellä", "Sauna", "Sisämajoitus", "Sisävessa"];
         //const { Retkipaikka, Sijainti, Koordinaatit, Lippukunta, Verkkosivu, Sähköposti, Puhelinnumero } = this.state;
-        return (<form>
-            <TextInput handleChange={this.handleChange} placeholder="Esimerkkipaikka" helper="Kirjoita retkipaikan nimi" text="Retkipaikka" />
+        return (<form className="needs-validation" noValidate>
+            <TextInput handleChange={this.handleChange} id="name" placeholder="Esimerkkipaikka" helper="Kirjoita retkipaikan nimi" text="Retkipaikka" />
             <SelectInput
                 data={this.typeArr}
                 title="Retkipaikan tyyppi"
@@ -66,17 +109,17 @@ class TagBar extends React.Component {
             />
             <small id={"Help"} className="form-text text-muted form-group">Valitse retkipaikan tyyppi</small>
             <div className="form-row">
-                <TextInput handleChange={this.handleChange} placeholder="Paikan sijainti" helper="Kirjoita retkipaikan sijainti" text="Sijainti" size="col-md-6" />
-                <TextInput handleChange={this.handleChange} placeholder="60.45,22.26" helper="Kirjoita retkipaikan koordinaatit" text="Koordinaatit" size="col-md-6" />
+                <TextInput handleChange={this.handleChange} id="text" placeholder="Paikan sijainti" helper="Kirjoita retkipaikan sijainti" text="Sijainti" size="col-md-6" />
+                <TextInput handleChange={this.handleChange} id="geo" placeholder="60.45,22.26" helper="Kirjoita retkipaikan koordinaatit" text="Koordinaatit" size="col-md-6" />
             </div>
             {this.getTextForm("3", "Kuvaus paikasta", "Kirjoita kuvaus retkipaikasta")}
             {this.generateCheckBoxes(arr)}
             <small id={"Help"} className="form-text text-muted form-group">Valitse retkipaikkaa kuvaavat asiat</small>
             <div className="form-row">
-                <TextInput handleChange={this.handleChange} placeholder="Hervannan hukat" helper="Kirjoita lippukunnan nimi" text="Lippukunta" size="col-md-3" />
-                <TextInput handleChange={this.handleChange} placeholder="www.retkipaikka.fi" helper="Kirjoita kohteen nettisivu" text="Verkkosivu" size="col-md-3" />
-                <TextInput handleChange={this.handleChange} placeholder="example@ex.com" helper="Kirjoita sähköposti" text="Sähköposti" size="col-md-3" />
-                <TextInput handleChange={this.handleChange} placeholder="0441235678" helper="Kirjoita puhelinnumero" text="Puhelinnumero" size="col-md-3" />
+                <TextInput handleChange={this.handleChange} id="ownerName" placeholder="Esimerkkiomistaja" helper="Kirjoita retkipaikan omistaja (lippukunta tms.)" text="Omistaja" size="col-md-3" />
+                <TextInput handleChange={this.handleChange} id="website" placeholder="www.retkipaikka.fi" helper="Kirjoita kohteen nettisivu" text="Verkkosivu" size="col-md-3" />
+                <TextInput handleChange={this.handleChange} id="mail" placeholder="example@ex.com" helper="Kirjoita sähköposti" text="Sähköposti" size="col-md-3" />
+                <TextInput handleChange={this.handleChange} id="phone" placeholder="0441235678" helper="Kirjoita puhelinnumero" text="Puhelinnumero" size="col-md-3" />
             </div>
             <button onClick={this.handleFormSubmit} type="submit" className="btn btn-primary">Lähetä</button>
         </form>)
