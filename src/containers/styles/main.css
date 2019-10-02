@@ -10,7 +10,13 @@
 }
 .frontpage-image-container img{
     width: 100%;
-    height: inherit;
+    height: 550px;
     position: relative;
-    top: 0;
+    top: -300px;
+    z-index:-1;
+}
+.login-form{
+    width: 50%;
+    margin: 0 auto;
+    margin-top:15%;
 }

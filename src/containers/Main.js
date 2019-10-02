@@ -12,16 +12,17 @@ class Main extends React.Component {
     componentWillMount() {
         const { fetchLocations, results } = this.props;
         if (results.searchResults.length === 0) {
-            fetchLocations()
+            fetchLocations();
         }
     }
 
     render() {
+        const { location } = this.props;
         const imagesPath = "/images/";
         console.log(imagesPath + "frontpage_img.jpg")
         return (
             <div className="frontpage-container">
-                <Header />
+                <Header location={location} />
                 <div className="frontpage-image-container">
                     <img alt="frontpage_image" src={imagesPath + "frontpage_img.jpg"} />
                     <h2 className="main-header">Partio retkipaikat</h2>

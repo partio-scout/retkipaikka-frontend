@@ -13,3 +13,14 @@
     margin-left: 20px;
     position: absolute;
 }
+.header-login-button button{
+    background: #022433;
+    border-color:#022433;
+    color: #fff;
+    height: 40px;
+    width: 120px;
+}
+.header-login-button{
+    float: right;
+    padding: 10px;
+}
