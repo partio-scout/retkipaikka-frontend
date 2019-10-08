@@ -29,24 +29,24 @@
     margin-top: 1.5rem;
 }
 .inputform-inputs-button button{
-    background: #022433;
+    background: #28aae1;;
     border-radius: 10px;
     color: #fff;
     height: 40px;
     width: 120px;
 }
 .inputform-inputs-button button:hover{
-    background-color: #28a9e1;
+    background-color: #253764;
 }
 .inputform-checked{
     width:10px;
     height:10px;
-    background-color:#022433;;
+    background-color:#253764;;
     z-index:51
 }
 
 .inputform-checked:hover{
-    background-color:#28a9e1;
+    background-color:#28aae1;
     
 }
 

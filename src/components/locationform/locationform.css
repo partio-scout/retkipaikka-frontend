@@ -6,3 +6,13 @@
 .form-container h4{
     margin-bottom:50px;
 }
+.btn-primary{
+    background: #28aae1;
+    border-color:#28aae1;
+    color: #fff;
+    height: 40px;
+    width: 120px;
+}
+.btn-primary:hover{
+    background: #253764;
+}

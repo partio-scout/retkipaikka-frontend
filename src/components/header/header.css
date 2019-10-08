@@ -4,7 +4,7 @@
     top:0;
     z-index:5;
     position:fixed;
-    background-color:rgba(0,123,191,1)
+    background-color:#253764;
 }
 .header-container-text{
     font-size: 20px;
@@ -14,8 +14,8 @@
     position: absolute;
 }
 .header-login-button button{
-    background: #022433;
-    border-color:#022433;
+    background: #28aae1;
+    border-color:#28aae1;
     color: #fff;
     height: 40px;
     width: 120px;
