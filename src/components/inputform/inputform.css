@@ -28,16 +28,7 @@
     margin-left:1rem;
     margin-top: 1.5rem;
 }
-.inputform-inputs-button button{
-    background: #28aae1;;
-    border-radius: 10px;
-    color: #fff;
-    height: 40px;
-    width: 120px;
-}
-.inputform-inputs-button button:hover{
-    background-color: #253764;
-}
+
 .inputform-checked{
     width:10px;
     height:10px;

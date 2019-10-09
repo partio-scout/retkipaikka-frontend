@@ -71,6 +71,7 @@ class MapHeader extends React.Component {
         console.log(tripPlace);
         return (
             <div className="mapheader-container">
+
                 <div className="mapheader-helpers">
                     <span className="mapheader-left">
                         <button onClick={() => this.setState({ showSideSlider: !showSideSlider, clickedObj: null })}>{this.getText()}</button>
