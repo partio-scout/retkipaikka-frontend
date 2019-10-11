@@ -19,3 +19,6 @@ export const LOG_OUT = "LOG_OUT";
 //alerts
 export const ALERT_MESSAGE = "ALERT_MESSAGE";
 export const RESET_MESSAGE = "RESET_MESSAGE";
+
+//map
+export const SET_COORDINATES = "SET_COORDINATES";

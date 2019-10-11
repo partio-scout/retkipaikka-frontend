@@ -17,10 +17,9 @@
     width:400px;
 }
 .inputform-inputs{
-    width: 100%;
     height: inherit;
     display: inline-flex;
-    margin-left: 20%;
+    margin: 0 auto;
     position:relative;
     top:0.5rem;
 }

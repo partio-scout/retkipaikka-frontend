@@ -4,6 +4,7 @@ import MapHeader from "./header"
 import SideSlider from "./header/sideSlider"
 import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps"
 import { connect } from "react-redux";
+import { setCoordinates } from "../../actions/MapActions"
 
 
 const apiKey = "AIzaSyDCtpSTaV-7OjEPzIpgj_4Vc8ErY7NqO5k"
@@ -18,6 +19,7 @@ class Map extends React.Component {
             <GoogleMap
                 defaultZoom={8}
                 defaultCenter={{ lat: 61.29, lng: 23.45 }}
+                onClick={this.handleMapClick}
             >
                 {markers}
             </GoogleMap>
@@ -40,9 +42,15 @@ class Map extends React.Component {
     handleMarkerClose = () => {
         this.setState({ selected: null })
     }
+    handleMapClick = (e) => {
+        const { setCoordinates } = this.props;
+        let obj = { lat: e.latLng.lat(), lng: e.latLng.lng() }
+        console.log("setCoordinates");
+        setCoordinates(obj);
 
+    }
     render() {
-        const { results } = this.props;
+        const { results, coords } = this.props;
         const { selected } = this.state;
         const PartioMap = this.generateMap();
         // const PartioMap = withScriptjs(withGoogleMap((props) =>
@@ -53,7 +61,9 @@ class Map extends React.Component {
         //         <Marker position={{ lat: -34.397, lng: 150.644 }} />}
         //     </GoogleMap>
         // ))
+        console.log(coords)
         return (
+
             <div className="map-container">
                 <div className="map">
                     <MapHeader results={results} renderMenu resultAmount={results.length} data={results} />
@@ -74,7 +84,8 @@ class Map extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        results: state.searchResults.filteredResults
+        results: state.searchResults.filteredResults,
+        coords: state.map.coords
     }
 }
-export default connect(mapStateToProps)(Map);
+export default connect(mapStateToProps, { setCoordinates })(Map);

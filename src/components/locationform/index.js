@@ -9,7 +9,7 @@ import "./locationform.css"
 class TagBar extends React.Component {
     typeArr = [{ type: "locationtype", text: "Valitse" }, { type: "locationtype", text: "Laavu" }, { type: "locationtype", text: "Kämppä" }, { type: "locationtype", text: "Alue" }]
     state = {
-
+        geo: ""
     }
     //propertytypes:
     //laavu, kämppä, alue
@@ -71,10 +71,11 @@ class TagBar extends React.Component {
     }
 
     submitForm = (data) => {
-        console.log(data)
+        console.log(data, "meni läpi")
     }
     handleChange = (e) => {
         let value = e.target.type === "checkbox" ? e.target.checked : e.target.value;
+        console.log(e.target.id, value);
         this.setState({ [e.target.id]: value });
     }
 
@@ -87,6 +88,16 @@ class TagBar extends React.Component {
         })
         return boxes;
     }
+    static getDerivedStateFromProps(newProps, currentState) {
+        console.log(newProps, "derivedstate");
+        console.log(newProps.coords, currentState.geo)
+        if (newProps.coords !== currentState.geo && newProps.coords !== null) {
+            return { geo: newProps.coords.lat + "," + newProps.coords.lng };
+        } else
+            return null;
+    }
+
+
     getTextForm = (rows, text, helper) => {
         return (
             <div className="form-group">
@@ -96,8 +107,9 @@ class TagBar extends React.Component {
             </div>)
     }
     generateLocationForm = () => {
+        const { coords } = this.props;
         let arr = ["Järvi lähellä", "Sauna", "Sisämajoitus", "Sisävessa"];
-        //const { Retkipaikka, Sijainti, Koordinaatit, Lippukunta, Verkkosivu, Sähköposti, Puhelinnumero } = this.state;
+        //const { text, geo, ownerName, website, mail, phone } = this.state;
         return (<form className="needs-validation" noValidate>
             <TextInput handleChange={this.handleChange} id="name" placeholder="Esimerkkipaikka" helper="Kirjoita retkipaikan nimi" text="Retkipaikka" required={true} />
             <SelectInput
@@ -110,7 +122,7 @@ class TagBar extends React.Component {
             <small id={"Help"} className="form-text text-muted form-group">Valitse retkipaikan tyyppi</small>
             <div className="form-row">
                 <TextInput handleChange={this.handleChange} id="text" placeholder="Paikan sijainti" helper="Kirjoita retkipaikan sijainti" text="Sijainti" size="col-md-6" required={true} />
-                <TextInput handleChange={this.handleChange} id="geo" placeholder="60.45,22.26" helper="Kirjoita retkipaikan koordinaatit" text="Koordinaatit" size="col-md-6" required={true} />
+                <TextInput handleChange={this.handleChange} id="geo" placeholder="Koordinaatit" helper="Valitse koordinaatit kartalta" text="Koordinaatit" size="col-md-6" required={true} />
             </div>
             {this.getTextForm("3", "Kuvaus paikasta", "Kirjoita kuvaus retkipaikasta")}
             {this.generateCheckBoxes(arr)}
@@ -127,6 +139,8 @@ class TagBar extends React.Component {
     }
 
     render() {
+        const { coords } = this.props;
+        console.log(this.state);
         return (
             <div className="form-container">
                 <h4>Ilmoita retkipaikka!</h4>
@@ -137,7 +151,8 @@ class TagBar extends React.Component {
 }
 const mapStateToProps = state => {
     return {
-        tagList: state.filters
+        tagList: state.filters,
+        coords: state.map.coords
     }
 }
 export default connect(mapStateToProps, { removeFilter })(TagBar);
