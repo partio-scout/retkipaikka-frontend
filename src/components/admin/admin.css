@@ -1,5 +1,5 @@
 .admin-panel{
-    padding-top:70px;
+    /* padding-top:70px; */
     padding-bottom:100%;
     width:9%;
     background-color: #253764;
@@ -10,8 +10,9 @@
 .location-list-item{
     display:inline-flex;
 }
+
 .location-list-container{
-    display:block;
+    display:grid;
 }
 .active{
     background-color: #28aae1 !important;

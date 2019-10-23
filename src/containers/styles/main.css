@@ -23,6 +23,9 @@
 .admin-data-container{
     margin-top:70px;
 }
+.admin-data-container h3{
+    margin-bottom:30px;
+}
 body {
     font-family: 'PT Sans', sans-serif;
 }
