@@ -72,6 +72,9 @@ class Admin extends React.Component {
             case "settings":
                 renderElement = <AdminSettings />
                 break;
+            default:
+                renderElement = <h3>Testi</h3>
+                break;
         }
 
 

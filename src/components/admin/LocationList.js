@@ -28,7 +28,7 @@ class LocationList extends React.Component {
     render() {
         const items = this.generateListItems();
         return (
-            <div>
+            <div className="admin-content-container">
                 <h3>Retkipaikat</h3>
                 <div className="location-list-container">
                     {items}
@@ -38,6 +38,8 @@ class LocationList extends React.Component {
         )
     }
 }
+
+
 
 const mapStateToProps = state => {
     return {
