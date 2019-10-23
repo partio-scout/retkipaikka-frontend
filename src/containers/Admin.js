@@ -2,16 +2,25 @@ import React from "react";
 import "./styles/main.css";
 import Header from "../components/header"
 import TextInput from "../components/locationform/textInput";
+import AdminPanel from "../components/admin/AdminPanel"
+import LocationList from "../components/admin/LocationList"
+import NotificationList from "../components/admin/NotificationList";
+import AdminSettings from "../components/admin/AdminSettings";
+import { fetchLocations } from "../actions/SearchResultsActions"
 import { connect } from "react-redux";
 
 
 class Admin extends React.Component {
     state = {
-
+        element: "locations"
     }
     componentWillMount() {
-        console.log("login mounted")
+        const { fetchLocations, results } = this.props;
+        if (results.searchResults.length === 0) {
+            fetchLocations();
+        }
     }
+
     handleFormSubmit = (e) => {
         e.preventDefault();
         let emptyFound = false;
@@ -47,15 +56,38 @@ class Admin extends React.Component {
             </div>
         )
     }
+    handleMenuClick = () => {
+
+    }
     getAdminPanel = () => {
+        const { element } = this.state;
+        let renderElement = ""
+        switch (element) {
+            case "locations":
+                renderElement = <LocationList />
+                break;
+            case "notifications":
+                renderElement = <NotificationList />
+                break;
+            case "settings":
+                renderElement = <AdminSettings />
+                break;
+        }
+
+
         return (
             <div>
-                paneeli
+                <AdminPanel handleClick={this.handleMenuClick} />
+                <div className="admin-data-container">
+                    {renderElement}
+                </div>
+
+                {/* <iframe width="100%" height="800" src="http://localhost:3000/" frameborder="0" allowfullscreen></iframe> */}
             </div>
         )
     }
     render() {
-        let loggedIn = false;
+        let loggedIn = true;
         let renderElement = loggedIn ? this.getAdminPanel() : this.getLoginForm();
         return (
             <div className="frontpage-container">
@@ -70,4 +102,4 @@ const mapStateToProps = state => {
         results: state.searchResults
     }
 }
-export default connect(mapStateToProps)(Admin);
+export default connect(mapStateToProps, { fetchLocations })(Admin);

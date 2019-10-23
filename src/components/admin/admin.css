@@ -1,0 +1,26 @@
+.admin-panel{
+    padding-top:70px;
+    padding-bottom:100%;
+    width:9%;
+    background-color: #253764;
+    position:relative;
+    float:left;
+    height:100%
+}
+.location-list-item{
+    display:inline-flex;
+}
+.location-list-container{
+    display:block;
+}
+.active{
+    background-color: #28aae1 !important;
+}
+.list-group-item{
+    background-color:initial;
+    color:white;
+    border: none;
+}
+.admin-list{
+    margin-right:1px;
+}

@@ -20,7 +20,9 @@
     margin: 0 auto;
     margin-top:15%;
 }
-
+.admin-data-container{
+    margin-top:70px;
+}
 body {
     font-family: 'PT Sans', sans-serif;
 }
