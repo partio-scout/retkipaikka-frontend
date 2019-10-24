@@ -6,14 +6,19 @@ import InputContainer from "../components/inputform"
 import LocationForm from "../components/locationform"
 import { connect } from "react-redux";
 import { fetchLocations } from "../actions/SearchResultsActions"
+import { fetchFilters } from "../actions/FilterActions"
 //import {imagesPath} from "../paths"
 
 class Main extends React.Component {
     componentWillMount() {
-        const { fetchLocations, results } = this.props;
+        const { fetchLocations, fetchFilters, results, filtersLoc, filtersCom } = this.props;
         if (results.searchResults.length === 0) {
             fetchLocations();
         }
+        if (filtersLoc.length === 0 || filtersCom.length === 0) {
+            fetchFilters();
+        }
+
     }
 
     render() {
@@ -36,7 +41,9 @@ class Main extends React.Component {
 }
 const mapStateToProps = state => {
     return {
-        results: state.searchResults
+        results: state.searchResults,
+        filtersLoc: state.filters.locationTypeFilterList,
+        filtersCom: state.filters.commonFilterList
     }
 }
-export default connect(mapStateToProps, { fetchLocations })(Main);
+export default connect(mapStateToProps, { fetchLocations, fetchFilters })(Main);

@@ -34,7 +34,9 @@ class InputContainer extends React.Component {
     checkTags = (tag) => {
         const { tags } = this.props;
         let vals = Object.values(tags);
-        for (let i = 0; i < vals.length; i++) {
+        //tags has 5 elements
+        // first 3 are the tag arrays
+        for (let i = 0; i < 3; i++) {
             if (vals[i].filter(t => t.text === tag.text).length !== 0) {
                 return false;
             }
@@ -42,8 +44,8 @@ class InputContainer extends React.Component {
         return true;
     }
     render() {
-        const { results } = this.props;
-
+        const { results, filtersLoc, filtersCom } = this.props;
+        console.log(filtersCom, "commons")
         return (
             <div>
                 <div className="inputform-container">
@@ -51,8 +53,8 @@ class InputContainer extends React.Component {
                     <form className="inputform-inputs" onSubmit={(e) => e.preventDefault()}>
                         <div className="form-row">
                             <TextInput data={results.searchResults} applyFilter={this.addFilter} title="Paikannimi" customClassName="inputform-select form-group col-md-4 col-sm-11 " />
-                            <SelectInput data={this.typeArr} applyFilter={this.addFilter} title="Tyyppi" useFiltering={true} customClassName="form-group col-md-3 col-sm-11 " />
-                            <SelectInput data={this.filterArr} applyFilter={this.addFilter} title="Suodattimet" useFiltering={true} customClassName="form-group col-md-3 col-sm-11 " />
+                            <SelectInput data={filtersLoc} applyFilter={this.addFilter} title="Tyyppi" useFiltering={true} customClassName="form-group col-md-3 col-sm-11 " />
+                            <SelectInput data={filtersCom} applyFilter={this.addFilter} title="Suodattimet" useFiltering={true} customClassName="form-group col-md-3 col-sm-11 " />
                             <div className="inputform-inputs-button form-group col-md-1 col-sm-11 ">
                                 <button className="btn btn-primary" onClick={this.filterResults}>Suodata</button>
                             </div>
@@ -70,7 +72,9 @@ class InputContainer extends React.Component {
 const mapStateToProps = state => {
     return {
         tags: state.filters,
-        results: state.searchResults
+        results: state.searchResults,
+        filtersLoc: state.filters.locationTypeFilterList,
+        filtersCom: state.filters.commonFilterList
     }
 }
 export default connect(mapStateToProps, { addFilter, filterFromResults })(InputContainer);

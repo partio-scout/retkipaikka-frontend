@@ -80,11 +80,16 @@ class TagBar extends React.Component {
     }
 
     generateCheckBoxes = (arr) => {
+        console.log(arr);
         let boxes = arr.map(item => {
-            return (<div className="form-check form-check-inline">
-                <input onClick={this.handleChange} type="checkbox" className="form-check-input" id={"box-" + item} />
-                <label className="form-check-label" htmlFor={item}>{item}</label>
-            </div>)
+            if (item.type !== "nofilter") {
+                return (<div className="form-check form-check-inline">
+                    <input onClick={this.handleChange} type="checkbox" className="form-check-input" id={"box-" + item.text} />
+                    <label className="form-check-label" htmlFor={item.text}>{item.text}</label>
+                </div>)
+            } else {
+                return null;
+            }
         })
         return boxes;
     }
@@ -107,13 +112,15 @@ class TagBar extends React.Component {
             </div>)
     }
     generateLocationForm = () => {
-        const { coords } = this.props;
-        let arr = ["Järvi lähellä", "Sauna", "Sisämajoitus", "Sisävessa"];
+        const { coords, typeFilters, commonFilters } = this.props;
+
+        let newTypes = [...typeFilters];
+        newTypes.splice(0, 1);
         //const { text, geo, ownerName, website, mail, phone } = this.state;
         return (<form className="needs-validation" noValidate>
             <TextInput handleChange={this.handleChange} id="name" placeholder="Esimerkkipaikka" helper="Kirjoita retkipaikan nimi" text="Retkipaikka" required={true} />
             <SelectInput
-                data={this.typeArr}
+                data={newTypes}
                 title="Retkipaikan tyyppi"
                 useFiltering={false}
                 handleFormSelect={this.handleChange}
@@ -125,7 +132,7 @@ class TagBar extends React.Component {
                 <TextInput handleChange={this.handleChange} id="geo" placeholder="Koordinaatit" helper="Valitse koordinaatit kartalta" text="Koordinaatit" size="col-md-6" required={true} />
             </div>
             {this.getTextForm("3", "Kuvaus paikasta", "Kirjoita kuvaus retkipaikasta")}
-            {this.generateCheckBoxes(arr)}
+            {this.generateCheckBoxes(commonFilters)}
             <small id={"Help"} className="form-text text-muted form-group">Valitse retkipaikkaa kuvaavat asiat</small>
             <div className="form-row">
                 <TextInput handleChange={this.handleChange} id="ownerName" placeholder="Esimerkkiomistaja" helper="Kirjoita retkipaikan omistaja (lippukunta, kaupunki, srk tms.)" text="Omistaja" size="col-md-3" required={true} />
@@ -152,7 +159,9 @@ class TagBar extends React.Component {
 const mapStateToProps = state => {
     return {
         tagList: state.filters,
-        coords: state.map.coords
+        coords: state.map.coords,
+        typeFilters: state.filters.locationTypeFilterList,
+        commonFilters: state.filters.commonFilterList
     }
 }
 export default connect(mapStateToProps, { removeFilter })(TagBar);

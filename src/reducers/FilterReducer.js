@@ -7,12 +7,16 @@ import {
     REMOVE_COMMON_FILTER,
     REMOVE_ALL_COMMON_FILTERS,
     REMOVE_ALL_LOCATIONTYPE_FILTERS,
+    UPDATE_FETCHED_FILTERS,
+
 } from "../actions/ActionTypes"
 
 const initialState = {
     locationFilters: [],
     locationTypeFilters: [],
     commonFilters: [],
+    locationTypeFilterList: [],
+    commonFilterList: []
 }
 
 const handleDelete = (filter, removeObj) => {
@@ -63,6 +67,12 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 locationTypeFilters: []
+            }
+        case UPDATE_FETCHED_FILTERS:
+            return {
+                ...state,
+                locationTypeFilterList: action.payload.locations,
+                commonFilterList: action.payload.common
             }
         default:
             return state;
