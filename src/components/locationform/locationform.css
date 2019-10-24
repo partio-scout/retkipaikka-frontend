@@ -13,6 +13,13 @@
     height: 40px;
     width: 120px;
 }
+
+@media only screen and (max-width: 752px) {
+    .btn-primary {
+      width:80px;
+    }
+  }
+
 .btn-primary:hover{
     background: #28aae1;
 }

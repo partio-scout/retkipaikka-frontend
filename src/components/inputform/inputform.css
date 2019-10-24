@@ -8,7 +8,7 @@
 .inputform-select{
     /* width: 250px; */
     /* margin-top:1rem; */
-    margin-left:1rem;
+    
 }
 .form-select-input{
     margin-left: 0 !important;
@@ -21,6 +21,8 @@
     /* display: inline-flex; */
     width:100%;
     /* margin: 0 auto; */
+    margin-left:0.5rem;
+    margin-right:0.2rem;
     position:relative;
     top:0.5rem;
 }
@@ -28,6 +30,7 @@
     /* margin-left:1rem; */
     margin-top: 1.5rem;
 }
+
 
 .inputform-checked{
     width:10px;
@@ -50,3 +53,16 @@
     position:relative;
     top:-5px;
 }
+.form-row{
+    margin-right:0;
+}
+
+
+@media only screen and (max-width: 752px) {
+    .inputform-container{
+        height: 300px;
+    }
+    .inputform-inputs .form-row{
+        display:block;
+    }
+  }

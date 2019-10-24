@@ -1,25 +1,32 @@
 .map-container{
     background-color: #ffffff;
     width: 100%;
-    height: 104%;
-    padding-bottom: 20rem;
+    height: 100%;
+    padding-bottom: 10rem;
     padding-top:1rem;
     top: 0;
     position: relative
 }
 .map{
     background-color: black;
-    width:57%;
-    height: 500px;
-    min-width:490px;
+    width:75%;
+    height: 600px;
+    min-width:310px;
     margin:0 auto;
     /* border-radius:20px; */
 }
 
+@media only screen and (max-width: 752px) {
+    .map {
+      width:95%;
+    }
+  }
+
 .main-header{
     position: absolute;
     top: 10px;
-    margin-left: 39%;
+    left: 50%;
+    transform: translate(-50%, 0);
     font-size:60px;
     color:white;
 }
