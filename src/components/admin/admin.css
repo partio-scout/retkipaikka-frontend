@@ -2,6 +2,7 @@
 .admin-panel{
     padding-top:70px;
     padding-bottom:100%;
+    min-width:130px;
     width:9%;
     background-color: #253764;
     position:relative;
@@ -9,8 +10,10 @@
     height:100%
 }
 .admin-content-container{
-    width:91%;
-    margin-left:1%;
+    width:100%;
+    margin-left: 2%;
+    margin-top: 2%;
+    
 }
 
 

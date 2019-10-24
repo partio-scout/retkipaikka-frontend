@@ -14,14 +14,44 @@ class LocationList extends React.Component {
 
     }
 
+
+
+    getRowData = (obj, index) => {
+        return (
+            <tr>
+                <th scope="row">{index}</th>
+                <td>{obj.name}</td>
+                <td>{obj.text}</td>
+                <td>{obj.propertyType}</td>
+            </tr>
+        )
+
+    }
     generateListItems = () => {
         const { results } = this.props;
-        console.log(results);
-        const values = results.map(location => {
-            return <ListComponent data={location} />
-        })
+        const values = results.map((location, i) => {
+            return this.getRowData(location, i + 1)
 
-        return values;
+        })
+        let head = (<thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nimi</th>
+                <th scope="col">Sijainti</th>
+                <th scope="col">Tyyppi</th>
+            </tr>
+        </thead>)
+
+        let body = (<tbody>
+            {values}
+        </tbody>)
+
+        return (<table className="table table-hover">
+            {head}
+            {body}
+        </table>)
+
+
     }
 
 
