@@ -47,14 +47,19 @@ class InputContainer extends React.Component {
         return (
             <div>
                 <div className="inputform-container">
-                    <div className="inputform-inputs form-row">
-                        <TextInput data={results.searchResults} applyFilter={this.addFilter} title="Etsi paikannimen perusteella" size="col md-4" />
-                        <SelectInput data={this.typeArr} applyFilter={this.addFilter} title="Retkipaikan tyyppi" useFiltering={true} size="col md-4" />
-                        <SelectInput data={this.filterArr} applyFilter={this.addFilter} title="Suodattimet" useFiltering={true} size="col md-4" />
-                        <span className="inputform-inputs-button">
-                            <button className="btn btn-primary" onClick={this.filterResults}>Suodata</button>
-                        </span>
-                    </div>
+                    {/* <div className="inputform-inputs form-row form-group"> */}
+                    <form className="inputform-inputs">
+                        <div className="form-row">
+                            <TextInput data={results.searchResults} applyFilter={this.addFilter} title="Paikannimi" customClassName="inputform-select form-group col-4" />
+                            <SelectInput data={this.typeArr} applyFilter={this.addFilter} title="Tyyppi" useFiltering={true} customClassName="form-group col-3" />
+                            <SelectInput data={this.filterArr} applyFilter={this.addFilter} title="Suodattimet" useFiltering={true} customClassName="form-group col-3" />
+                            <div className="inputform-inputs-button form-group col-1">
+                                <button className="btn btn-primary" onClick={this.filterResults}>Suodata</button>
+                            </div>
+                        </div>
+
+                        {/* </div> */}
+                    </form>
 
                 </div>
                 <TagBar />

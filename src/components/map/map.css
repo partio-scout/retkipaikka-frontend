@@ -9,9 +9,10 @@
 }
 .map{
     background-color: black;
-    width: 856px;
+    width:57%;
     height: 500px;
-    margin-left: 26%;
+    min-width:490px;
+    margin:0 auto;
     /* border-radius:20px; */
 }
 

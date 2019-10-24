@@ -28,9 +28,10 @@ class TextInput extends React.Component {
     }
     render() {
         const { currentText } = this.state;
-        const { title, data } = this.props;
+        const { title, data, customClassName } = this.props;
+        let className = customClassName ? customClassName : "inputform-select";
         return (
-            <div className="inputform-textinput">
+            <div className={customClassName}>
                 {title !== undefined && <span className="inputform-title">{title}</span>}
 
                 <Typeahead
