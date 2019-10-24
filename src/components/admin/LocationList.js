@@ -23,6 +23,7 @@ class LocationList extends React.Component {
                 <td>{obj.name}</td>
                 <td>{obj.text}</td>
                 <td>{obj.propertyType}</td>
+                <td>{obj.data.ownerName}</td>
             </tr>
         )
 
@@ -39,6 +40,7 @@ class LocationList extends React.Component {
                 <th scope="col">Nimi</th>
                 <th scope="col">Sijainti</th>
                 <th scope="col">Tyyppi</th>
+                <th scope="col">Omistaja</th>
             </tr>
         </thead>)
 
