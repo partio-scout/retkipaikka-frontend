@@ -16,7 +16,7 @@
     /* border-radius:20px; */
 }
 
-@media only screen and (max-width: 752px) {
+@media only screen and (max-width: 576px) {
     .map {
       width:95%;
     }
