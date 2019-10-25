@@ -3,6 +3,7 @@ import "./map.css";
 import MapHeader from "./header"
 import SideSlider from "./header/sideSlider"
 import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps"
+import { MarkerClusterer } from "react-google-maps/lib/components/addons/MarkerClusterer"
 import { connect } from "react-redux";
 import { setCoordinates } from "../../actions/MapActions"
 
@@ -16,7 +17,23 @@ const PartioMap = withScriptjs(withGoogleMap((props) =>
         center={props.center}
         onClick={props.handleMapClick}
     >
-        {props.markers}
+        <MarkerClusterer
+            averageCenter={false}
+            enableRetinaIcons
+            gridSize={50}
+            imagePath="/icons/map-cluster-small.svg"
+            styles={[{
+                url: '/icons/map-cluster-small.svg',
+                width: 53,
+                height: 53,
+                anchorText: [-4, -2],
+                textColor: "white"
+            }]}
+            maxZoom={10}
+        >
+            {props.markers}
+        </MarkerClusterer>
+
     </GoogleMap>
 ))
 
@@ -32,7 +49,13 @@ class Map extends React.Component {
     generateMarkers = () => {
         const { results } = this.props;
         let markers = results.map((reg, i) => {
-            return <Marker key={reg.text + i} position={reg.geo} onClick={() => this.setState({ selected: reg })} />
+            return <Marker
+                key={reg.text + i}
+                position={reg.geo}
+                onClick={() => this.setState({ selected: reg })}
+                icon={{
+                    url: '/icons/map-marker.svg',
+                }} />
         });
         return markers;
     }
@@ -49,7 +72,6 @@ class Map extends React.Component {
     render() {
         const { results, filterTypes, selectedLoc } = this.props;
         const { selected } = this.state;
-
         let center = { lat: 61.29, lng: 23.45 };
         let zoom = 8;
         if (selectedLoc !== null) {

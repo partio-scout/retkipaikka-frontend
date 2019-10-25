@@ -13,12 +13,10 @@
     top:10px;
     position:relative;
 }
-.mapheader-helpers{
-    
-}
+
 .component{
     top: -30px !important;
-    height:550px !important;
+    height:650px !important;
     padding-top:10px;
 }
 .component button{
