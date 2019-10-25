@@ -24,3 +24,5 @@ export const RESET_MESSAGE = "RESET_MESSAGE";
 
 //map
 export const SET_COORDINATES = "SET_COORDINATES";
+export const SELECT_LOCATION = "SELECT_LOCATION";
+export const RESET_LOCATION = "RESET_LOCATION";

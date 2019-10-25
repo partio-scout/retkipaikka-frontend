@@ -4,7 +4,7 @@ import MapHeader from "./header"
 import SideSlider from "./header/sideSlider"
 import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps"
 import { connect } from "react-redux";
-import { setCoordinates } from "../../actions/MapActions"
+import { setCoordinates, selectLocation } from "../../actions/MapActions"
 
 
 const apiKey = "AIzaSyDCtpSTaV-7OjEPzIpgj_4Vc8ErY7NqO5k"
@@ -14,16 +14,27 @@ class Map extends React.Component {
     }
 
     generateMap = () => {
+        const { selectedLoc } = this.props;
+        const { selected } = this.state;
+        let center = { lat: 61.29, lng: 23.45 };
+        let zoom = 8;
+        if (selected !== null) {
+            center = selected.geo;
+        } else if (selectedLoc !== null) {
+            center = selectedLoc.geo;
+        }
         const markers = this.generateMarkers();
         const PartioMap = withScriptjs(withGoogleMap((props) =>
             <GoogleMap
-                defaultZoom={8}
-                defaultCenter={{ lat: 61.29, lng: 23.45 }}
+                defaultZoom={zoom}
+                defaultCenter={center}
                 onClick={this.handleMapClick}
             >
                 {markers}
             </GoogleMap>
         ))
+
+
 
         return PartioMap;
 
@@ -49,24 +60,18 @@ class Map extends React.Component {
         setCoordinates(obj);
 
     }
+
     render() {
-        const { results, coords } = this.props;
+        const { results, coords, filterTypes, selectedLoc } = this.props;
         const { selected } = this.state;
+        console.time("kartta");
         const PartioMap = this.generateMap();
-        // const PartioMap = withScriptjs(withGoogleMap((props) =>
-        //     <GoogleMap
-        //         defaultZoom={8}
-        //         defaultCenter={{ lat: -34.397, lng: 150.644 }}
-        //     >
-        //         <Marker position={{ lat: -34.397, lng: 150.644 }} />}
-        //     </GoogleMap>
-        // ))
-        console.log(coords)
+        console.timeEnd("kartta");
         return (
 
             <div className="map-container">
                 <div className="map">
-                    <MapHeader results={results} renderMenu resultAmount={results.length} data={results} />
+                    <MapHeader types={filterTypes} results={results} renderMenu resultAmount={results.length} data={results} />
                     <PartioMap
                         isMarkerShown
                         googleMapURL={"https://maps.googleapis.com/maps/api/js?key=&v=3.exp&libraries=geometry,drawing,places"}
@@ -85,7 +90,9 @@ class Map extends React.Component {
 const mapStateToProps = state => {
     return {
         results: state.searchResults.filteredResults,
-        coords: state.map.coords
+        coords: state.map.coords,
+        selectedLoc: state.map.selectedLocation,
+        filterTypes: state.filters.locationTypeFilterList
     }
 }
 export default connect(mapStateToProps, { setCoordinates })(Map);

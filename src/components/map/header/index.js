@@ -2,27 +2,7 @@ import React from "react";
 import "./mapHeader.css";
 import SideSlider from "./sideSlider";
 
-export const generateFromSingleData = (obj) => {
-    return (
-        <div>
-            <h4>Nimi:</h4>
-            <span>{obj.name}</span>
-            <br />
-            <h4>Kuvaus:</h4>
-            <span> {obj.description}</span>
-            <br />
-            <h4>Yhteystiedot:</h4>
-            <span>{obj.data.ownerName}</span>
-            <br />
-            <span>{obj.data.website}</span>
-            <br />
-            <span>{obj.data.mail}</span>
-            <br />
-            <span>{obj.data.phone}</span>
 
-        </div>
-    )
-}
 class MapHeader extends React.Component {
     state = {
         showSideSlider: false,
@@ -33,10 +13,11 @@ class MapHeader extends React.Component {
         const { showSideSlider } = this.state;
         return showSideSlider ? "<-" : "->";
     }
-    generateLocationInfo = (obj) => {
+    generateLocationInfo = (obj, i) => {
+        console.log(obj)
         //[{ type: "city", name: "Testilaavu", text: "Tampere", geo: { lat: 61.29, lng: 23.45 }, propertyType: "Laavu", has: ["Järvi lähellä"],data:{name:"hehu",website:"www.hehu.fi",contact:"oy@partio.com"} },
         return (
-            <div>
+            <div key={obj.name + i}>
                 <span onClick={() => this.setState({ clickedObj: obj })}>{obj.name}</span>
             </div>
         )
@@ -48,27 +29,37 @@ class MapHeader extends React.Component {
     }
 
     generateAllData = (data) => {
-        let shelterData = data.filter(d => d.propertyType === "Laavu");
-        let houseData = data.filter(d => d.propertyType === "Kämppä");
-        let regionData = data.filter(d => d.propertyType === "Alue")
-        let arr = [shelterData, houseData, regionData];
+        const { types } = this.props;
+        console.log(data);
         let totalDataArr = [];
-        for (let i = 0; i < arr.length; i++) {
-            if (arr[i].length !== 0) {
-                totalDataArr.push(<h4>{arr[i][0].propertyType}</h4>);
-                let tempData = arr[i].map(obj => {
-                    return this.generateLocationInfo(obj)
-                })
-                totalDataArr = totalDataArr.concat(tempData);
+        //types contain all locationtypes, first one is blank so start at 1
+        for (let i = 1; i < types.length; ++i) {
+            // filter locations of the current
+            let type = types[i].text;
+            let arr = data.filter(d => d.propertyType === type);
+            if (arr.length > 0) {
+                // add title and then add the rest elements
+                totalDataArr.push(<h4 key={i}>{arr[0].propertyType}</h4>);
+                for (let j = 0; j < arr.length; ++j) {
+                    totalDataArr.push(this.generateLocationInfo(arr[j], j))
+
+
+                }
             }
+            // let shelterData = data.filter(d => d.propertyType === "Laavu");
+            // let houseData = data.filter(d => d.propertyType === "Kämppä");
+            // let regionData = data.filter(d => d.propertyType === "Alue")
+            // let arr = [shelterData, houseData, regionData];
+
+
         }
         return totalDataArr;
     }
     render() {
         const { showSideSlider, clickedObj } = this.state;
         const { resultAmount, data } = this.props;
+        //let tripPlace = clickedObj === null ? this.generateAllData(data) : clickedObj;
         let tripPlace = clickedObj === null ? this.generateAllData(data) : clickedObj;
-        console.log(tripPlace);
         return (
             <div className="mapheader-container">
 

@@ -58,7 +58,7 @@
 }
 
 
-@media only screen and (max-width: 752px) {
+@media only screen and (max-width: 768px) {
     .inputform-container{
         height: 300px;
     }

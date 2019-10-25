@@ -6,6 +6,7 @@ import TagBar from "../tagbar";
 import { connect } from "react-redux";
 import { addFilter } from "../../actions/FilterActions";
 import { filterFromResults } from "../../actions/SearchResultsActions";
+import { resetLocation } from "../../actions/MapActions"
 
 class InputContainer extends React.Component {
     // sauna
@@ -27,8 +28,8 @@ class InputContainer extends React.Component {
     }
 
     filterResults = () => {
-        const { filterFromResults, results, tags } = this.props;
-
+        const { filterFromResults, results, tags, resetLocation } = this.props;
+        resetLocation();
         filterFromResults(results.searchResults, tags);
     }
     checkTags = (tag) => {
@@ -77,4 +78,4 @@ const mapStateToProps = state => {
         filtersCom: state.filters.commonFilterList
     }
 }
-export default connect(mapStateToProps, { addFilter, filterFromResults })(InputContainer);
+export default connect(mapStateToProps, { addFilter, filterFromResults, resetLocation })(InputContainer);
