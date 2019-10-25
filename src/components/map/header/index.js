@@ -14,7 +14,7 @@ class MapHeader extends React.Component {
         return showSideSlider ? "<-" : "->";
     }
     generateLocationInfo = (obj, i) => {
-        console.log(obj)
+
         //[{ type: "city", name: "Testilaavu", text: "Tampere", geo: { lat: 61.29, lng: 23.45 }, propertyType: "Laavu", has: ["Järvi lähellä"],data:{name:"hehu",website:"www.hehu.fi",contact:"oy@partio.com"} },
         return (
             <div key={obj.name + i}>
