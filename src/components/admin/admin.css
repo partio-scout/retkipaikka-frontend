@@ -26,7 +26,13 @@
 .admin-list{
     margin-right:1px;
 }
-
+.sort-icon{
+    float:right;
+    opacity:0.5;
+}
+.inverse-icon{
+    transform: rotate(-180deg);
+}
 .list-item-button-container{
     margin-left:30px;
     float:right;
