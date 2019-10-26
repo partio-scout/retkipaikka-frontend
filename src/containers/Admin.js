@@ -7,6 +7,7 @@ import LocationList from "../components/admin/LocationList"
 import NotificationList from "../components/admin/NotificationList";
 import AdminSettings from "../components/admin/AdminSettings";
 import { fetchLocations } from "../actions/SearchResultsActions"
+import { fetchFilters } from "../actions/FilterActions"
 import { connect } from "react-redux";
 
 
@@ -15,9 +16,12 @@ class Admin extends React.Component {
         element: "locations"
     }
     componentWillMount() {
-        const { fetchLocations, results } = this.props;
+        const { fetchLocations, fetchFilters, results, filtersLoc, filtersCom } = this.props;
         if (results.searchResults.length === 0) {
             fetchLocations();
+        }
+        if (filtersLoc.length === 0 || filtersCom.length === 0) {
+            fetchFilters();
         }
     }
 
@@ -102,7 +106,9 @@ class Admin extends React.Component {
 }
 const mapStateToProps = state => {
     return {
-        results: state.searchResults
+        results: state.searchResults,
+        filtersLoc: state.filters.locationTypeFilterList,
+        filtersCom: state.filters.commonFilterList
     }
 }
-export default connect(mapStateToProps, { fetchLocations })(Admin);
+export default connect(mapStateToProps, { fetchLocations, fetchFilters })(Admin);

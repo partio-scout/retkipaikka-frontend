@@ -30,10 +30,10 @@ class TagBar extends React.Component {
     }
 
     render() {
-
+        const { adminPage } = this.props;
         let tags = this.createTags();
         return (
-            <div className="tag-container">
+            <div className="tag-container" style={adminPage ? { backgroundColor: 'white' } : {}}>
                 {tags}
             </div>
         )

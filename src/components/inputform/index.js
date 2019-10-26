@@ -45,11 +45,13 @@ class InputContainer extends React.Component {
         return true;
     }
     render() {
-        const { results, filtersLoc, filtersCom } = this.props;
+        const { results, filtersLoc, filtersCom, adminPage } = this.props;
+
         console.log(filtersCom, "commons")
+
         return (
             <div>
-                <div className="inputform-container">
+                <div className="inputform-container" style={adminPage ? { backgroundColor: 'white' } : {}}>
                     {/* <div className="inputform-inputs form-row form-group"> */}
                     <form className="inputform-inputs" onSubmit={(e) => e.preventDefault()}>
                         <div className="form-row">
@@ -65,7 +67,7 @@ class InputContainer extends React.Component {
                     </form>
 
                 </div>
-                <TagBar />
+                <TagBar adminPage={adminPage} />
             </div>
         )
     }

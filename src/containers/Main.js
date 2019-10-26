@@ -32,7 +32,7 @@ class Main extends React.Component {
                     <img alt="frontpage_image" src={imagesPath + "frontpage_img.jpg"} />
                     <h2 className="main-header">Partio retkipaikat</h2>
                 </div>
-                <InputContainer />
+                <InputContainer adminPage={false} />
                 <Map />
                 <LocationForm />
             </div>

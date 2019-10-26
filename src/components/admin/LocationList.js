@@ -2,6 +2,7 @@ import React from "react";
 import "./admin.css"
 import { connect } from "react-redux";
 import ListComponent from "./ListComponent";
+import InputContainer from "../inputform"
 class LocationList extends React.Component {
     state = {
         currentSort: "id",
@@ -18,11 +19,13 @@ class LocationList extends React.Component {
 
     }
 
+    handleObjectClick = (obj) => {
 
+    }
 
     getRowData = (obj) => {
         return (
-            <tr>
+            <tr onClick={() => this.handleObjectClick(obj)}>
                 <th scope="row">{obj.id}</th>
                 <td>{obj.name}</td>
                 <td>{obj.text}</td>
@@ -111,11 +114,12 @@ class LocationList extends React.Component {
         return (
             <div className="admin-content-container">
                 <h3>Retkipaikat</h3>
+                <InputContainer adminPage={true} />
                 <div className="location-list-container">
                     {items}
                 </div>
-            </div>
 
+            </div>
         )
     }
 }
@@ -124,7 +128,7 @@ class LocationList extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        results: state.searchResults.searchResults,
+        results: state.searchResults.filteredResults,
 
     }
 }
