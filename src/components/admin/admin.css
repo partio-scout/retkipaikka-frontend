@@ -15,6 +15,18 @@
     margin-top: 2%;
     
 }
+.info-close-button{
+    background-color: #28aae1;
+    float:right;
+}
+.admin-info-dialog{
+    width:auto;
+    position:absolute;
+    background-color:white;
+}
+.info-button{
+    width:90px;
+}
 
 
 /* list items */

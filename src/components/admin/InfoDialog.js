@@ -1,11 +1,11 @@
 import React from "react";
-import "./mapHeader.css";
+
 import { connect } from "react-redux";
-import { selectLocation } from "../../../actions/MapActions"
+import { selectLocation } from "../../actions/MapActions"
 
 class InfoDialog extends React.Component {
     generateFromSingleData = (obj) => {
-        const { selectLocation } = this.props;
+
         return (
             <div>
                 <h4>Nimi:</h4>
@@ -24,24 +24,24 @@ class InfoDialog extends React.Component {
                 <span>{obj.data.phone}</span>
                 <br />
                 <br />
-                <h4 onClick={() => selectLocation(obj)} ><u>Näytä kartalla</u></h4>
+                <button className="btn btn-primary info-button">Poista</button>
+                <button className="btn btn-primary info-button">Muokkaa</button>
 
             </div>
         )
     }
-    getText = () => {
-        return "<-";
-    }
+
 
 
     render() {
-        console.log("render slider")
-        let className = "map-side-slider component"
+        const { data, customClassName, handleClose, clickHeight } = this.props;
+        let className = "admin-info-dialog"
+
         return (
-            <div className={this.props.class ? className + this.props.class : className}>
-                <button onClick={this.props.handleClose}>{this.getText()}</button>
+            <div style={{ top: clickHeight.height, left: clickHeight.width }} className={customClassName ? className + customClassName : className}>
+                <button className="btn info-close-button" onClick={handleClose}>x</button>
                 <div className="side-slider-data">
-                    {this.generateFromSingleData(this.props.data)}
+                    {this.generateFromSingleData(data)}
                 </div>
 
             </div>

@@ -1,13 +1,15 @@
 import React from "react";
 import "./admin.css"
 import { connect } from "react-redux";
-import ListComponent from "./ListComponent";
+import InfoDialog from "./InfoDialog";
 import InputContainer from "../inputform"
 class LocationList extends React.Component {
     state = {
         currentSort: "id",
         // 1 asc, -1 desc
-        sortType: 1
+        sortType: 1,
+        clickedObj: null,
+        clickPos: null
     }
     getText = () => {
         return "<-";
@@ -19,13 +21,18 @@ class LocationList extends React.Component {
 
     }
 
-    handleObjectClick = (obj) => {
+    handleObjectClick = (obj, e) => {
+        //set clickedobject and move window down by 50px and right by 50px from clicked position
+        this.setState({ clickedObj: obj, clickPos: { height: e.clientY + 50, width: e.clientX + 50 } });
 
+    }
+    handleClose = () => {
+        this.setState({ clickedObj: null });
     }
 
     getRowData = (obj) => {
         return (
-            <tr onClick={() => this.handleObjectClick(obj)}>
+            <tr onClick={(e) => this.handleObjectClick(obj, e)}>
                 <th scope="row">{obj.id}</th>
                 <td>{obj.name}</td>
                 <td>{obj.text}</td>
@@ -110,7 +117,10 @@ class LocationList extends React.Component {
 
 
     render() {
+        const { clickedObj, clickPos } = this.state;
+        console.time("gen")
         const items = this.generateListItems();
+        console.timeEnd("gen")
         return (
             <div className="admin-content-container">
                 <h3>Retkipaikat</h3>
@@ -118,6 +128,9 @@ class LocationList extends React.Component {
                 <div className="location-list-container">
                     {items}
                 </div>
+
+                {clickedObj !== null && <InfoDialog data={clickedObj} clickHeight={clickPos} handleClose={this.handleClose}></InfoDialog>}
+
 
             </div>
         )
