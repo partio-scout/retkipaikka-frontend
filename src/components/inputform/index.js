@@ -18,8 +18,8 @@ class InputContainer extends React.Component {
     //Laavu
     // Kämppä
     // Alue
-    filterArr = [{ type: "nofilter", text: "Ei suodattimia" }, { type: "filter", text: "Sauna" }, { type: "filter", text: "Järvi lähellä" }, { type: "filter", text: "Sisämajoitus" }, { type: "filter", text: "Sisävessa" }]
-    typeArr = [{ type: "nolocationtype", text: "Kaikki" }, { type: "locationtype", text: "Laavu" }, { type: "locationtype", text: "Kämppä" }, { type: "locationtype", text: "Alue" }]
+    // filterArr = [{ type: "nofilter", text: "Ei suodattimia" }, { type: "filter", text: "Sauna" }, { type: "filter", text: "Järvi lähellä" }, { type: "filter", text: "Sisämajoitus" }, { type: "filter", text: "Sisävessa" }]
+    // typeArr = [{ type: "nolocationtype", text: "Kaikki" }, { type: "locationtype", text: "Laavu" }, { type: "locationtype", text: "Kämppä" }, { type: "locationtype", text: "Alue" }]
     addFilter = (obj) => {
         const { addFilter } = this.props;
         if (this.checkTags(obj)) {

@@ -38,7 +38,9 @@ class SelectInput extends React.Component {
 
     generateData = (data) => {
         const { selectedValues } = this.state;
+        const { defaultValue } = this.props;
         let mappedData = data.map((value, i) => {
+            console.log(defaultValue, value.text)
             //return (<option className={selectedValues.find(f => f === value) ? "inputform-checked" : null} key={i}>{value}</option>)
             return (<option key={i}>{value.text}</option>)
         })
@@ -52,7 +54,7 @@ class SelectInput extends React.Component {
         return (
             <div className={className}>
                 {title !== undefined && <span className="inputform-title">{title}</span>}
-                <select id="type" onChange={this.handleSelect} selected="s" className="form-control">
+                <select defaultValue={} id="type" onChange={this.handleSelect} selected="s" className="form-control">
                     {dataForDropDown}
                 </select>
                 {/* <Select

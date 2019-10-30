@@ -2,8 +2,12 @@ import React from "react";
 
 import { connect } from "react-redux";
 import { selectLocation } from "../../actions/MapActions"
+import LocationForm from "../locationform"
 
 class InfoDialog extends React.Component {
+    state = {
+        editEnabled: null
+    }
     generateFromSingleData = (obj) => {
 
         return (
@@ -25,16 +29,27 @@ class InfoDialog extends React.Component {
                 <br />
                 <br />
                 <button className="btn btn-primary info-button">Poista</button>
-                <button className="btn btn-primary info-button">Muokkaa</button>
+                <button onClick={() => this.handleEditClick(obj)} className="btn btn-primary info-button">Muokkaa</button>
 
             </div>
         )
+    }
+    handleEditClick = (obj) => {
+        const { editEnabled } = this.state;
+        let value = obj;
+        if (editEnabled) {
+            value = null;
+        }
+        this.setState({ editEnabled: value })
+
     }
 
 
 
     render() {
         const { data, customClassName, handleClose, clickHeight } = this.props;
+        const { editEnabled } = this.state;
+
         let className = "admin-info-dialog"
 
         return (
@@ -43,6 +58,7 @@ class InfoDialog extends React.Component {
                 <div className="side-slider-data">
                     {this.generateFromSingleData(data)}
                 </div>
+                {editEnabled !== null && <LocationForm editPageObj={editEnabled} />}
 
             </div>
 

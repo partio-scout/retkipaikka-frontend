@@ -2,16 +2,18 @@ import React from "react";
 import { connect } from "react-redux";
 
 const TextInput = (props) => {
-    const { placeholder, helper, size, handleChange, text, id, required, customType, coords } = props;
+    const { placeholder, helper, size, handleChange, text, id, required, customType, coords, defaultValue } = props;
     let className = size ? "form-group " + size : "form-group";
-
+    // if default value prop is passed, use it
+    // also for geo input, dont allow writing and get coordinates on click
     return (
         <div className={className}>
             <label htmlFor={text + "-input"}>{text}</label>
             <div className="input-group">
-                {id === "geo" ?
-                    <input onChange={handleChange} value={coords ? coords.lat + ", " + coords.lng : ""} type={customType || "text"} className="form-control" id={id} placeholder={placeholder} readOnly required={required} /> :
-                    <input onChange={handleChange} type={customType || "text"} className="form-control" id={id} placeholder={placeholder} required={required} />}
+                {defaultValue ? <input onChange={handleChange} defaultValue={defaultValue} type={customType || "text"} className="form-control" id={id} placeholder={placeholder} required={required} /> :
+                    id === "geo" ?
+                        <input onChange={handleChange} value={coords ? coords.lat + ", " + coords.lng : ""} type={customType || "text"} className="form-control" id={id} placeholder={placeholder} readOnly required={required} /> :
+                        <input onChange={handleChange} type={customType || "text"} className="form-control" id={id} placeholder={placeholder} required={required} />}
             </div>
 
             <small id={text + "Help"} className="form-text text-muted">{helper}</small>

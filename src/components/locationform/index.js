@@ -6,7 +6,7 @@ import TextInput from "./textInput"
 import "./locationform.css"
 
 
-class TagBar extends React.Component {
+class LocationForm extends React.Component {
     typeArr = [{ type: "locationtype", text: "Valitse" }, { type: "locationtype", text: "Laavu" }, { type: "locationtype", text: "Kämppä" }, { type: "locationtype", text: "Alue" }]
     state = {
         geo: ""
@@ -79,12 +79,12 @@ class TagBar extends React.Component {
         this.setState({ [e.target.id]: value });
     }
 
-    generateCheckBoxes = (arr) => {
+    generateCheckBoxes = (arr, has) => {
         console.log(arr);
         let boxes = arr.map(item => {
             if (item.type !== "nofilter") {
                 return (<div className="form-check form-check-inline">
-                    <input onClick={this.handleChange} type="checkbox" className="form-check-input" id={"box-" + item.text} />
+                    <input onClick={this.handleChange} type="checkbox" className="form-check-input" id={"box-" + item.text} defaultChecked={has.filter((val) => val === item.text).length > 0} />
                     <label className="form-check-label" htmlFor={item.text}>{item.text}</label>
                 </div>)
             } else {
@@ -103,13 +103,47 @@ class TagBar extends React.Component {
     }
 
 
-    getTextForm = (rows, text, helper) => {
+    getTextForm = (rows, text, helper, description) => {
         return (
             <div className="form-group">
                 <label htmlFor="text-area">{text}</label>
-                <textarea onChange={this.handleChange} className="form-control" id="description" rows={rows}></textarea>
+                <textarea defaultValue={description !== null ? description : ""} onChange={this.handleChange} className="form-control" id="description" rows={rows}></textarea>
                 <small id={text + "Help"} className="form-text text-muted">{helper}</small>
             </div>)
+    }
+    generateEditForm = () => {
+        const { coords, typeFilters, commonFilters, editPageObj } = this.props;
+        console.log(editPageObj.has)
+        let newTypes = [...typeFilters];
+        newTypes.splice(0, 1);
+        //const { text, geo, ownerName, website, mail, phone } = this.state;
+        return (<form className="needs-validation" noValidate>
+            <TextInput defaultValue={editPageObj.name} handleChange={this.handleChange} id="name" placeholder="Esimerkkipaikka" helper="Kirjoita retkipaikan nimi" text="Retkipaikka" required={true} />
+            <SelectInput
+                defaultValue={editPageObj.propertyType}
+                data={newTypes}
+                title="Retkipaikan tyyppi"
+                useFiltering={false}
+                handleFormSelect={this.handleChange}
+                customClassName={"form-select-input"}
+            />
+            <small id={"Help"} className="form-text text-muted form-group">Valitse retkipaikan tyyppi</small>
+            <div className="form-row">
+                <TextInput defaultValue={editPageObj.text} handleChange={this.handleChange} id="text" placeholder="Paikan sijainti" helper="Kirjoita retkipaikan sijainti" text="Sijainti" size="col-md-6" required={true} />
+                <TextInput defaultValue={editPageObj.geo.lat + ", " + editPageObj.geo.lng} handleChange={this.handleChange} id="geo" placeholder="Koordinaatit" helper="Valitse koordinaatit kartalta" text="Koordinaatit" size="col-md-6" required={true} />
+            </div>
+            {this.getTextForm("3", "Kuvaus paikasta", "Kirjoita kuvaus retkipaikasta", editPageObj.description)}
+            {this.generateCheckBoxes(commonFilters, editPageObj.has)}
+            <small id={"Help"} className="form-text text-muted form-group">Valitse retkipaikkaa kuvaavat asiat</small>
+            <div className="form-row">
+                <TextInput defaultValue={editPageObj.data.ownerName} handleChange={this.handleChange} id="ownerName" placeholder="Esimerkkiomistaja" helper="Kirjoita retkipaikan omistaja (lippukunta, kaupunki, srk tms.)" text="Omistaja" size="col-md-3" required={true} />
+                <TextInput defaultValue={editPageObj.data.website} handleChange={this.handleChange} id="website" placeholder="www.retkipaikka.fi" helper="Kirjoita kohteen nettisivu" text="Verkkosivu" size="col-md-3" required={false} />
+                <TextInput defaultValue={editPageObj.data.mail} handleChange={this.handleChange} id="mail" placeholder="example@ex.com" helper="Kirjoita sähköposti" text="Sähköposti" size="col-md-3" required={false} />
+                <TextInput defaultValue={editPageObj.data.phone} handleChange={this.handleChange} id="phone" placeholder="0441235678" helper="Kirjoita puhelinnumero" text="Puhelinnumero" size="col-md-3" required={false} />
+            </div>
+            <button onClick={this.handleFormSubmit} type="submit" className="btn btn-primary">Lähetä</button>
+        </form>)
+        // data: { name: null, website:
     }
     generateLocationForm = () => {
         const { coords, typeFilters, commonFilters } = this.props;
@@ -131,8 +165,8 @@ class TagBar extends React.Component {
                 <TextInput handleChange={this.handleChange} id="text" placeholder="Paikan sijainti" helper="Kirjoita retkipaikan sijainti" text="Sijainti" size="col-md-6" required={true} />
                 <TextInput handleChange={this.handleChange} id="geo" placeholder="Koordinaatit" helper="Valitse koordinaatit kartalta" text="Koordinaatit" size="col-md-6" required={true} />
             </div>
-            {this.getTextForm("3", "Kuvaus paikasta", "Kirjoita kuvaus retkipaikasta")}
-            {this.generateCheckBoxes(commonFilters)}
+            {this.getTextForm("3", "Kuvaus paikasta", "Kirjoita kuvaus retkipaikasta", null)}
+            {this.generateCheckBoxes(commonFilters, [])}
             <small id={"Help"} className="form-text text-muted form-group">Valitse retkipaikkaa kuvaavat asiat</small>
             <div className="form-row">
                 <TextInput handleChange={this.handleChange} id="ownerName" placeholder="Esimerkkiomistaja" helper="Kirjoita retkipaikan omistaja (lippukunta, kaupunki, srk tms.)" text="Omistaja" size="col-md-3" required={true} />
@@ -146,12 +180,14 @@ class TagBar extends React.Component {
     }
 
     render() {
-        const { coords } = this.props;
-        console.log(this.state);
+        const { coords, editPageObj } = this.props;
+        let form = editPageObj ? this.generateEditForm() : this.generateLocationForm();
+
         return (
             <div className="form-container">
-                <h4>Ilmoita retkipaikka!</h4>
-                {this.generateLocationForm()}
+                {editPageObj && <h4>Ilmoita retkipaikka!</h4>}
+                {form}
+
             </div>
         )
     }
@@ -164,5 +200,5 @@ const mapStateToProps = state => {
         commonFilters: state.filters.commonFilterList
     }
 }
-export default connect(mapStateToProps, { removeFilter })(TagBar);
+export default connect(mapStateToProps, { removeFilter })(LocationForm);
 
