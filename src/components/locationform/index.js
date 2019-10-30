@@ -9,7 +9,7 @@ import "./locationform.css"
 class LocationForm extends React.Component {
     typeArr = [{ type: "locationtype", text: "Valitse" }, { type: "locationtype", text: "Laavu" }, { type: "locationtype", text: "Kämppä" }, { type: "locationtype", text: "Alue" }]
     state = {
-        geo: ""
+
     }
     //propertytypes:
     //laavu, kämppä, alue
@@ -19,7 +19,7 @@ class LocationForm extends React.Component {
     //{ type: "city", name: "Testialue", text: "Turku", geo: { lat: 60.45, lng: 22.26 },
     // propertyType: "Alue", has: ["Järvi lähellä", "Sauna"], 
     //data: { name: "hehu", website: "www.hehu.fi", contact: "oy@partio.com" } },
-    handleFormSubmit = (e) => {
+    handleFormSubmit = (e, edit) => {
         e.preventDefault();
         // e.stopPropagation();
         let emptyFound = false;
@@ -35,6 +35,7 @@ class LocationForm extends React.Component {
         })
         if (!emptyFound) {
             let stateKeys = Object.keys(this.state);
+            console.log(JSON.stringify(this.state))
             for (let i = 0; i < stateKeys.length; i++) {
                 let key = stateKeys[i];
                 //console.log(this.state.key)
@@ -42,15 +43,18 @@ class LocationForm extends React.Component {
                     let splitted = key.split("-");
                     dataObj.has.push(splitted[1]);
                 } else if (key === "geo") {
-                    let splittedGeo = this.state[key].split(",");
-                    if (splittedGeo.length === 2) {
-                        let geoObj = { lat: splittedGeo[0], lng: splittedGeo[1] };
-                        dataObj.geo = geoObj;
-                    } else {
-                        let geoItem = document.getElementById("geo")
-                        geoItem.value = ""
-                        return;
+                    if (this.state[key]) {
+                        let splittedGeo = this.state[key].split(",");
+                        if (splittedGeo.length === 2) {
+                            let geoObj = { lat: splittedGeo[0], lng: splittedGeo[1] };
+                            dataObj.geo = geoObj;
+                        } else {
+                            let geoItem = document.getElementById("geo")
+                            geoItem.value = ""
+                            return;
+                        }
                     }
+
                 } else {
                     switch (key) {
                         case "phone":
@@ -66,12 +70,20 @@ class LocationForm extends React.Component {
 
                 }
             }
-            this.submitForm(dataObj);
+            if (edit) {
+                this.handleEditSubmit(dataObj)
+            } else {
+                this.submitForm(dataObj);
+            }
+
         }
     }
 
     submitForm = (data) => {
         console.log(data, "meni läpi")
+    }
+    handleEditSubmit = (data) => {
+
     }
     handleChange = (e) => {
         let value = e.target.type === "checkbox" ? e.target.checked : e.target.value;
@@ -99,7 +111,8 @@ class LocationForm extends React.Component {
         if (newProps.coords !== currentState.geo && newProps.coords !== null) {
             return { geo: newProps.coords.lat + "," + newProps.coords.lng };
         } else
-            return null;
+            console.log("asdasdas")
+        return null;
     }
 
 
@@ -113,7 +126,6 @@ class LocationForm extends React.Component {
     }
     generateEditForm = () => {
         const { coords, typeFilters, commonFilters, editPageObj } = this.props;
-        console.log(editPageObj.has)
         let newTypes = [...typeFilters];
         newTypes.splice(0, 1);
         //const { text, geo, ownerName, website, mail, phone } = this.state;
@@ -130,7 +142,7 @@ class LocationForm extends React.Component {
             <small id={"Help"} className="form-text text-muted form-group">Valitse retkipaikan tyyppi</small>
             <div className="form-row">
                 <TextInput defaultValue={editPageObj.text} handleChange={this.handleChange} id="text" placeholder="Paikan sijainti" helper="Kirjoita retkipaikan sijainti" text="Sijainti" size="col-md-6" required={true} />
-                <TextInput defaultValue={editPageObj.geo.lat + ", " + editPageObj.geo.lng} handleChange={this.handleChange} id="geo" placeholder="Koordinaatit" helper="Valitse koordinaatit kartalta" text="Koordinaatit" size="col-md-6" required={true} />
+                <TextInput defaultValue={editPageObj.geo.lat + "," + editPageObj.geo.lng} handleChange={this.handleChange} id="geo" placeholder="Koordinaatit" helper="Valitse koordinaatit kartalta" text="Koordinaatit" size="col-md-6" required={true} />
             </div>
             {this.getTextForm("3", "Kuvaus paikasta", "Kirjoita kuvaus retkipaikasta", editPageObj.description)}
             {this.generateCheckBoxes(commonFilters, editPageObj.has)}
@@ -141,10 +153,12 @@ class LocationForm extends React.Component {
                 <TextInput defaultValue={editPageObj.data.mail} handleChange={this.handleChange} id="mail" placeholder="example@ex.com" helper="Kirjoita sähköposti" text="Sähköposti" size="col-md-3" required={false} />
                 <TextInput defaultValue={editPageObj.data.phone} handleChange={this.handleChange} id="phone" placeholder="0441235678" helper="Kirjoita puhelinnumero" text="Puhelinnumero" size="col-md-3" required={false} />
             </div>
-            <button onClick={this.handleFormSubmit} type="submit" className="btn btn-primary">Lähetä</button>
+            <button onClick={(e) => this.handleFormSubmit(e, true)} type="submit" className="btn btn-primary">Lähetä</button>
         </form>)
         // data: { name: null, website:
     }
+
+
     generateLocationForm = () => {
         const { coords, typeFilters, commonFilters } = this.props;
 
@@ -174,7 +188,7 @@ class LocationForm extends React.Component {
                 <TextInput handleChange={this.handleChange} id="mail" placeholder="example@ex.com" helper="Kirjoita sähköposti" text="Sähköposti" size="col-md-3" required={false} />
                 <TextInput handleChange={this.handleChange} id="phone" placeholder="0441235678" helper="Kirjoita puhelinnumero" text="Puhelinnumero" size="col-md-3" required={false} />
             </div>
-            <button onClick={this.handleFormSubmit} type="submit" className="btn btn-primary">Lähetä</button>
+            <button onClick={(e) => this.handleFormSubmit(e, false)} type="submit" className="btn btn-primary">Lähetä</button>
         </form>)
         // data: { name: null, website: null, mail: null, phone: null }
     }
@@ -182,10 +196,12 @@ class LocationForm extends React.Component {
     render() {
         const { coords, editPageObj } = this.props;
         let form = editPageObj ? this.generateEditForm() : this.generateLocationForm();
+        let className = "form-container";
+        className = editPageObj ? "edit-form-container" : className
 
         return (
-            <div className="form-container">
-                {editPageObj && <h4>Ilmoita retkipaikka!</h4>}
+            <div className={className}>
+                {!editPageObj && <h4>Ilmoita retkipaikka!</h4>}
                 {form}
 
             </div>

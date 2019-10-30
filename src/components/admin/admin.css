@@ -19,6 +19,9 @@
     background-color: #28aae1;
     float:right;
 }
+.info-close-button:hover{
+    background-color:#f04150;
+}
 .admin-info-dialog{
     width:auto;
     position:absolute;

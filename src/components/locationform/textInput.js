@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 const TextInput = (props) => {
     const { placeholder, helper, size, handleChange, text, id, required, customType, coords, defaultValue } = props;
     let className = size ? "form-group " + size : "form-group";
+
     // if default value prop is passed, use it
     // also for geo input, dont allow writing and get coordinates on click
     return (

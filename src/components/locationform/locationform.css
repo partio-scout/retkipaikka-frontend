@@ -3,6 +3,10 @@
     margin:0 auto;
     padding-bottom:5rem;
 }
+.edit-form-container{
+  width:75%;
+  padding-bottom:5rem;
+}
 .form-container h4{
     margin-bottom:50px;
 }
@@ -25,5 +29,6 @@
     }
   }
 .btn-primary:hover{
-    background: #28aae1;
+    background-color:#f04150;
+    /* background: #28aae1; */
 }

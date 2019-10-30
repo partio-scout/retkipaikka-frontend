@@ -121,6 +121,7 @@ class LocationList extends React.Component {
         console.time("gen")
         const items = this.generateListItems();
         console.timeEnd("gen")
+        console.log(clickedObj, "in locationList clicked")
         return (
             <div className="admin-content-container">
                 <h3>Retkipaikat</h3>

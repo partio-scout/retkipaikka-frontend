@@ -7,7 +7,7 @@ class Header extends React.Component {
         const { location } = this.props;
         return (
             <div className="header-container">
-                <h4 className="header-container-text">Partion retkipaikat</h4>
+                <Link to="/" ><h4 className="header-container-text">Partion retkipaikat</h4></Link>
                 {/* {location.pathname !== "/hallinta" && <span className="header-login-button">
                     <Link to="/hallinta" >
                         <button className="btn btn-primary" >Kirjaudu</button>
