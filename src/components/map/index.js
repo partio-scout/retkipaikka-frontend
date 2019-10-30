@@ -76,7 +76,7 @@ class ScoutMap extends React.Component {
                     <Map
                         center={center}
                         zoom={zoom}
-                        maxZoom={10}
+                        maxZoom={15}
                         attributionControl={true}
                         zoomControl={true}
                         doubleClickZoom={true}
