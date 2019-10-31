@@ -15,6 +15,19 @@
     margin:0 auto;
     /* border-radius:20px; */
 }
+.marker-cluster-custom{
+    background-color:rgb(28, 66, 87);
+
+    border-radius:50px;
+    /* width:100px; */
+}
+.marker-cluster-label{
+  margin-top:10px;
+  color:white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .leaflet-container {
   height: 600px;
   min-width:310px;

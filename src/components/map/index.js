@@ -3,7 +3,8 @@ import "./map.css";
 import MapHeader from "./header"
 import SideSlider from "./header/sideSlider"
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet'
-// import { MarkerClusterGroup } from "react-leaflet-markercluster"
+import L from "leaflet"
+import MarkerClusterGroup from 'react-leaflet-markercluster/dist/react-leaflet-markercluster';
 
 import { connect } from "react-redux";
 import { setCoordinates } from "../../actions/MapActions"
@@ -12,20 +13,6 @@ import { setCoordinates } from "../../actions/MapActions"
 const apiKey = "AIzaSyDCtpSTaV-7OjEPzIpgj_4Vc8ErY7NqO5k"
 
 
-const PartioMap = (props) => (
-    <Map
-
-        zoom={props.zoom}
-        center={props.center}
-        onClick={props.handleMapClick}
-    >
-
-        >
-            {props.markers}
-
-
-    </Map>
-)
 
 class ScoutMap extends React.Component {
     state = {
@@ -36,13 +23,30 @@ class ScoutMap extends React.Component {
     renderInfo = (obj) => {
 
     }
+    createClusterCustomIcon = (cluster) => {
+        return L.divIcon({
+            html: `<div>
+            <span class="marker-cluster-label">${cluster.getChildCount()}</span>
+                </div>`,
+            className: 'marker-cluster-custom',
+            iconSize: L.point(40, 40, true),
+        });
+
+    };
+    scoutIcon = L.icon({
+        iconUrl: '/icons/map-marker.svg',
+        iconSize: [40, 50], // size of the icon
+    });
     generateMarkers = () => {
         const { results } = this.props;
         let markers = results.map((reg, i) => {
+
             return <Marker
                 key={reg.text + i}
                 position={reg.geo}
                 onClick={() => this.setState({ selected: reg })}
+                icon={this.scoutIcon}
+
             />
         });
         return markers;
@@ -90,7 +94,13 @@ class ScoutMap extends React.Component {
                             attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                         />
-                        {this.generateMarkers()}
+
+                        <MarkerClusterGroup
+                            showCoverageOnHover
+                            iconCreateFunction={this.createClusterCustomIcon}>
+                            {this.generateMarkers()}
+                        </MarkerClusterGroup>
+
                     </Map>
                     {/* <PartioMap
                         // isMarkerShown
