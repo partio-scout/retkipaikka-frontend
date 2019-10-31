@@ -60,18 +60,19 @@ class Admin extends React.Component {
             </div>
         )
     }
-    handleMenuClick = () => {
-
+    handleMenuClick = (e) => {
+        let type = e.target.id;
+        if (type) {
+            this.setState({ element: type })
+        }
     }
     getAdminPanel = () => {
         const { element } = this.state;
         let renderElement = ""
         switch (element) {
             case "locations":
-                renderElement = <LocationList />
-                break;
             case "notifications":
-                renderElement = <NotificationList />
+                renderElement = <LocationList type={element} />
                 break;
             case "settings":
                 renderElement = <AdminSettings />

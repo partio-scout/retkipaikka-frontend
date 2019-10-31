@@ -5,7 +5,8 @@ import {
 
 const initialState = {
     searchResults: [],
-    filteredResults: []
+    filteredResults: [],
+    notificationResults: []
 }
 
 

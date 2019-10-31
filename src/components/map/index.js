@@ -2,7 +2,7 @@ import React from "react";
 import "./map.css";
 import MapHeader from "./header"
 import SideSlider from "./header/sideSlider"
-import { Map, Marker, Popup, TileLayer } from 'react-leaflet'
+import { Map as LeafletMap, Marker, Popup, TileLayer } from 'react-leaflet'
 import L from "leaflet"
 import MarkerClusterGroup from 'react-leaflet-markercluster/dist/react-leaflet-markercluster';
 
@@ -12,9 +12,7 @@ import { setCoordinates } from "../../actions/MapActions"
 
 const apiKey = "AIzaSyDCtpSTaV-7OjEPzIpgj_4Vc8ErY7NqO5k"
 
-
-
-class ScoutMap extends React.Component {
+class Map extends React.Component {
     state = {
         selected: null
     }
@@ -40,7 +38,6 @@ class ScoutMap extends React.Component {
     generateMarkers = () => {
         const { results } = this.props;
         let markers = results.map((reg, i) => {
-
             return <Marker
                 key={reg.text + i}
                 position={reg.geo}
@@ -76,8 +73,7 @@ class ScoutMap extends React.Component {
             <div className="map-container">
                 <div className="map">
                     <MapHeader types={filterTypes} results={results} renderMenu resultAmount={results.length} data={results} />
-
-                    <Map
+                    <LeafletMap
                         center={center}
                         zoom={zoom}
                         maxZoom={15}
@@ -94,25 +90,13 @@ class ScoutMap extends React.Component {
                             attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                         />
-
                         <MarkerClusterGroup
                             showCoverageOnHover
                             iconCreateFunction={this.createClusterCustomIcon}>
                             {this.generateMarkers()}
                         </MarkerClusterGroup>
 
-                    </Map>
-                    {/* <PartioMap
-                        // isMarkerShown
-                        // googleMapURL={"https://maps.googleapis.com/maps/api/js?key=&v=3.exp&libraries=geometry,drawing,places"}
-                        // loadingElement={<div style={{ height: `100%` }} />}
-                        // containerElement={<div style={{ height: `100%` }} />}
-                        // mapElement={<div style={{ height: `100%` }} />}
-                        center={center}
-                        zoom={zoom}
-                        markers={this.generateMarkers()}
-                        handleMapClick={this.handleMapClick}
-                    /> */}
+                    </LeafletMap>
                     {selected !== null && <SideSlider class={" map-slider"} handleClose={this.handleMarkerClose} data={selected} />}
                 </div>
 
@@ -129,4 +113,4 @@ const mapStateToProps = state => {
         filterTypes: state.filters.locationTypeFilterList
     }
 }
-export default connect(mapStateToProps, { setCoordinates })(ScoutMap);
+export default connect(mapStateToProps, { setCoordinates })(Map);

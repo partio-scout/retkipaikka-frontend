@@ -55,10 +55,14 @@ class LocationList extends React.Component {
         }
 
     }
+
+    checkType = (type) => {
+        return type === "locations"
+    }
     handleSort = () => {
-        const { results } = this.props;
+        const { results, notifications, type } = this.props;
         const { currentSort, sortType } = this.state;
-        let newResults = [...results];
+        let newResults = this.checkType(type) ? [...results] : [...notifications];
         newResults = newResults.sort((a, b) => {
             switch (sortType) {
                 case 1:
@@ -118,14 +122,17 @@ class LocationList extends React.Component {
 
     render() {
         const { clickedObj, clickPos } = this.state;
+        const { type } = this.props;
         console.time("gen")
+        let isLocation = this.checkType(type);
+        let title = isLocation ? "Nykyiset retkipaikat" : "Hyväksymättömät retkipaikat"
         const items = this.generateListItems();
         console.timeEnd("gen")
         console.log(clickedObj, "in locationList clicked")
         return (
             <div className="admin-content-container">
-                <h3>Retkipaikat</h3>
-                <InputContainer adminPage={true} />
+                <h3>{title}</h3>
+                {isLocation && <InputContainer adminPage={true} />}
                 <div className="location-list-container">
                     {items}
                 </div>
@@ -143,6 +150,7 @@ class LocationList extends React.Component {
 const mapStateToProps = state => {
     return {
         results: state.searchResults.filteredResults,
+        notifications: state.searchResults.notificationResults
 
     }
 }
