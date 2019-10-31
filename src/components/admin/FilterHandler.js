@@ -4,7 +4,9 @@ import { connect } from "react-redux";
 import TextInput from "../locationform/textInput"
 import ListComponent from "./ListComponent";
 class FilterHandler extends React.Component {
+    state = {
 
+    }
     getText = () => {
         return "<-";
     }
@@ -25,7 +27,16 @@ class FilterHandler extends React.Component {
         return values;
     }
     handleChange = (e) => {
+        let value = e.target.type === "checkbox" ? e.target.checked : e.target.value;
+        this.setState({ [e.target.id]: value });
 
+    }
+    handleSubmit = (e, value) => {
+        e.preventDefault();
+        let data = this.state[value];
+        if (data) {
+            console.log(data);
+        }
     }
     getRowData = (obj) => {
         return (
@@ -69,7 +80,7 @@ class FilterHandler extends React.Component {
                 <h5>Suodattimet</h5>
                 {this.getTable(commonFilters)}
 
-                <form>
+                <form onSubmit={(e) => this.handleSubmit(e, "filter")}>
                     <div className="form-row">
                         <TextInput handleChange={this.handleChange} id="filter" placeholder="suodatin" helper="Kirjoita lisättävän suodattimen nimi" text="Lisää suodatin" size="col-md-3" required={true} />
                         <button className="btn btn-primary admin-filter-button">Lisää</button>
@@ -77,7 +88,7 @@ class FilterHandler extends React.Component {
                 </form>
                 <h5>Kategoriat</h5>
                 {this.getTable(locationTypes)}
-                <form>
+                <form onSubmit={(e) => this.handleSubmit(e, "types")}>
                     <div className="form-row">
                         <TextInput handleChange={this.handleChange} id="types" placeholder="Kategoria" helper="Kirjoita lisättävän kategorian nimi" text="Lisää kategoria" size="col-md-3" required={true} />
                         <button className="btn btn-primary admin-filter-button">Lisää</button>
