@@ -5,15 +5,16 @@ class AdminPanel extends React.Component {
 
 
     render() {
-        const { handleClick } = this.props;
+        const { handleClick, selectedTab } = this.props;
+
         return (
             <div className="admin-panel">
                 <div className="list-group admin-list" >
-                    <span onClick={handleClick} id="notifications" className="list-group-item list-group-item-action" >
+                    <span onClick={handleClick} id="notifications" className={"list-group-item list-group-item-action " + (selectedTab === "notifications" ? "tab-selected" : "")} >
                         Katso ilmoituksia
                     </span>
-                    <span onClick={handleClick} id="locations" className="list-group-item list-group-item-action" >Selaa retkipaikkoja</span>
-                    <span onClick={handleClick} id="settings" className="list-group-item list-group-item-action" >Asetukset</span>
+                    <span onClick={handleClick} id="locations" className={"list-group-item list-group-item-action " + (selectedTab === "locations" ? "tab-selected" : "")} >Selaa retkipaikkoja</span>
+                    <span onClick={handleClick} id="filters" className={"list-group-item list-group-item-action " + (selectedTab === "filters" ? "tab-selected" : "")} >Suodattimet</span>
                 </div>
 
             </div>

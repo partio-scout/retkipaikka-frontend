@@ -4,8 +4,7 @@ import Header from "../components/header"
 import TextInput from "../components/locationform/textInput";
 import AdminPanel from "../components/admin/AdminPanel"
 import LocationList from "../components/admin/LocationList"
-import NotificationList from "../components/admin/NotificationList";
-import AdminSettings from "../components/admin/AdminSettings";
+import FilterHandler from "../components/admin/FilterHandler";
 import { fetchLocations } from "../actions/SearchResultsActions"
 import { fetchFilters } from "../actions/FilterActions"
 import { connect } from "react-redux";
@@ -74,8 +73,8 @@ class Admin extends React.Component {
             case "notifications":
                 renderElement = <LocationList type={element} />
                 break;
-            case "settings":
-                renderElement = <AdminSettings />
+            case "filters":
+                renderElement = <FilterHandler />
                 break;
             default:
                 renderElement = <h3>Testi</h3>
@@ -85,7 +84,7 @@ class Admin extends React.Component {
 
         return (
             <div>
-                <AdminPanel handleClick={this.handleMenuClick} />
+                <AdminPanel selectedTab={element} handleClick={this.handleMenuClick} />
                 <div className="admin-data-container">
                     {renderElement}
                 </div>

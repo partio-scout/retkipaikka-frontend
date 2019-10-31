@@ -64,8 +64,8 @@ export const removeFilter = (obj) => {
 }
 
 export const fetchFilters = () => {
-    let locationTypeFilters = [{ type: "nolocationtype", text: "Kaikki" }, { type: "locationtype", text: "Laavu" }, { type: "locationtype", text: "Kämppä" }, { type: "locationtype", text: "Alue" }, { type: "locationtype", text: "Venelaituri" }]
-    let commonFilters = [{ type: "nofilter", text: "Ei suodattimia" }, { type: "filter", text: "Sauna" }, { type: "filter", text: "Järvi lähellä" }, { type: "filter", text: "Laituri" }, { type: "filter", text: "Sisämajoitus" }, { type: "filter", text: "Sisävessa" }]
+    let locationTypeFilters = [{ id: 0, type: "nolocationtype", text: "Kaikki" }, { id: 1, type: "locationtype", text: "Laavu" }, { id: 2, type: "locationtype", text: "Kämppä" }, { id: 3, type: "locationtype", text: "Alue" }, { id: 4, type: "locationtype", text: "Venelaituri" }]
+    let commonFilters = [{ id: 0, type: "nofilter", text: "Ei suodattimia" }, { id: 1, type: "filter", text: "Sauna" }, { id: 2, type: "filter", text: "Järvi lähellä" }, { id: 3, type: "filter", text: "Laituri" }, { id: 4, type: "filter", text: "Sisämajoitus" }, { id: 5, type: "filter", text: "Sisävessa" }]
     const locations = { locations: locationTypeFilters, common: commonFilters }
     return {
         type: UPDATE_FETCHED_FILTERS,

@@ -32,7 +32,7 @@ class LocationList extends React.Component {
 
     getRowData = (obj) => {
         return (
-            <tr onClick={(e) => this.handleObjectClick(obj, e)}>
+            <tr key={obj.id} onClick={(e) => this.handleObjectClick(obj, e)}>
                 <th scope="row">{obj.id}</th>
                 <td>{obj.name}</td>
                 <td>{obj.text}</td>

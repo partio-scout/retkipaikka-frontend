@@ -74,7 +74,6 @@ class InfoDialog extends React.Component {
         console.log(editEnabled, "in render")
         return (
             <Draggable
-
                 handle=".move-handle">
                 <div style={{ top: clickHeight.height, left: clickHeight.width }} className={customClassName ? className + customClassName : className}>
                     <button className="btn info-close-button" onClick={handleClose}>x</button>
