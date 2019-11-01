@@ -12,7 +12,8 @@ import {
 
 export const addFilter = (obj) => {
     let actionType = ""
-
+    // handles the input form filters
+    // add filter tag depending on the type
     switch (obj.type) {
         case "city":
             actionType = ADD_LOCATION_FILTER;
@@ -40,7 +41,7 @@ export const addFilter = (obj) => {
 }
 export const removeFilter = (obj) => {
     let actionType = ""
-
+    // remove filter tag depending on the type
     switch (obj.type) {
         case "city":
             actionType = REMOVE_LOCATION_FILTER;
@@ -64,6 +65,8 @@ export const removeFilter = (obj) => {
 }
 
 export const fetchFilters = () => {
+    // fetch filters from database
+    // currently hardcoded data
     let locationTypeFilters = [{ id: 0, type: "nolocationtype", text: "Kaikki" }, { id: 1, type: "locationtype", text: "Laavu" }, { id: 2, type: "locationtype", text: "Kämppä" }, { id: 3, type: "locationtype", text: "Alue" }, { id: 4, type: "locationtype", text: "Venelaituri" }]
     let commonFilters = [{ id: 0, type: "nofilter", text: "Ei suodattimia" }, { id: 1, type: "filter", text: "Sauna" }, { id: 2, type: "filter", text: "Järvi lähellä" }, { id: 3, type: "filter", text: "Laituri" }, { id: 4, type: "filter", text: "Sisämajoitus" }, { id: 5, type: "filter", text: "Sisävessa" }]
     const locations = { locations: locationTypeFilters, common: commonFilters }

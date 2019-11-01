@@ -46,6 +46,9 @@ class LocationList extends React.Component {
     handleListClick = (e) => {
         const { currentSort, sortType } = this.state;
         let id = e.target.id;
+        // get the id and compare it to current sort type
+        // if same column is clicked, change sort type
+        // if other column is clicked set it to current sort
         if (id) {
             if (id === currentSort) {
                 this.setState({ sortType: sortType * -1 })
@@ -123,11 +126,10 @@ class LocationList extends React.Component {
     render() {
         const { clickedObj, clickPos } = this.state;
         const { type } = this.props;
-        console.time("gen")
+        // this same component is used in admin notification and admin location list page
         let isLocation = this.checkType(type);
         let title = isLocation ? "Nykyiset retkipaikat" : "Hyväksymättömät retkipaikat"
         const items = this.generateListItems();
-        console.timeEnd("gen")
         console.log(clickedObj, "in locationList clicked")
         return (
             <div className="admin-content-container">

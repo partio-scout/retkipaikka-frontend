@@ -6,7 +6,6 @@ class AdminPanel extends React.Component {
 
     render() {
         const { handleClick, selectedTab } = this.props;
-
         return (
             <div className="admin-panel">
                 <div className="list-group admin-list" >

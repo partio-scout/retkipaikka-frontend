@@ -10,25 +10,16 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 
 
 class LocationForm extends React.Component {
-    typeArr = [{ type: "locationtype", text: "Valitse" }, { type: "locationtype", text: "Laavu" }, { type: "locationtype", text: "Kämppä" }, { type: "locationtype", text: "Alue" }]
     state = {
 
     }
-    //propertytypes:
-    //laavu, kämppä, alue
-    //has:
-    //sauna, järvi lähellä, sisämajoitus,sisävessa
 
-    //{ type: "city", name: "Testialue", text: "Turku", geo: { lat: 60.45, lng: 22.26 },
-    // propertyType: "Alue", has: ["Järvi lähellä", "Sauna"], 
-    //data: { name: "hehu", website: "www.hehu.fi", contact: "oy@partio.com" } },
     handleFormSubmit = (e, edit) => {
         e.preventDefault();
-        // e.stopPropagation();
         let emptyFound = false;
         let dataObj = { name: null, text: null, geo: { lat: null, lng: null }, description: null, type: null, has: [], data: { ownerName: null, mail: null, website: null, phone: null } }
         var forms = document.getElementsByClassName('needs-validation');
-
+        // check if all required fields have value in
         Array.prototype.filter.call(forms, function (form) {
             if (form.checkValidity() === false) {
                 e.stopPropagation();
@@ -36,6 +27,8 @@ class LocationForm extends React.Component {
             }
             form.classList.add('was-validated');
         })
+        // if all required fields had value,
+        // loop through state and put the data in object
         if (!emptyFound) {
             let stateKeys = Object.keys(this.state);
             console.log(JSON.stringify(this.state))
@@ -73,6 +66,7 @@ class LocationForm extends React.Component {
 
                 }
             }
+            // check if form was from edit page or main page
             if (edit) {
                 this.handleEditSubmit(dataObj)
             } else {
@@ -126,13 +120,12 @@ class LocationForm extends React.Component {
         return boxes;
     }
     static getDerivedStateFromProps(newProps, currentState) {
-        console.log(newProps, "derivedstate");
-        console.log(newProps.coords, currentState.geo)
+        // on coordinates props change (map was clicked),
+        // change the geo field coordinates
         if (newProps.coords !== currentState.geo && newProps.coords !== null) {
             return { geo: newProps.coords.lat + "," + newProps.coords.lng };
         } else
-            console.log("asdasdas")
-        return null;
+            return null;
     }
 
 
@@ -145,10 +138,10 @@ class LocationForm extends React.Component {
             </div>)
     }
     generateEditForm = () => {
-        const { coords, typeFilters, commonFilters, editPageObj } = this.props;
+        const { typeFilters, commonFilters, editPageObj } = this.props;
         let newTypes = [...typeFilters];
         newTypes.splice(0, 1);
-        //const { text, geo, ownerName, website, mail, phone } = this.state;
+        // generate form for edit page
         return (<form className="needs-validation" noValidate>
             <TextInput defaultValue={editPageObj.name} handleChange={this.handleChange} id="name" placeholder="Esimerkkipaikka" helper="Kirjoita retkipaikan nimi" text="Retkipaikka" required={true} />
             <SelectInput
@@ -180,11 +173,10 @@ class LocationForm extends React.Component {
 
 
     generateLocationForm = () => {
-        const { coords, typeFilters, commonFilters, editPageObj } = this.props;
-
+        const { typeFilters, commonFilters, editPageObj } = this.props;
         let newTypes = [...typeFilters];
         newTypes.splice(0, 1);
-        //const { text, geo, ownerName, website, mail, phone } = this.state;
+        // generate from for main page
         return (<form className="needs-validation" noValidate>
             <TextInput handleChange={this.handleChange} id="name" placeholder="Esimerkkipaikka" helper="Kirjoita retkipaikan nimi" text="Retkipaikka" required={true} />
             <SelectInput
@@ -210,11 +202,12 @@ class LocationForm extends React.Component {
             </div>
             <button onClick={(e) => this.handleFormSubmit(e, false)} type="submit" className="btn btn-primary">Lähetä</button>
         </form>)
-        // data: { name: null, website: null, mail: null, phone: null }
     }
 
     render() {
-        const { coords, editPageObj } = this.props;
+        const { editPageObj } = this.props;
+        // editPageObj comes from edit page,
+        // it it's not undefined, generate edit form
         let form = editPageObj ? this.generateEditForm() : this.generateLocationForm();
         let className = "form-container";
         className = editPageObj ? "edit-form-container" : className

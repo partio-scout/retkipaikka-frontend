@@ -3,7 +3,7 @@ import React from "react";
 
 const ListComponent = (props) => {
 
-    //{ type: "city", name: "Testilaavu", text: "Tampere", geo: { lat: 61.29, lng: 23.45 }, description: "laavu jossain", propertyType: "Laavu", has: ["Järvi lähellä"], data: { ownerName: "hehu", website: "www.hehu.fi", phone: "123034234", mail: "oy@partio.com" } },
+    // not in use at the moment
     return (
         <div className="location-list-item">
             <span className="list-item-text-container">
