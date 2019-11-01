@@ -5,6 +5,11 @@ import { selectLocation } from "../../actions/MapActions"
 import LocationForm from "../locationform"
 import Draggable from 'react-draggable';
 
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
+
+
+
 
 class InfoDialog extends React.Component {
     state = {
@@ -32,23 +37,41 @@ class InfoDialog extends React.Component {
                 <span>{obj.data.phone}</span>
                 <br />
                 <br />
-                <button className="btn btn-primary info-button">Poista</button>
+                <button onClick={() => this.handleDelete(obj)} className="btn btn-primary info-button">Poista</button>
                 <button onClick={() => this.handleEditClick(obj)} className="btn btn-primary info-button">Muokkaa</button>
 
             </div>
         )
     }
     static getDerivedStateFromProps(newProps, currentState) {
+        // if edit form is opened
         if (currentState.editEnabled !== null) {
-            console.log(newProps.data.id, currentState.editEnabled.id)
+            // check if user clicked other location object, in the table
+            // if clicked, disable edit form
             if (newProps.data.id !== currentState.editEnabled.id) {
-                console.log(newProps.data.id, "newpropsdata")
                 return { editEnabled: null };
             }
         }
         return null;
 
     }
+
+    handleDelete = (obj) => {
+        confirmAlert({
+            title: 'Retkipaikan poistaminen',
+            message: 'Haluatko varmasti poistaa retkipaikan ' + obj.name + "?",
+            buttons: [
+                {
+                    label: 'Kyllä',
+                    onClick: () => alert("delete")
+                },
+                {
+                    label: 'Ei',
+
+                }
+            ]
+        });
+    };
 
 
 
@@ -71,16 +94,20 @@ class InfoDialog extends React.Component {
         const { data, customClassName, handleClose, clickHeight } = this.props;
         const { editEnabled } = this.state;
         let className = "admin-info-dialog"
-        console.log(editEnabled, "in render")
+        console.log("asd")
         return (
+
+
             <Draggable
                 handle=".move-handle">
                 <div style={{ top: clickHeight.height, left: clickHeight.width }} className={customClassName ? className + customClassName : className}>
+
                     <button className="btn info-close-button" onClick={handleClose}>x</button>
                     <div className="side-slider-data">
                         {this.generateFromSingleData(data)}
                     </div>
                     {editEnabled !== null && <LocationForm editPageObj={data} />}
+                    {}
 
                 </div>
 

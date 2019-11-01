@@ -14,6 +14,8 @@ export const fetchLocations = () => {
     { id: 5, type: "city", name: "Testilaavu2", text: "Hämeenlinnna", geo: { lat: 60.99, lng: 24.46 }, propertyType: "Laavu", description: "laavu jossain5", has: ["Järvi lähellä"], data: { ownerName: "hehu", website: "www.hehu.fi", phone: "123034234", mail: "oy@partio.com" } },
     { id: 6, type: "city", name: "Laituri", text: "Säkylä", geo: { lat: 61.04, lng: 22.32 }, propertyType: "Venelaituri", description: "Venelaituri1", has: ["Järvi lähellä", "Laituri"], data: { ownerName: "Meri", website: "www.hehu.fi", phone: "123034234", mail: "oy@partio.com" } }]
 
+
+
     return {
         type: FETCH_LOCATIONS,
         payload: locations

@@ -19,6 +19,9 @@
     background-color: #28aae1;
     float:right;
 }
+.react-confirm-alert-button-group button{
+    background-color: #28aae1 !important;
+}
 .admin-filter-button{
     margin-top: 2rem;
     margin-left: 1rem

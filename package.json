@@ -12,6 +12,7 @@
     "prop-types": "^15.7.2",
     "react": "^16.9.0",
     "react-bootstrap-typeahead": "^3.4.6",
+    "react-confirm-alert": "^2.4.1",
     "react-dom": "^16.9.0",
     "react-draggable": "^4.1.0",
     "react-google-maps": "^9.4.5",

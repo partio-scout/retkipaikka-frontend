@@ -5,6 +5,9 @@ import SelectInput from "../inputform/SelectInput"
 import TextInput from "./textInput"
 import "./locationform.css"
 
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
+
 
 class LocationForm extends React.Component {
     typeArr = [{ type: "locationtype", text: "Valitse" }, { type: "locationtype", text: "Laavu" }, { type: "locationtype", text: "Kämppä" }, { type: "locationtype", text: "Alue" }]
@@ -79,10 +82,27 @@ class LocationForm extends React.Component {
         }
     }
 
+    askForConfirmation = (obj) => {
+        confirmAlert({
+            title: 'Retkipaikan muokkaaminen',
+            message: 'Haluatko tallentaa tekemäsi muokkaukset?',
+            buttons: [
+                {
+                    label: 'Kyllä',
+                    onClick: () => alert("handleEditSubmit")
+                },
+                {
+                    label: 'Ei',
+
+                }
+            ]
+        });
+    };
     submitForm = (data) => {
         console.log(data, "meni läpi")
     }
     handleEditSubmit = (data) => {
+        this.askForConfirmation()
 
     }
     handleChange = (e) => {
@@ -153,14 +173,14 @@ class LocationForm extends React.Component {
                 <TextInput defaultValue={editPageObj.data.mail} handleChange={this.handleChange} id="mail" placeholder="example@ex.com" helper="Kirjoita sähköposti" text="Sähköposti" size="col-md-3" required={false} />
                 <TextInput defaultValue={editPageObj.data.phone} handleChange={this.handleChange} id="phone" placeholder="0441235678" helper="Kirjoita puhelinnumero" text="Puhelinnumero" size="col-md-3" required={false} />
             </div>
-            <button onClick={(e) => this.handleFormSubmit(e, true)} type="submit" className="btn btn-primary">Lähetä</button>
+            <button onClick={(e) => this.handleFormSubmit(e, true)} type="submit" className="btn btn-primary">Hyväksy</button>
         </form>)
         // data: { name: null, website:
     }
 
 
     generateLocationForm = () => {
-        const { coords, typeFilters, commonFilters } = this.props;
+        const { coords, typeFilters, commonFilters, editPageObj } = this.props;
 
         let newTypes = [...typeFilters];
         newTypes.splice(0, 1);

@@ -3,6 +3,8 @@ import "./admin.css"
 import { connect } from "react-redux";
 import TextInput from "../locationform/textInput"
 import ListComponent from "./ListComponent";
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 class FilterHandler extends React.Component {
     state = {
 
@@ -35,7 +37,15 @@ class FilterHandler extends React.Component {
         e.preventDefault();
         let data = this.state[value];
         if (data) {
-            console.log(data);
+            switch (value) {
+                case "filter":
+                    this.askForConfirmation("suodattimen " + data, "Suodattimen lisääminen")
+                    break;
+                case "types":
+                    this.askForConfirmation("kategorian " + data, "Kategorian lisääminen")
+                    break;
+            }
+
         }
     }
     getRowData = (obj) => {
@@ -47,6 +57,23 @@ class FilterHandler extends React.Component {
         )
 
     }
+    askForConfirmation = (name, title) => {
+        confirmAlert({
+            title: title,
+            message: 'Haluatko tallentaa ' + name + '?',
+            buttons: [
+                {
+                    label: 'Kyllä',
+                    onClick: () => alert("add")
+                },
+                {
+                    label: 'Ei',
+
+                }
+            ]
+        });
+    };
+
 
     getTable = (data) => {
         let values = [...data].splice(1, data.length - 1).map(d => this.getRowData(d));
