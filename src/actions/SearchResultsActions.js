@@ -14,7 +14,7 @@ export const fetchLocations = () => {
     { id: 3, type: "city", name: "Testialue", text: "Turku", geo: { lat: 60.45, lng: 22.26 }, propertyType: "Alue", description: "laavu jossain3", has: ["Järvi lähellä", "Sauna"], data: { ownerName: "hehu", website: "www.hehu.fi", phone: "123034234", mail: "oy@partio.com" } },
     { id: 4, type: "city", name: "Testilaavu2", text: "Tampere", geo: { lat: 61.27, lng: 23.51 }, propertyType: "Laavu", description: "laavu jossain4", has: ["Järvi lähellä"], data: { ownerName: "hehu", website: "www.hehu.fi", phone: "123034234", mail: "oy@partio.com" } },
     { id: 5, type: "city", name: "Testilaavu2", text: "Hämeenlinnna", geo: { lat: 60.99, lng: 24.46 }, propertyType: "Laavu", description: "laavu jossain5", has: ["Järvi lähellä"], data: { ownerName: "hehu", website: "www.hehu.fi", phone: "123034234", mail: "oy@partio.com" } },
-    { id: 6, type: "city", name: "Laituri", text: "Säkylä", geo: { lat: 61.04, lng: 22.32 }, propertyType: "Venelaituri", description: "Venelaituri1", has: ["Järvi lähellä", "Laituri"], data: { ownerName: "Meri", website: "www.hehu.fi", phone: "123034234", mail: "oy@partio.com" } }]
+    { id: 6, type: "city", name: "Laituri", text: "Säkylä", geo: { lat: 61.04, lng: 22.32 }, propertyType: "Venelaituri", description: "Venelaituri1", has: ["Järvi lähellä", "Laituri", "Yli 5 majoituspaikkaa"], data: { ownerName: "Meri", website: "www.hehu.fi", phone: "123034234", mail: "oy@partio.com" } }]
 
 
 

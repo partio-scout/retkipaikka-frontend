@@ -30,7 +30,7 @@ class Main extends React.Component {
                 <Header location={location} />
                 <div className="frontpage-image-container">
                     <img alt="frontpage_image" src={imagesPath + "frontpage_img.jpg"} />
-                    <h2 className="main-header">Partio retkipaikat</h2>
+                    <h2 className="main-header">Partion retkipaikat</h2>
                 </div>
                 <InputContainer adminPage={false} />
                 <Map />
