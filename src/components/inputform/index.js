@@ -9,17 +9,7 @@ import { filterFromResults } from "../../actions/SearchResultsActions";
 import { resetLocation } from "../../actions/MapActions"
 
 class InputContainer extends React.Component {
-    // sauna
-    // järvi lähellä
-    // sisämajoitus
-    // sisävessa
-    //test for commit
 
-    //Laavu
-    // Kämppä
-    // Alue
-    // filterArr = [{ type: "nofilter", text: "Ei suodattimia" }, { type: "filter", text: "Sauna" }, { type: "filter", text: "Järvi lähellä" }, { type: "filter", text: "Sisämajoitus" }, { type: "filter", text: "Sisävessa" }]
-    // typeArr = [{ type: "nolocationtype", text: "Kaikki" }, { type: "locationtype", text: "Laavu" }, { type: "locationtype", text: "Kämppä" }, { type: "locationtype", text: "Alue" }]
     addFilter = (obj) => {
         const { addFilter } = this.props;
         if (this.checkTags(obj)) {
