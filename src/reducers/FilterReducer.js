@@ -21,7 +21,7 @@ const initialState = {
 
 const handleDelete = (filter, removeObj) => {
     let newArr = [...filter];
-    newArr = newArr.filter(filterObj => filterObj.text !== removeObj.text);
+    newArr = newArr.filter(filterObj => filterObj.object_name !== removeObj.object_name);
     return newArr;
 
 }

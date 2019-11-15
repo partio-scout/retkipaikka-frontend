@@ -17,8 +17,8 @@ class MapHeader extends React.Component {
 
         //[{ type: "city", name: "Testilaavu", text: "Tampere", geo: { lat: 61.29, lng: 23.45 }, propertyType: "Laavu", has: ["Järvi lähellä"],data:{name:"hehu",website:"www.hehu.fi",contact:"oy@partio.com"} },
         return (
-            <div key={obj.name + i}>
-                <span onClick={() => this.setState({ clickedObj: obj })}>{obj.name}</span>
+            <div key={obj.location_name + i}>
+                <span onClick={() => this.setState({ clickedObj: obj })}>{obj.location_name}</span>
             </div>
         )
     }
@@ -30,16 +30,15 @@ class MapHeader extends React.Component {
 
     generateAllData = (data) => {
         const { types } = this.props;
-        console.log(data);
         let totalDataArr = [];
         //types contain all locationtypes, first one is blank so start at 1
         for (let i = 1; i < types.length; ++i) {
             // filter locations of the current
-            let type = types[i].text;
-            let arr = data.filter(d => d.propertyType === type);
+            let type = types[i].object_name;
+            let arr = data.filter(d => d.location_category === type);
             if (arr.length > 0) {
                 // add title and then add the rest elements
-                totalDataArr.push(<h4 key={i}>{arr[0].propertyType}</h4>);
+                totalDataArr.push(<h4 key={i}>{arr[0].location_category}</h4>);
                 for (let j = 0; j < arr.length; ++j) {
                     totalDataArr.push(this.generateLocationInfo(arr[j], j))
 

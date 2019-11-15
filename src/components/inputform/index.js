@@ -28,10 +28,13 @@ class InputContainer extends React.Component {
         //tags has 5 elements
         // first 3 are the tag arrays
         for (let i = 0; i < 3; i++) {
-            if (vals[i].filter(t => t.text === tag.text).length !== 0) {
+            if (vals[i].filter(t => t.object_name === tag.object_name).length !== 0) {
                 return false;
             }
         }
+        //location_place
+        //category_name
+        //filter_name
         return true;
     }
     render() {

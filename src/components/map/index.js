@@ -39,8 +39,8 @@ class Map extends React.Component {
         const { results } = this.props;
         let markers = results.map((reg, i) => {
             return <Marker
-                key={reg.text + i}
-                position={reg.geo}
+                key={reg.object_name + i}
+                position={reg.location_geo}
                 onClick={() => this.setState({ selected: reg })}
                 icon={this.scoutIcon}
 
@@ -65,7 +65,7 @@ class Map extends React.Component {
         let center = { lat: 61.29, lng: 23.45 };
         let zoom = 8;
         if (selectedLoc !== null) {
-            center = selectedLoc.geo;
+            center = selectedLoc.location_geo;
             zoom = 11;
         }
 

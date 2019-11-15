@@ -22,19 +22,19 @@ class InfoDialog extends React.Component {
                 <h4 className="move-handle">#{obj.id}</h4>
 
                 <h4>Nimi:</h4>
-                <span>{obj.name}</span>
+                <span>{obj.location_name}</span>
                 <br />
                 <h4>Kuvaus:</h4>
-                <span> {obj.description}</span>
+                <span> {obj.location_description}</span>
                 <br />
                 <h4>Yhteystiedot:</h4>
-                <span>{obj.data.ownerName}</span>
+                <span>{obj.location_owner}</span>
                 <br />
-                <span>{obj.data.website}</span>
+                <span>{obj.location_website}</span>
                 <br />
-                <span>{obj.data.mail}</span>
+                <span>{obj.location_mail}</span>
                 <br />
-                <span>{obj.data.phone}</span>
+                <span>{obj.location_phone}</span>
                 <br />
                 <br />
                 <button onClick={() => this.handleDelete(obj)} className="btn btn-primary info-button">Poista</button>
@@ -48,7 +48,7 @@ class InfoDialog extends React.Component {
         if (currentState.editEnabled !== null) {
             // check if user clicked other location object, in the table
             // if clicked, disable edit form
-            if (newProps.data.id !== currentState.editEnabled.id) {
+            if (newProps.data.location_id !== currentState.editEnabled.location_id) {
                 return { editEnabled: null };
             }
         }
@@ -59,7 +59,7 @@ class InfoDialog extends React.Component {
     handleDelete = (obj) => {
         confirmAlert({
             title: 'Retkipaikan poistaminen',
-            message: 'Haluatko varmasti poistaa retkipaikan ' + obj.name + "?",
+            message: 'Haluatko varmasti poistaa retkipaikan ' + obj.location_name + "?",
             buttons: [
                 {
                     label: 'Kyllä',
@@ -93,11 +93,8 @@ class InfoDialog extends React.Component {
     render() {
         const { data, customClassName, handleClose, clickHeight } = this.props;
         const { editEnabled } = this.state;
-        let className = "admin-info-dialog"
-        console.log("asd")
+        let className = "admin-info-dialog";
         return (
-
-
             <Draggable
                 handle=".move-handle">
                 <div style={{ top: clickHeight.height, left: clickHeight.width }} className={customClassName ? className + customClassName : className}>
@@ -107,7 +104,7 @@ class InfoDialog extends React.Component {
                         {this.generateFromSingleData(data)}
                     </div>
                     {editEnabled !== null && <LocationForm editPageObj={data} />}
-                    {}
+
 
                 </div>
 

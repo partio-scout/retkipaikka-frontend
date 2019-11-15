@@ -9,19 +9,19 @@ class SideSlider extends React.Component {
         return (
             <div>
                 <h4>Nimi:</h4>
-                <span>{obj.name}</span>
+                <span>{obj.location_name}</span>
                 <br />
                 <h4>Kuvaus:</h4>
-                <span> {obj.description}</span>
+                <span> {obj.location_description}</span>
                 <br />
                 <h4>Yhteystiedot:</h4>
-                <span>{obj.data.ownerName}</span>
+                <span>{obj.location_owner}</span>
                 <br />
-                <span>{obj.data.website}</span>
+                <span>{obj.location_website}</span>
                 <br />
-                <span>{obj.data.mail}</span>
+                <span>{obj.location_mail}</span>
                 <br />
-                <span>{obj.data.phone}</span>
+                <span>{obj.location_phone}</span>
                 <br />
                 <br />
                 <h4 onClick={() => selectLocation(obj)} ><u>Näytä kartalla</u></h4>

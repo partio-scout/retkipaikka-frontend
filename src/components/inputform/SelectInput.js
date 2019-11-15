@@ -12,7 +12,7 @@ class SelectInput extends React.Component {
         const { data, applyFilter, useFiltering, handleFormSelect } = this.props;
         if (useFiltering) {
             let temp = e.target.value;
-            let value = data.filter(d => d.text === temp);
+            let value = data.filter(d => d.object_name === temp);
             applyFilter(value[0]);
         } else {
             handleFormSelect(e);
@@ -37,11 +37,9 @@ class SelectInput extends React.Component {
     }
 
     generateData = (data) => {
-        const { selectedValues } = this.state;
-        const { defaultValue } = this.props;
         let mappedData = data.map((value, i) => {
             //return (<option className={selectedValues.find(f => f === value) ? "inputform-checked" : null} key={i}>{value}</option>)
-            return (<option key={i}>{value.text}</option>)
+            return (<option key={i}>{value.object_name}</option>)
         })
         return mappedData;
     }

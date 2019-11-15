@@ -2,7 +2,7 @@ import React from "react";
 import "./admin.css"
 import { connect } from "react-redux";
 import TextInput from "../locationform/textInput"
-import ListComponent from "./ListComponent";
+
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 class FilterHandler extends React.Component {
@@ -19,15 +19,7 @@ class FilterHandler extends React.Component {
 
     }
 
-    generateListItems = () => {
-        const { results } = this.props;
 
-        const values = results.map(location => {
-            return <ListComponent data={location} />
-        })
-
-        return values;
-    }
     handleChange = (e) => {
         let value = e.target.type === "checkbox" ? e.target.checked : e.target.value;
         this.setState({ [e.target.id]: value });
@@ -48,11 +40,11 @@ class FilterHandler extends React.Component {
 
         }
     }
-    getRowData = (obj) => {
+    getRowData = (obj, dataId) => {
         return (
-            <tr key={obj.id}>
-                <th scope="row">{obj.id}</th>
-                <td>{obj.text}</td>
+            <tr key={obj[dataId + "id"]}>
+                <th scope="row">{obj[dataId + "id"]}</th>
+                <td>{obj.object_name}</td>
             </tr>
         )
 
@@ -75,15 +67,15 @@ class FilterHandler extends React.Component {
     };
 
 
-    getTable = (data) => {
-        let values = [...data].splice(1, data.length - 1).map(d => this.getRowData(d));
+    getTable = (data, dataId) => {
+        let values = [...data].splice(1, data.length - 1).map(d => this.getRowData(d, dataId));
 
 
         // values = values.map(d => this.getRowData(d));
         let head = (<thead>
             <tr>
-                <th id="id" scope="col">#</th>
-                <th id="name" scope="col">Nimi</th>
+                <th id={dataId + "id"} scope="col">#</th>
+                <th id="object_name" scope="col">Nimi</th>
             </tr>
         </thead>)
 
@@ -105,7 +97,7 @@ class FilterHandler extends React.Component {
             <div className="admin-content-container">
                 <h3>Suodattimet ja kategoriat</h3>
                 <h5>Suodattimet</h5>
-                {this.getTable(commonFilters)}
+                {this.getTable(commonFilters, "filter_")}
 
                 <form onSubmit={(e) => this.handleSubmit(e, "filter")}>
                     <div className="form-row">
@@ -114,7 +106,7 @@ class FilterHandler extends React.Component {
                     </div>
                 </form>
                 <h5>Kategoriat</h5>
-                {this.getTable(locationTypes)}
+                {this.getTable(locationTypes, "category_")}
                 <form onSubmit={(e) => this.handleSubmit(e, "types")}>
                     <div className="form-row">
                         <TextInput handleChange={this.handleChange} id="types" placeholder="Kategoria" helper="Kirjoita lisättävän kategorian nimi" text="Lisää kategoria" size="col-md-3" required={true} />

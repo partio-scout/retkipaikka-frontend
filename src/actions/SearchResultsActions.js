@@ -9,12 +9,12 @@ import {
 export const fetchLocations = () => {
     // fetch locations from database
     // currently hardcoded values
-    let locations = [{ id: 1, location_type: "city", location_name: "Testilaavu", location_place: "Tampere", location_geo: { lat: 61.29, lng: 23.45 }, location_category: "Laavu", location_description: "laavu jossain", filters: ["Järvi lähellä"], location_owner: "hehu", location_website: "www.hehu.fi", location_phone: "123034234", location_mail: "oy@partio.com" },
-    { id: 2, location_type: "city", location_name: "Testikämppä", location_place: "Helsinki", location_geo: { lat: 60.16, lng: 24.94 }, location_category: "Kämppä", location_description: "laavu jossain2", filters: ["Järvi lähellä", "Sisämajoitus", "Sisävessa"], location_owner: "hehu", location_website: "www.hehu.fi", location_phone: "123034234", location_mail: "oy@partio.com" },
-    { id: 3, location_type: "city", location_name: "Testialue", location_place: "Turku", location_geo: { lat: 60.45, lng: 22.26 }, location_category: "Alue", location_description: "laavu jossain3", filters: ["Järvi lähellä", "Sauna"], location_owner: "hehu", location_website: "www.hehu.fi", location_phone: "123034234", location_mail: "oy@partio.com" },
-    { id: 4, location_type: "city", location_name: "Testilaavu2", location_place: "Tampere", location_geo: { lat: 61.27, lng: 23.51 }, location_category: "Laavu", location_description: "laavu jossain4", filters: ["Järvi lähellä"], location_owner: "hehu", location_website: "www.hehu.fi", location_phone: "123034234", location_mail: "oy@partio.com" },
-    { id: 5, location_type: "city", location_name: "Testilaavu2", location_place: "Hämeenlinnna", location_geo: { lat: 60.99, lng: 24.46 }, location_category: "Laavu", location_description: "laavu jossain5", filters: ["Järvi lähellä"], location_owner: "hehu", location_website: "www.hehu.fi", location_phone: "123034234", location_mail: "oy@partio.com" },
-    { id: 6, location_type: "city", location_name: "Laituri", location_place: "Säkylä", location_geo: { lat: 61.04, lng: 22.32 }, location_category: "Venelaituri", location_description: "Venelaituri1", filters: ["Järvi lähellä", "Laituri", "Yli 5 majoituspaikkaa"], location_owner: "Meri", location_website: "www.hehu.fi", location_phone: "123034234", location_mail: "oy@partio.com" }]
+    let locations = [{ location_id: 1, object_type: "city", location_name: "Testilaavu", object_name: "Tampere", location_geo: { lat: 61.29, lng: 23.45 }, location_category: "Laavu", location_description: "laavu jossain", location_pricing: "20€", filters: ["Järvi lähellä"], location_owner: "hehu", location_website: "www.hehu.fi", location_phone: "123034234", location_mail: "oy@partio.com" },
+    { location_id: 2, object_type: "city", location_name: "Testikämppä", object_name: "Helsinki", location_geo: { lat: 60.16, lng: 24.94 }, location_category: "Kämppä", location_description: "laavu jossain2", location_pricing: "20€", filters: ["Järvi lähellä", "Sisämajoitus", "Sisävessa"], location_owner: "hehu", location_website: "www.hehu.fi", location_phone: "123034234", location_mail: "oy@partio.com" },
+    { location_id: 3, object_type: "city", location_name: "Testialue", object_name: "Turku", location_geo: { lat: 60.45, lng: 22.26 }, location_category: "Alue", location_description: "laavu jossain3", location_pricing: "20€", filters: ["Järvi lähellä", "Sauna"], location_owner: "hehu", location_website: "www.hehu.fi", location_phone: "123034234", location_mail: "oy@partio.com" },
+    { location_id: 4, object_type: "city", location_name: "Testilaavu2", object_name: "Tampere", location_geo: { lat: 61.27, lng: 23.51 }, location_category: "Laavu", location_description: "laavu jossain4", location_pricing: "20€", filters: ["Järvi lähellä"], location_owner: "hehu", location_website: "www.hehu.fi", location_phone: "123034234", location_mail: "oy@partio.com" },
+    { location_id: 5, object_type: "city", location_name: "Testilaavu2", object_name: "Hämeenlinnna", location_geo: { lat: 60.99, lng: 24.46 }, location_category: "Laavu", location_description: "laavu jossain5", location_pricing: "20€", filters: ["Järvi lähellä"], location_owner: "hehu", location_website: "www.hehu.fi", location_phone: "123034234", location_mail: "oy@partio.com" },
+    { location_id: 6, object_type: "city", location_name: "Laituri", object_name: "Säkylä", location_geo: { lat: 61.04, lng: 22.32 }, location_category: "Venelaituri", location_description: "Venelaituri1", location_pricing: "20€", filters: ["Järvi lähellä", "Laituri", "Yli 5 majoituspaikkaa"], location_owner: "Meri", location_website: "www.hehu.fi", location_phone: "123034234", location_mail: "oy@partio.com" }]
 
 
 
@@ -32,7 +32,7 @@ export const filterFromResults = (searchResults, filters) => {
     let types = filters.locationTypeFilters;
     let regulars = filters.commonFilters;
     // first filter search results through location names
-    let cityFiltersPass = searchResults.filter(loc => locations.find(({ text }) => loc.location_place === text));
+    let cityFiltersPass = searchResults.filter(loc => locations.find(({ object_name }) => loc.object_name === object_name));
     // if all passed, dont modify the array
     cityFiltersPass = locations.length === 0 ? searchResults : cityFiltersPass;
     console.log(cityFiltersPass.length, " passed cityfilters");

@@ -5,7 +5,7 @@ import InfoDialog from "./InfoDialog";
 import InputContainer from "../inputform"
 class LocationList extends React.Component {
     state = {
-        currentSort: "id",
+        currentSort: "location_id",
         // 1 asc, -1 desc
         sortType: 1,
         clickedObj: null,
@@ -33,11 +33,11 @@ class LocationList extends React.Component {
     getRowData = (obj) => {
         return (
             <tr key={obj.id} onClick={(e) => this.handleObjectClick(obj, e)}>
-                <th scope="row">{obj.id}</th>
-                <td>{obj.name}</td>
-                <td>{obj.text}</td>
-                <td>{obj.propertyType}</td>
-                <td>{obj.data.ownerName}</td>
+                <th scope="row">{obj.location_id}</th>
+                <td>{obj.location_name}</td>
+                <td>{obj.object_name}</td>
+                <td>{obj.location_category}</td>
+                <td>{obj.location_owner}</td>
             </tr>
         )
 
@@ -65,24 +65,16 @@ class LocationList extends React.Component {
     handleSort = () => {
         const { results, notifications, type } = this.props;
         const { currentSort, sortType } = this.state;
+        // component is used in two places, if it's in locations, use search results
         let newResults = this.checkType(type) ? [...results] : [...notifications];
         newResults = newResults.sort((a, b) => {
             switch (sortType) {
                 case 1:
-                    if (currentSort === "ownerName") {
+                    return ('' + a[currentSort]).localeCompare(b[currentSort])
 
-                        return ('' + a.data.ownerName).localeCompare(b.data.ownerName)
-                    } else {
-
-                        return ('' + a[currentSort]).localeCompare(b[currentSort])
-
-                    }
                 case -1:
-                    if (currentSort === "ownerName") {
-                        return ('' + b.data.ownerName).localeCompare(a.data.ownerName)
-                    } else {
-                        return ('' + b[currentSort]).localeCompare(a[currentSort])
-                    }
+                    return ('' + b[currentSort]).localeCompare(a[currentSort])
+
                 default:
                     return a.id - b.id;
             }
@@ -102,11 +94,11 @@ class LocationList extends React.Component {
         let image = <img className={sortType === 1 ? "sort-icon" : "sort-icon inverse-icon"} alt="imgarrow" src="/icons/arrow.svg" />
         let head = (<thead>
             <tr onClick={this.handleListClick}>
-                <th id="id" scope="col">#{currentSort === "id" && image}</th>
-                <th id="name" scope="col">Nimi{currentSort === "name" && image}</th>
-                <th id="text" scope="col">Sijainti{currentSort === "text" && image}</th>
-                <th id="propertyType" scope="col">Tyyppi{currentSort === "propertyType" && image}</th>
-                <th id="ownerName" scope="col">Omistaja{currentSort === "ownerName" && image}</th>
+                <th id="location_id" scope="col">#{currentSort === "location_id" && image}</th>
+                <th id="location_name" scope="col">Nimi{currentSort === "location_name" && image}</th>
+                <th id="object_name" scope="col">Sijainti{currentSort === "object_name" && image}</th>
+                <th id="location_category" scope="col">Tyyppi{currentSort === "location_category" && image}</th>
+                <th id="location_owner" scope="col">Omistaja{currentSort === "ocation_owner" && image}</th>
             </tr>
         </thead>)
 

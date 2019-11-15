@@ -10,7 +10,7 @@ class TextInput extends React.Component {
 
     getNamesFromData = (data) => {
         let newArr = data.map(value => {
-            return value.text;
+            return value.object_name;
         })
         return newArr;
     }
@@ -18,11 +18,10 @@ class TextInput extends React.Component {
         const { data } = this.props;
         let temp = e[0];
         if (temp !== "") {
-            let value = data.filter(d => d.text === temp);
+            let value = data.filter(d => d.object_name === temp);
             if (value.length !== 0) {
                 this.props.applyFilter(value[0]);
             }
-
         }
 
     }
@@ -35,6 +34,7 @@ class TextInput extends React.Component {
                 {title !== undefined && <span className="inputform-title">{title}</span>}
 
                 <Typeahead
+                    id={"type-ahead " + className}
                     placeholder={currentText}
                     onChange={(selected) => {
                         this.handleFiltering(selected);

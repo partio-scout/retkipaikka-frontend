@@ -24,7 +24,7 @@ class TagBar extends React.Component {
         //let tagList = [{ type: "city", text: "Tampere" }, { type: "filter", text: "sauna" }, { type: "filter", text: "vessa" }, { type: "locationtype", text: "laavu" }]
         return tagArr.map((tag, i) => {
             return (
-                <Tag key={tag.text + i} tag={tag} handleTagRemove={this.handleTagRemove} />
+                <Tag key={tag.object_name + i} tag={tag} handleTagRemove={this.handleTagRemove} />
             )
         })
     }
