@@ -2,7 +2,7 @@ import React from "react";
 import "./admin.css"
 import { connect } from "react-redux";
 import TextInput from "../locationform/textInput"
-
+import { postFilter, postCategory } from "../../actions/FilterActions"
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 class FilterHandler extends React.Component {
@@ -29,12 +29,19 @@ class FilterHandler extends React.Component {
         e.preventDefault();
         let data = this.state[value];
         if (data) {
+            let obj = { object_type: "filter", object_name: data };
             switch (value) {
                 case "filter":
-                    this.askForConfirmation("suodattimen " + data, "Suodattimen lisääminen")
+
+                    this.askForConfirmation("suodattimen " + data, "Suodattimen lisääminen", obj)
+
+
                     break;
                 case "types":
-                    this.askForConfirmation("kategorian " + data, "Kategorian lisääminen")
+                    obj.object_type = "locationtype"
+                    this.askForConfirmation("kategorian " + data, "Kategorian lisääminen", obj)
+
+
                     break;
             }
 
@@ -49,17 +56,31 @@ class FilterHandler extends React.Component {
         )
 
     }
-    askForConfirmation = (name, title) => {
+    closeFunc = () => {
+        return false
+    }
+    handlePost = (obj) => {
+        const { postFilter, postCategory } = this.props;
+
+        if (obj.object_type === "filter") {
+            postFilter(obj);
+        } else {
+            postCategory(obj);
+        }
+
+    }
+    askForConfirmation = (name, title, obj) => {
         confirmAlert({
             title: title,
             message: 'Haluatko tallentaa ' + name + '?',
             buttons: [
                 {
                     label: 'Kyllä',
-                    onClick: () => alert("add")
+                    onClick: () => this.handlePost(obj)
                 },
                 {
                     label: 'Ei',
+                    onClick: () => this.testFunc()
 
                 }
             ]
@@ -129,5 +150,5 @@ const mapStateToProps = state => {
 
     }
 }
-export default connect(mapStateToProps)(FilterHandler);
+export default connect(mapStateToProps, { postFilter, postCategory })(FilterHandler);
 

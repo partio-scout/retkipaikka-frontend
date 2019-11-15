@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { removeFilter } from "../../actions/FilterActions"
+import { postFormData } from "../../actions/SearchResultsActions"
 import SelectInput from "../inputform/SelectInput"
 import TextInput from "./textInput"
 import "./locationform.css"
@@ -38,15 +39,15 @@ class LocationForm extends React.Component {
                 //console.log(this.state.key)
                 if (key.includes("box") && this.state[key]) {
                     let splitted = key.split("-");
-                    dataObj.has.push(splitted[1]);
-                } else if (key === "geo") {
+                    dataObj.filters.push(splitted[1]);
+                } else if (key === "location_geo") {
                     if (this.state[key]) {
                         let splittedGeo = this.state[key].split(",");
                         if (splittedGeo.length === 2) {
                             let geoObj = { lat: splittedGeo[0], lng: splittedGeo[1] };
-                            dataObj.geo = geoObj;
+                            dataObj.location_geo = geoObj;
                         } else {
-                            let geoItem = document.getElementById("geo")
+                            let geoItem = document.getElementById("location_geo")
                             geoItem.value = ""
                             return;
                         }
@@ -87,7 +88,7 @@ class LocationForm extends React.Component {
         });
     };
     submitForm = (data) => {
-        console.log(data, "meni läpi");
+        postFormData(data);
     }
     handleEditSubmit = (data) => {
         this.askForConfirmation();
@@ -117,7 +118,7 @@ class LocationForm extends React.Component {
         // on coordinates props change (map was clicked),
         // change the geo field coordinates
         if (newProps.coords !== currentState.location_geo && newProps.coords !== null) {
-            return { geo: newProps.coords.lat + "," + newProps.coords.lng };
+            return { location_geo: newProps.coords.lat + "," + newProps.coords.lng };
         } else
             return null;
     }
@@ -173,7 +174,7 @@ class LocationForm extends React.Component {
         newTypes.splice(0, 1);
         // generate from for main page
         return (<form className="needs-validation" noValidate>
-            <TextInput handleChange={this.handleChange} id="location_place" placeholder="Esimerkkipaikka" helper="Kirjoita retkipaikan nimi" text="Retkipaikka*" required={true} />
+            <TextInput handleChange={this.handleChange} id="location_name" placeholder="Esimerkkipaikka" helper="Kirjoita retkipaikan nimi" text="Retkipaikka*" required={true} />
             <SelectInput
                 data={newTypes}
                 title="Retkipaikan tyyppi*"

@@ -51,7 +51,7 @@ class SelectInput extends React.Component {
         return (
             <div className={className}>
                 {title !== undefined && <span className="inputform-title">{title}</span>}
-                <select id="type" defaultValue={defaultValue ? defaultValue : ""} onChange={this.handleSelect} selected="s" className="form-control">
+                <select id="location_category" defaultValue={defaultValue ? defaultValue : ""} onChange={this.handleSelect} selected="s" className="form-control">
                     {dataForDropDown}
                 </select>
                 {/* <Select

@@ -71,8 +71,8 @@ export default function (state = initialState, action) {
         case UPDATE_FETCHED_FILTERS:
             return {
                 ...state,
-                locationTypeFilterList: action.payload.locations,
-                commonFilterList: action.payload.common
+                locationTypeFilterList: action.payload.categories,
+                commonFilterList: action.payload.filters
             }
         default:
             return state;

@@ -4,6 +4,8 @@ import {
     UPDATE_RESULTS
 } from "./ActionTypes"
 
+import axios from "axios";
+
 
 
 export const fetchLocations = () => {
@@ -24,6 +26,18 @@ export const fetchLocations = () => {
     }
 }
 
+export const postFormData = (data) => {
+    let stringifiedData = JSON.stringify(data);
+    axios.post(
+        'http://localhost:3001/api/Triplocations/addNewLocation?locationData=' + stringifiedData
+
+    ).then(response => {
+        console.log(response);
+
+    }).catch(error => {
+        console.log("error in feedback", error);
+    });
+}
 
 
 export const filterFromResults = (searchResults, filters) => {

@@ -10,6 +10,8 @@ import {
     UPDATE_FETCHED_FILTERS
 } from "./ActionTypes"
 
+import axios from "axios";
+
 export const addFilter = (obj) => {
     let actionType = ""
     // handles the input form filters
@@ -64,20 +66,58 @@ export const removeFilter = (obj) => {
 
 
 }
+export const postFilter = (data) => (dispatch) => {
+    console.log("in add post")
 
-export const fetchFilters = () => {
-    // fetch filters from database
-    // currently hardcoded data
-    let locationTypeFilters = [{ category_id: 0, object_type: "nolocationtype", object_name: "Kaikki" }, { category_id: 1, object_type: "locationtype", object_name: "Laavu" }, { category_id: 2, object_type: "locationtype", object_name: "Kämppä" }, { category_id: 3, object_type: "locationtype", object_name: "Alue" }, { category_id: 4, object_type: "locationtype", object_name: "Venelaituri" }]
-    let commonFilters = [{ filter_id: 0, object_type: "nofilter", object_name: "Ei suodattimia" }, { filter_id: 1, object_type: "filter", object_name: "Sauna" }, { filter_id: 2, object_type: "filter", object_name: "Järvi lähellä" }, { filter_id: 3, object_type: "filter", object_name: "Laituri" }, { filter_id: 4, object_type: "filter", object_name: "Sisämajoitus" }, { filter_id: 5, object_type: "filter", object_name: "Sisävessa" },
-    { filter_id: 6, object_type: "filter", object_name: "Juomavesi" }, { filter_id: 7, object_type: "filter", object_name: "Sähkö" }, { filter_id: 8, object_type: "filter", object_name: "Ei majoitusta" }, { filter_id: 9, object_type: "filter", object_name: "Alle 5 majoituspaikkaa" }, { filter_id: 10, object_type: "filter", object_name: "Yli 5 majoituspaikkaa" }, { filter_id: 11, object_type: "filter", object_name: "Yli 10 majoituspaikkaa" },
-    { filter_id: 12, object_type: "filter", object_name: "Yli 20 majoituspaikkaa" }]
+    axios.post(
+        'http://localhost:3001/api/Filters', data
+    ).then(response => {
+        console.log("succes")
+        dispatch(fetchFilters())
+    }).catch(error => {
+        console.log("error in postin filter", error);
+    });
+}
+export const postCategory = (data) => (dispatch) => {
+    console.log("in add cate")
+    axios.post(
+        'http://localhost:3001/api/Categories', data
+    ).then(response => {
+        dispatch(fetchFilters())
+    }).catch(error => {
+        console.log("error in posting category", error);
+    });
+}
 
-    const locations = { locations: locationTypeFilters, common: commonFilters }
-    return {
+
+
+export const fetchFilters = () => async (dispatch) => {
+    // fetch filters from database 
+    let locations = {
+        categories: [{ category_id: 0, object_type: "nolocationtype", object_name: "Kaikki" }],
+        filters: [{ filter_id: 0, object_type: "nofilter", object_name: "Ei suodattimia" }]
+    }
+    try {
+        const categoryResponse = await axios.get(`http://localhost:3001/api/Categories`);
+        locations.categories = locations.categories.concat(categoryResponse.data);
+
+        const filterResponse = await axios.get(`http://localhost:3001/api/Filters`);
+        locations.filters = locations.filters.concat(filterResponse.data);
+    } catch (error) {
+        console.error(error);
+    }
+    console.log(JSON.parse(JSON.stringify(locations)));
+    // let locationTypeFilters = [{ category_id: 0, object_type: "nolocationtype", object_name: "Kaikki" }, { category_id: 1, object_type: "locationtype", object_name: "Laavu" }, { category_id: 2, object_type: "locationtype", object_name: "Kämppä" }, { category_id: 3, object_type: "locationtype", object_name: "Alue" }, { category_id: 4, object_type: "locationtype", object_name: "Venelaituri" }]
+    // let commonFilters = [{ filter_id: 0, object_type: "nofilter", object_name: "Ei suodattimia" }, { filter_id: 1, object_type: "filter", object_name: "Sauna" }, { filter_id: 2, object_type: "filter", object_name: "Järvi lähellä" }, { filter_id: 3, object_type: "filter", object_name: "Laituri" }, { filter_id: 4, object_type: "filter", object_name: "Sisämajoitus" }, { filter_id: 5, object_type: "filter", object_name: "Sisävessa" },
+    // { filter_id: 6, object_type: "filter", object_name: "Juomavesi" }, { filter_id: 7, object_type: "filter", object_name: "Sähkö" }, { filter_id: 8, object_type: "filter", object_name: "Ei majoitusta" }, { filter_id: 9, object_type: "filter", object_name: "Alle 5 majoituspaikkaa" }, { filter_id: 10, object_type: "filter", object_name: "Yli 5 majoituspaikkaa" }, { filter_id: 11, object_type: "filter", object_name: "Yli 10 majoituspaikkaa" },
+    // { filter_id: 12, object_type: "filter", object_name: "Yli 20 majoituspaikkaa" }]
+    console.log("meni")
+    // const locations = { locations: locationTypeFilters, common: commonFilters }
+    dispatch({
         type: UPDATE_FETCHED_FILTERS,
         payload: locations
-    }
+    })
+
 }
 
 
