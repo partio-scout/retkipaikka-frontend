@@ -1,5 +1,5 @@
 import React from "react";
-
+import moment from "moment"
 import { connect } from "react-redux";
 import { selectLocation } from "../../actions/MapActions"
 import LocationForm from "../locationform"
@@ -16,7 +16,7 @@ class InfoDialog extends React.Component {
         editEnabled: null
     }
     generateFromSingleData = (obj) => {
-
+        console.log(obj);
         return (
             <div>
                 <h4 className="move-handle">#{obj.location_id}</h4>
@@ -27,14 +27,40 @@ class InfoDialog extends React.Component {
                 <h4>Kuvaus:</h4>
                 <span> {obj.location_description}</span>
                 <br />
+                {obj.location_pricing &&
+                    <span>
+                        <h4>Hinnoittelu:</h4>
+                        <span> {obj.location_pricing}</span>
+
+                    </span>}
+
                 <h4>Yhteystiedot:</h4>
+                <span>Omistaja: </span>
                 <span>{obj.location_owner}</span>
+                {obj.location_website &&
+                    <span>
+                        <br />
+                        <span>Nettisivu: </span>
+                        <span>{obj.location_website}</span>
+                    </span>}
+                {obj.location_mail &&
+                    <span>
+                        <br />
+                        <span>Sähköposti: </span>
+                        <span>{obj.location_mail}</span>
+                    </span>}
+                {obj.location_phone &&
+                    <span>
+                        <br />
+                        <span>Puhelin: </span>
+                        <span>{obj.location_phone}</span>
+                    </span>}
+                <h4>Tietoa:</h4>
+                <span>Lisätty: </span>
+                <span>{moment(obj.createdAt).format("DD.MM.YYYY")}</span>
                 <br />
-                <span>{obj.location_website}</span>
-                <br />
-                <span>{obj.location_mail}</span>
-                <br />
-                <span>{obj.location_phone}</span>
+                <span>Muokattu: </span>
+                <span>{moment(obj.updatedAt).format("DD.MM.YYYY")}</span>
                 <br />
                 <br />
                 <button onClick={() => this.handleDelete(obj)} className="btn btn-primary info-button">Poista</button>

@@ -1,5 +1,6 @@
 import React from "react";
 import "./mapHeader.css";
+import moment from "moment"
 import { connect } from "react-redux";
 import { selectLocation } from "../../../actions/MapActions"
 
@@ -15,13 +16,32 @@ class SideSlider extends React.Component {
                 <span> {obj.location_description}</span>
                 <br />
                 <h4>Yhteystiedot:</h4>
+                <span>Omistaja: </span>
                 <span>{obj.location_owner}</span>
+                {obj.location_website &&
+                    <span>
+                        <br />
+                        <span>Nettisivu: </span>
+                        <span>{obj.location_website}</span>
+                    </span>}
+                {obj.location_mail &&
+                    <span>
+                        <br />
+                        <span>Sähköposti: </span>
+                        <span>{obj.location_mail}</span>
+                    </span>}
+                {obj.location_phone &&
+                    <span>
+                        <br />
+                        <span>Puhelin: </span>
+                        <span>{obj.location_phone}</span>
+                    </span>}
+                <h4>Tietoa:</h4>
+                <span>Lisätty: </span>
+                <span>{moment(obj.createdAt).format("DD.MM.YYYY")}</span>
                 <br />
-                <span>{obj.location_website}</span>
-                <br />
-                <span>{obj.location_mail}</span>
-                <br />
-                <span>{obj.location_phone}</span>
+                <span>Muokattu: </span>
+                <span>{moment(obj.updatedAt).format("DD.MM.YYYY")}</span>
                 <br />
                 <br />
                 <h4 onClick={() => selectLocation(obj)} ><u>Näytä kartalla</u></h4>

@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { removeFilter } from "../../actions/FilterActions"
-import { postFormData } from "../../actions/SearchResultsActions"
+import { postFormData, postEditData } from "../../actions/SearchResultsActions"
 import SelectInput from "../inputform/SelectInput"
 import TextInput from "./textInput"
 import "./locationform.css"
@@ -63,7 +63,7 @@ class LocationForm extends React.Component {
             if (edit) {
                 this.handleEditSubmit(dataObj)
             } else {
-                this.submitForm(dataObj);
+                this.submitForm(dataObj, false);
             }
         }
 
@@ -78,7 +78,7 @@ class LocationForm extends React.Component {
             buttons: [
                 {
                     label: 'Kyllä',
-                    onClick: () => alert("handleEditSubmit")
+                    onClick: () => this.submitForm(obj, true)
                 },
                 {
                     label: 'Ei',
@@ -87,9 +87,16 @@ class LocationForm extends React.Component {
             ]
         });
     };
-    submitForm = (data) => {
-        console.log(data);
-        postFormData(data);
+    submitForm = (data, edit) => {
+        const { editPageObj } = this.props;
+
+        if (edit) {
+            data["location_id"] = editPageObj.location_id;
+            postEditData(data);
+        } else {
+            postFormData(data);
+        }
+
 
     }
     handleEditSubmit = (data) => {
@@ -232,5 +239,5 @@ const mapStateToProps = state => {
         commonFilters: state.filters.commonFilterList
     }
 }
-export default connect(mapStateToProps, { removeFilter })(LocationForm);
+export default connect(mapStateToProps, { removeFilter, postEditData })(LocationForm);
 

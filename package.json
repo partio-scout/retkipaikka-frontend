@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "webpack-dev-server --open --mode development --host 192.168.1.5 --port 8080",
+    "start": "webpack-dev-server --open --mode development --host 192.168.1.2 --port 8080",
     "build": "webpack --mode production",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -16,6 +16,7 @@
     "leaflet": "^1.5.1",
     "leaflet.markercluster": "^1.4.1",
     "memoize-one": "^5.1.1",
+    "moment": "^2.24.0",
     "prop-types": "^15.7.2",
     "react": "^16.9.0",
     "react-bootstrap-typeahead": "^3.4.6",
