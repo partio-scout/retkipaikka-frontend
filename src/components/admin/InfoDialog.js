@@ -19,7 +19,7 @@ class InfoDialog extends React.Component {
 
         return (
             <div>
-                <h4 className="move-handle">#{obj.id}</h4>
+                <h4 className="move-handle">#{obj.location_id}</h4>
 
                 <h4>Nimi:</h4>
                 <span>{obj.location_name}</span>

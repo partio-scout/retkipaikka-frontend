@@ -1,6 +1,7 @@
 import {
     FETCH_LOCATIONS,
-    UPDATE_RESULTS
+    UPDATE_RESULTS,
+    FETCH_NON_ACCEPTED
 } from "../actions/ActionTypes"
 
 const initialState = {
@@ -24,6 +25,11 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 filteredResults: action.payload,
+            }
+        case FETCH_NON_ACCEPTED:
+            return {
+                ...state,
+                notificationResults: action.payload
             }
         default:
             return state;

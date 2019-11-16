@@ -13,7 +13,7 @@ class Main extends React.Component {
     componentWillMount() {
         const { fetchLocations, fetchFilters, results, filtersLoc, filtersCom } = this.props;
         if (results.searchResults.length === 0) {
-            fetchLocations();
+            fetchLocations(false);
         }
         if (filtersLoc.length === 0 || filtersCom.length === 0) {
             fetchFilters();

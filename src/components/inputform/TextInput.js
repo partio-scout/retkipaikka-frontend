@@ -9,6 +9,7 @@ class TextInput extends React.Component {
     }
 
     getNamesFromData = (data) => {
+        console.log(data);
         let newArr = data.map(value => {
             return value.object_name;
         })

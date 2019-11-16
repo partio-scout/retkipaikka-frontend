@@ -13,6 +13,7 @@ export const UPDATE_FETCHED_FILTERS = "UPDATE_FETCHED_FILTERS";
 //search
 export const FETCH_LOCATIONS = "FETCH_LOCATIONS";
 export const UPDATE_RESULTS = "UPDATE_RESULTS";
+export const FETCH_NON_ACCEPTED = "FETCH_NON_ACCEPTED";
 
 //login
 export const LOG_IN = "LOG_IN";

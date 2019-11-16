@@ -30,7 +30,7 @@ class LocationList extends React.Component {
         this.setState({ clickedObj: null });
     }
 
-    getRowData = (obj) => {
+    getRowData = (obj, i) => {
         return (
             <tr key={obj.id} onClick={(e) => this.handleObjectClick(obj, e)}>
                 <th scope="row">{obj.location_id}</th>
@@ -66,7 +66,10 @@ class LocationList extends React.Component {
         const { results, notifications, type } = this.props;
         const { currentSort, sortType } = this.state;
         // component is used in two places, if it's in locations, use search results
+        console.log(results, "res");
+        console.log(notifications, "noet");
         let newResults = this.checkType(type) ? [...results] : [...notifications];
+        console.log(newResults);
         newResults = newResults.sort((a, b) => {
             switch (sortType) {
                 case 1:
@@ -86,8 +89,8 @@ class LocationList extends React.Component {
     generateListItems = () => {
         const { currentSort, sortType } = this.state;
         let results = this.handleSort();
-        const values = results.map(location => {
-            return this.getRowData(location)
+        const values = results.map((location, i) => {
+            return this.getRowData(location, i)
 
         })
         //let sortedClassName = 

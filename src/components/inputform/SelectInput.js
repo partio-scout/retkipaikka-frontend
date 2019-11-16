@@ -15,6 +15,7 @@ class SelectInput extends React.Component {
             let value = data.filter(d => d.object_name === temp);
             applyFilter(value[0]);
         } else {
+            //newE.target.value = data.filter(d => d.object_name === newE.target.value)[0].category_id;
             handleFormSelect(e);
         }
 
@@ -38,8 +39,9 @@ class SelectInput extends React.Component {
 
     generateData = (data) => {
         let mappedData = data.map((value, i) => {
+            let id = value.category_id ? value.category_id : value.filter_id;
             //return (<option className={selectedValues.find(f => f === value) ? "inputform-checked" : null} key={i}>{value}</option>)
-            return (<option key={i}>{value.object_name}</option>)
+            return (<option id={id} key={i}>{value.object_name}</option>)
         })
         return mappedData;
     }

@@ -18,7 +18,7 @@ class LocationForm extends React.Component {
     handleFormSubmit = (e, edit) => {
         e.preventDefault();
         let emptyFound = false;
-        let dataObj = { location_name: null, object_name: null, location_geo: { lat: null, lng: null }, location_description: null, location_category: null, location_pricing: null, filters: [], location_owner: null, location_mail: null, location_website: null, location_phone: null }
+        let dataObj = { location_name: null, object_name: null, object_type: "city", location_geo: { lat: null, lng: null }, location_description: null, location_category: null, location_pricing: null, filters: [], location_owner: null, location_mail: null, location_website: null, location_phone: null }
         var forms = document.getElementsByClassName('needs-validation');
         // check if all required fields have value in
         Array.prototype.filter.call(forms, function (form) {
@@ -88,7 +88,9 @@ class LocationForm extends React.Component {
         });
     };
     submitForm = (data) => {
+        console.log(data);
         postFormData(data);
+
     }
     handleEditSubmit = (data) => {
         this.askForConfirmation();
@@ -97,6 +99,10 @@ class LocationForm extends React.Component {
     handleChange = (e) => {
         let value = e.target.type === "checkbox" ? e.target.checked : e.target.value;
         console.log(e.target.id, value);
+        if (e.target.id === "location_category") {
+            let id = e.target.options[e.target.options.selectedIndex].id;
+            value = id;
+        }
         this.setState({ [e.target.id]: value });
     }
 
@@ -105,7 +111,7 @@ class LocationForm extends React.Component {
         let boxes = arr.map(item => {
             if (item.object_type !== "nofilter") {
                 return (<div className="form-check form-check-inline">
-                    <input onClick={this.handleChange} type="checkbox" className="form-check-input" id={"box-" + item.object_name} defaultChecked={has.filter((val) => val === item.object_name).length > 0} />
+                    <input onClick={this.handleChange} type="checkbox" className="form-check-input" id={"box-" + item.filter_id} defaultChecked={has.filter((val) => val === item.object_name).length > 0} />
                     <label className="form-check-label" htmlFor={item.object_name}>{item.object_name}</label>
                 </div>)
             } else {
@@ -208,7 +214,7 @@ class LocationForm extends React.Component {
         let form = editPageObj ? this.generateEditForm() : this.generateLocationForm();
         let className = "form-container";
         className = editPageObj ? "edit-form-container" : className
-
+        console.log(this.state);
         return (
             <div className={className}>
                 {!editPageObj && <h4>Ilmoita retkipaikka!</h4>}
