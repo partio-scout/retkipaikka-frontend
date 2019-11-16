@@ -13,7 +13,7 @@ class Main extends React.Component {
     componentWillMount() {
         const { fetchLocations, fetchFilters, results, filtersLoc, filtersCom } = this.props;
         if (results.searchResults.length === 0) {
-            fetchLocations(false);
+            fetchLocations(true);
         }
         if (filtersLoc.length === 0 || filtersCom.length === 0) {
             fetchFilters();
@@ -29,7 +29,7 @@ class Main extends React.Component {
             <div className="frontpage-container">
                 <Header location={location} />
                 <div className="frontpage-image-container">
-                    <img alt="frontpage_image" src={imagesPath + "frontpage_img.jpg"} />
+                    <img alt="frontpage_image" src={_IMAGES_PATH_ + "frontpage_img.jpg"} />
                     <h2 className="main-header">Partion retkipaikat</h2>
                 </div>
                 <InputContainer adminPage={false} />

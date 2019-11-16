@@ -70,7 +70,7 @@ export const postFilter = (data) => (dispatch) => {
     console.log("in add post")
 
     axios.post(
-        'http://localhost:3001/api/Filters', data
+        _API_PATH_ + "/Filters", data
     ).then(response => {
         console.log("succes")
         dispatch(fetchFilters())
@@ -81,7 +81,7 @@ export const postFilter = (data) => (dispatch) => {
 export const postCategory = (data) => (dispatch) => {
     console.log("in add cate")
     axios.post(
-        'http://localhost:3001/api/Categories', data
+        _API_PATH_ + "/Categories", data
     ).then(response => {
         dispatch(fetchFilters())
     }).catch(error => {
@@ -98,10 +98,10 @@ export const fetchFilters = () => async (dispatch) => {
         filters: [{ filter_id: 0, object_type: "nofilter", object_name: "Ei suodattimia" }]
     }
     try {
-        const categoryResponse = await axios.get(`http://localhost:3001/api/Categories`);
+        const categoryResponse = await axios.get(_API_PATH_ + "/Categories");
         locations.categories = locations.categories.concat(categoryResponse.data);
 
-        const filterResponse = await axios.get(`http://localhost:3001/api/Filters`);
+        const filterResponse = await axios.get(_API_PATH_ + "/Filters");
         locations.filters = locations.filters.concat(filterResponse.data);
     } catch (error) {
         console.error(error);

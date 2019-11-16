@@ -94,7 +94,8 @@ class LocationList extends React.Component {
 
         })
         //let sortedClassName = 
-        let image = <img className={sortType === 1 ? "sort-icon" : "sort-icon inverse-icon"} alt="imgarrow" src="/icons/arrow.svg" />
+        console.log(_ICON_PATH_)
+        let image = <img className={sortType === 1 ? "sort-icon" : "sort-icon inverse-icon"} alt="imgarrow" src={_ICON_PATH_ + "arrow.svg"} />
         let head = (<thead>
             <tr onClick={this.handleListClick}>
                 <th id="location_id" scope="col">#{currentSort === "location_id" && image}</th>

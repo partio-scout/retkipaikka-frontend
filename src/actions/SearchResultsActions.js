@@ -5,6 +5,8 @@ import {
     FETCH_NON_ACCEPTED
 } from "./ActionTypes"
 
+
+
 import axios from "axios";
 
 
@@ -27,7 +29,7 @@ export const fetchLocations = (accepted) => async (dispatch) => {
     }
     try {
 
-        locations = await axios.get(`http://localhost:3001/api/Triplocations/fetchlocations?filter=` + JSON.stringify(query));
+        locations = await axios.get(_API_PATH_ + "/Triplocations/fetchlocations?filter=" + JSON.stringify(query));
         locations = locations.data;
         console.log(locations)
 
@@ -50,7 +52,7 @@ export const fetchLocations = (accepted) => async (dispatch) => {
 export const postFormData = (data) => {
     let stringifiedData = JSON.stringify(data);
     axios.post(
-        'http://localhost:3001/api/Triplocations/addNewLocation?locationData=' + stringifiedData
+        _API_PATH_ + "/Triplocations/addNewLocation?locationData=" + stringifiedData
 
     ).then(response => {
         console.log(response);

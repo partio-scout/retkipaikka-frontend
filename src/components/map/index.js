@@ -32,7 +32,7 @@ class Map extends React.Component {
 
     };
     scoutIcon = L.icon({
-        iconUrl: '/icons/map-marker.svg',
+        iconUrl: _ICON_PATH_ + "map-marker.svg",
         iconSize: [40, 50], // size of the icon
     });
     generateMarkers = () => {
