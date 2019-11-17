@@ -95,9 +95,11 @@ export const deleteCategory = (data) => (dispatch) => {
         _API_PATH_ + "/Categories/" + data.category_id + "/triplocations/count"
     ).then(response => {
         if (response.data.count === 0) {
-            axios.delete("/Categories/" + data.category_id);
-            console.log("deleted");
-            dispatch(fetchFilters())
+            axios.delete(_API_PATH_ + "/Categories/" + data.category_id).then(res => {
+                dispatch(fetchFilters())
+                console.log("deleted");
+            })
+
         } else {
             window.alert("et voi poistaa kategoriaa joka on käytössä")
         }
@@ -113,9 +115,11 @@ export const deleteFilter = (data) => (dispatch) => {
         _API_PATH_ + "/Filters/" + data.filter_id + "/triplocations/count"
     ).then(response => {
         if (response.data.count === 0) {
-            axios.delete(_API_PATH_ + "/Filters/" + data.filter_id);
-            console.log("deleted");
-            dispatch(fetchFilters())
+            axios.delete(_API_PATH_ + "/Filters/" + data.filter_id).then(res => {
+                console.log("deleted");
+                dispatch(fetchFilters())
+            });
+
         } else {
             window.alert("et voi poistaa suodatinta joka on käytössä")
         }
