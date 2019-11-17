@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { selectLocation } from "../../actions/MapActions"
 import LocationForm from "../locationform"
 import Draggable from 'react-draggable';
+import { deleteLocation } from "../../actions/SearchResultsActions"
 
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
@@ -69,6 +70,25 @@ class InfoDialog extends React.Component {
             </div>
         )
     }
+    generateFilterInfo = (obj) => {
+        const { handleDelete } = this.props;
+        let id = obj.filter_id ? obj.filter_id : obj.category_id;
+        let name = obj.object_name
+        let title = obj.filter_id ? "Suodattimen poisto" : "Kategorian poisto";
+        return (
+            <div>
+                <h4 className="move-handle">#{id}</h4>
+
+                <h4>Nimi:</h4>
+                <span>{name}</span>
+                <br />
+                <br />
+                <button onClick={() => handleDelete(name, title, obj)} className="btn btn-primary info-button">Poista</button>
+            </div>
+        )
+
+    }
+
     static getDerivedStateFromProps(newProps, currentState) {
         // if edit form is opened
         if (currentState.editEnabled !== null) {
@@ -81,6 +101,18 @@ class InfoDialog extends React.Component {
         return null;
 
     }
+    closeFunc = () => {
+        return false;
+    }
+
+    submitDelete = (obj) => {
+        const { deleteLocation, handleClose } = this.props;
+        let objToId = { location_id: obj.location_id };
+
+        deleteLocation(objToId);
+        handleClose();
+
+    }
 
     handleDelete = (obj) => {
         confirmAlert({
@@ -89,10 +121,11 @@ class InfoDialog extends React.Component {
             buttons: [
                 {
                     label: 'Kyllä',
-                    onClick: () => alert("delete")
+                    onClick: () => this.submitDelete(obj)
                 },
                 {
                     label: 'Ei',
+                    onClick: () => this.closeFunc()
 
                 }
             ]
@@ -117,7 +150,7 @@ class InfoDialog extends React.Component {
 
 
     render() {
-        const { data, customClassName, handleClose, clickHeight } = this.props;
+        const { data, customClassName, handleClose, clickHeight, locationPage } = this.props;
         const { editEnabled } = this.state;
         let className = "admin-info-dialog";
         return (
@@ -127,9 +160,10 @@ class InfoDialog extends React.Component {
 
                     <button className="btn info-close-button" onClick={handleClose}>x</button>
                     <div className="side-slider-data">
-                        {this.generateFromSingleData(data)}
+                        {locationPage ? this.generateFromSingleData(data) :
+                            this.generateFilterInfo(data)}
                     </div>
-                    {editEnabled !== null && <LocationForm editPageObj={data} />}
+                    {editEnabled !== null && <LocationForm handleClose={handleClose} editPageObj={data} />}
 
 
                 </div>
@@ -149,4 +183,4 @@ const mapStateToProps = state => {
         filterTypes: state.filters.locationTypeFilterList
     }
 }
-export default connect(mapStateToProps, { selectLocation })(InfoDialog);
+export default connect(mapStateToProps, { selectLocation, deleteLocation })(InfoDialog);

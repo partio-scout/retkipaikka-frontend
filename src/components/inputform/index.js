@@ -49,8 +49,8 @@ class InputContainer extends React.Component {
                     <form className="inputform-inputs" onSubmit={(e) => e.preventDefault()}>
                         <div className="form-row">
                             <TextInput data={results.searchResults} applyFilter={this.addFilter} title="Paikannimi" customClassName="inputform-select form-group col-md-4 col-sm-11 " />
-                            <SelectInput data={filtersLoc} applyFilter={this.addFilter} title="Tyyppi" useFiltering={true} customClassName="form-group col-md-3 col-sm-11 " />
-                            <SelectInput data={filtersCom} applyFilter={this.addFilter} title="Suodattimet" useFiltering={true} customClassName="form-group col-md-3 col-sm-11 " />
+                            <SelectInput id={"-cat"} data={filtersLoc} applyFilter={this.addFilter} title="Tyyppi" useFiltering={true} customClassName="form-group col-md-3 col-sm-11 " />
+                            <SelectInput id={"filt"} data={filtersCom} applyFilter={this.addFilter} title="Suodattimet" useFiltering={true} customClassName="form-group col-md-3 col-sm-11 " />
                             <div className="inputform-inputs-button form-group col-md-1 col-sm-11 ">
                                 <button className="btn btn-primary" onClick={this.filterResults}>Suodata</button>
                             </div>

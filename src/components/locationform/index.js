@@ -9,7 +9,7 @@ import "./locationform.css"
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 
-
+const initialState = {}
 class LocationForm extends React.Component {
     state = {
 
@@ -18,8 +18,10 @@ class LocationForm extends React.Component {
     handleFormSubmit = (e, edit) => {
         e.preventDefault();
         let emptyFound = false;
-        let dataObj = { location_name: null, object_name: null, object_type: "city", location_geo: { lat: null, lng: null }, location_description: null, location_category: null, location_pricing: null, filters: [], location_owner: null, location_mail: null, location_website: null, location_phone: null }
+        // let dataObj = { location_name: null, object_name: null, object_type: "city", location_geo: { lat: null, lng: null }, location_description: null, location_category: null, location_pricing: null, filters: [], location_owner: null, location_mail: null, location_website: null, location_phone: null }
+        let dataObj = {};
         var forms = document.getElementsByClassName('needs-validation');
+
         // check if all required fields have value in
         Array.prototype.filter.call(forms, function (form) {
             if (form.checkValidity() === false) {
@@ -34,11 +36,31 @@ class LocationForm extends React.Component {
         if (!emptyFound) {
             let stateKeys = Object.keys(this.state);
             console.log(JSON.stringify(this.state))
+            if (edit) {
+                let checkboxes = document.getElementsByClassName("form-check-input");
+                if (!dataObj.filters) {
+                    dataObj.filters = [];
+                }
+                for (let i = 0; i < checkboxes.length; ++i) {
+                    let chbox = checkboxes[i];
+                    if (chbox.id === "box-location_accepted" && chbox.defaultChecked !== chbox.checked) {
+                        dataObj.location_accepted = chbox.checked;
+                    } else if (chbox.checked && chbox.id !== "box-location_accepted") {
+                        dataObj.filters.push(chbox.id.split("-")[1]);
+                    }
+
+                }
+            }
+
             for (let i = 0; i < stateKeys.length; i++) {
                 let key = stateKeys[i];
+
                 //console.log(this.state.key)
-                if (key.includes("box") && this.state[key]) {
+                if (key.includes("box") && this.state[key] && !edit) {
                     let splitted = key.split("-");
+                    if (!dataObj.filters) {
+                        dataObj.filters = [];
+                    }
                     dataObj.filters.push(splitted[1]);
                 } else if (key === "location_geo") {
                     if (this.state[key]) {
@@ -63,7 +85,13 @@ class LocationForm extends React.Component {
             if (edit) {
                 this.handleEditSubmit(dataObj)
             } else {
+                dataObj["object_type"] = "city";
+                if (!dataObj.location_category) {
+                    dataObj.location_category = 1;
+                }
+                console.log(dataObj)
                 this.submitForm(dataObj, false);
+
             }
         }
 
@@ -88,19 +116,27 @@ class LocationForm extends React.Component {
         });
     };
     submitForm = (data, edit) => {
-        const { editPageObj } = this.props;
+        const { editPageObj, postEditData, postFormData } = this.props;
+
 
         if (edit) {
             data["location_id"] = editPageObj.location_id;
             postEditData(data);
+            this.props.handleClose();
         } else {
-            postFormData(data);
+            postFormData(data).then(res => {
+                console.log(res);
+                if (res) {
+                    this.setState(initialState);
+                }
+            });
+            //this.setState
         }
 
 
     }
     handleEditSubmit = (data) => {
-        this.askForConfirmation();
+        this.askForConfirmation(data);
 
     }
     handleChange = (e) => {
@@ -126,6 +162,12 @@ class LocationForm extends React.Component {
             }
         })
         return boxes;
+    }
+    generateAcceptBox = (obj) => {
+        return (<div className="form-check form-check-inline">
+            <input onClick={this.handleChange} type="checkbox" className="form-check-input" id={"box-location_accepted"} defaultChecked={obj.location_accepted} />
+            <label className="form-check-label" htmlFor={"Näytä käyttäjälle"}>{"Näytä käyttäjälle"}</label>
+        </div>)
     }
     static getDerivedStateFromProps(newProps, currentState) {
         // on coordinates props change (map was clicked),
@@ -153,6 +195,7 @@ class LocationForm extends React.Component {
         return (<form className="needs-validation" noValidate>
             <TextInput defaultValue={editPageObj.location_name} handleChange={this.handleChange} id="location_name" placeholder="Esimerkkipaikka" helper="Kirjoita retkipaikan nimi" text="Retkipaikka" required={true} />
             <SelectInput
+                id=""
                 defaultValue={editPageObj.location_category}
                 data={newTypes}
                 title="Retkipaikan tyyppi"
@@ -175,6 +218,7 @@ class LocationForm extends React.Component {
                 <TextInput defaultValue={editPageObj.location_mail} handleChange={this.handleChange} id="location_mail" placeholder="example@ex.com" helper="Kirjoita sähköposti" text="Sähköposti" size="col-md-3" required={false} />
                 <TextInput defaultValue={editPageObj.location_phone} handleChange={this.handleChange} id="location_phone" placeholder="0441235678" helper="Kirjoita puhelinnumero" text="Puhelinnumero" size="col-md-3" required={false} />
             </div>
+            {this.generateAcceptBox(editPageObj)}
             <button onClick={(e) => this.handleFormSubmit(e, true)} type="submit" className="btn btn-primary">Hyväksy</button>
         </form>)
         // data: { name: null, website:
@@ -189,6 +233,7 @@ class LocationForm extends React.Component {
         return (<form className="needs-validation" noValidate>
             <TextInput handleChange={this.handleChange} id="location_name" placeholder="Esimerkkipaikka" helper="Kirjoita retkipaikan nimi" text="Retkipaikka*" required={true} />
             <SelectInput
+                id=""
                 data={newTypes}
                 title="Retkipaikan tyyppi*"
                 useFiltering={false}
@@ -239,5 +284,5 @@ const mapStateToProps = state => {
         commonFilters: state.filters.commonFilterList
     }
 }
-export default connect(mapStateToProps, { removeFilter, postEditData })(LocationForm);
+export default connect(mapStateToProps, { removeFilter, postEditData, postFormData })(LocationForm);
 

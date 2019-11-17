@@ -94,7 +94,6 @@ class LocationList extends React.Component {
 
         })
         //let sortedClassName = 
-        console.log(_ICON_PATH_)
         let image = <img className={sortType === 1 ? "sort-icon" : "sort-icon inverse-icon"} alt="imgarrow" src={_ICON_PATH_ + "arrow.svg"} />
         let head = (<thead>
             <tr onClick={this.handleListClick}>
@@ -135,7 +134,7 @@ class LocationList extends React.Component {
                     {items}
                 </div>
 
-                {clickedObj !== null && <InfoDialog data={clickedObj} clickHeight={clickPos} handleClose={this.handleClose}></InfoDialog>}
+                {clickedObj !== null && <InfoDialog data={clickedObj} locationPage={true} clickHeight={clickPos} handleClose={this.handleClose}></InfoDialog>}
 
 
             </div>

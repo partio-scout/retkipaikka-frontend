@@ -2,12 +2,13 @@ import React from "react";
 import "./admin.css"
 import { connect } from "react-redux";
 import TextInput from "../locationform/textInput"
-import { postFilter, postCategory } from "../../actions/FilterActions"
+import { postFilter, postCategory, deleteCategory, deleteFilter } from "../../actions/FilterActions"
 import { confirmAlert } from 'react-confirm-alert';
+import InfoDialog from "./InfoDialog"
 import 'react-confirm-alert/src/react-confirm-alert.css';
 class FilterHandler extends React.Component {
     state = {
-
+        clickedObj: null
     }
     getText = () => {
         return "<-";
@@ -43,19 +44,28 @@ class FilterHandler extends React.Component {
 
 
                     break;
+                default:
+                    break;
             }
 
         }
     }
     getRowData = (obj, dataId) => {
         return (
-            <tr key={obj[dataId + "id"]}>
+            <tr key={obj[dataId + "id"]} onClick={(e) => this.handleObjectClick(obj, e)}>
                 <th scope="row">{obj[dataId + "id"]}</th>
                 <td>{obj.object_name}</td>
             </tr>
         )
 
     }
+
+    handleObjectClick = (obj, e) => {
+        //set clickedobject and move window down by 50px and right by 50px from clicked position
+        this.setState({ clickedObj: obj, clickPos: { height: e.clientY + 50, width: e.clientX + 50 } });
+
+    }
+
     closeFunc = () => {
         return false
     }
@@ -66,6 +76,10 @@ class FilterHandler extends React.Component {
             postFilter(obj);
         } else {
             postCategory(obj);
+        }
+        let fields = document.getElementsByClassName("form-control");
+        for (let i = 0; i < fields.length; ++i) {
+            fields[i].value = ""
         }
 
     }
@@ -80,7 +94,36 @@ class FilterHandler extends React.Component {
                 },
                 {
                     label: 'Ei',
-                    onClick: () => this.testFunc()
+                    onClick: () => this.closeFunc()
+
+                }
+            ]
+        });
+    };
+
+    handleDelete = (obj) => {
+        const { deleteFilter, deleteCategory } = this.props;
+        console.log(obj);
+        if (obj.object_type === "filter") {
+            deleteFilter(obj);
+        } else {
+            deleteCategory(obj);
+        }
+        this.handleClose()
+
+    }
+    askForDelConfirmation = (name, title, obj) => {
+        confirmAlert({
+            title: title,
+            message: 'Haluatko poistaa ' + name + '?',
+            buttons: [
+                {
+                    label: 'Kyllä',
+                    onClick: () => this.handleDelete(obj)
+                },
+                {
+                    label: 'Ei',
+                    onClick: () => this.closeFunc()
 
                 }
             ]
@@ -109,11 +152,14 @@ class FilterHandler extends React.Component {
             {body}
         </table>)
     }
-
+    handleClose = () => {
+        this.setState({ clickedObj: null })
+    }
 
     render() {
         //const items = this.generateListItems();
         const { locationTypes, commonFilters } = this.props;
+        const { clickedObj, clickPos } = this.state;
         return (
             <div className="admin-content-container">
                 <h3>Suodattimet ja kategoriat</h3>
@@ -134,6 +180,7 @@ class FilterHandler extends React.Component {
                         <button className="btn btn-primary admin-filter-button">Lisää</button>
                     </div>
                 </form>
+                {clickedObj !== null && <InfoDialog data={clickedObj} handleDelete={this.askForDelConfirmation} clickHeight={clickPos} handleClose={this.handleClose}></InfoDialog>}
 
 
 
@@ -150,5 +197,5 @@ const mapStateToProps = state => {
 
     }
 }
-export default connect(mapStateToProps, { postFilter, postCategory })(FilterHandler);
+export default connect(mapStateToProps, { postFilter, postCategory, deleteCategory, deleteFilter })(FilterHandler);
 

@@ -21,11 +21,8 @@ export const fetchLocations = (accepted) => async (dispatch) => {
         }
     }
     try {
-
         locations = await axios.get(_API_PATH_ + "/Triplocations/fetchlocations?filter=" + JSON.stringify(query));
         locations = locations.data;
-        console.log(locations)
-
     } catch (error) {
         console.error(error);
     }
@@ -42,31 +39,54 @@ export const fetchLocations = (accepted) => async (dispatch) => {
 
 }
 
-export const postFormData = (data) => {
-    let stringifiedData = JSON.stringify(data);
-    axios.post(
-        _API_PATH_ + "/Triplocations/addNewLocation?locationData=" + stringifiedData
+export const postFormData = (data) => (dispatch) => {
+    return new Promise(function (resolve, reject) {
+        let stringifiedData = JSON.stringify(data);
+        axios.post(
+            _API_PATH_ + "/Triplocations/addNewLocation?locationData=" + stringifiedData
 
-    ).then(response => {
-        console.log(response);
+        ).then(response => {
+            console.log(response);
+            resolve(true)
+            window.alert("Retkipaikka ilmoitettu")
 
-    }).catch(error => {
-        console.log("error in feedback", error);
-    });
+        }).catch(error => {
+            window.alert("Virhe retkipaikan lisäämisessä")
+            reject(false)
+        });
+    })
 }
 
-export const postEditData = (data) => {
+export const postEditData = (data) => (dispatch) => {
+    console.log("in edit")
     let stringifiedData = JSON.stringify(data);
-    axios.post(
+    axios.patch(
         _API_PATH_ + "/Triplocations/editLocation?locationData=" + stringifiedData
 
     ).then(response => {
-        console.log(response);
+        console.log(response, "edit res");
+        dispatch(fetchLocations(true));
+        dispatch(fetchLocations(false));
 
     }).catch(error => {
-        console.log("error in feedback", error);
+        console.log("error in editing data", error);
     });
 }
+
+export const deleteLocation = (data) => (dispatch) => {
+    let stringifiedData = JSON.stringify(data);
+    console.log(stringifiedData);
+    axios.delete(
+        _API_PATH_ + "/Triplocations/deleteLocation?locationData=" + stringifiedData
+    ).then(response => {
+        console.log(response);
+        dispatch(fetchLocations(true));
+        dispatch(fetchLocations(false));
+    }).catch(error => {
+        console.log("error in editing data", error);
+    });
+}
+
 
 
 export const filterFromResults = (searchResults, filters) => {

@@ -75,7 +75,7 @@ export const postFilter = (data) => (dispatch) => {
         console.log("succes")
         dispatch(fetchFilters())
     }).catch(error => {
-        console.log("error in postin filter", error);
+        window.alert("Virhe suodattimen lisäämisessä")
     });
 }
 export const postCategory = (data) => (dispatch) => {
@@ -85,7 +85,44 @@ export const postCategory = (data) => (dispatch) => {
     ).then(response => {
         dispatch(fetchFilters())
     }).catch(error => {
-        console.log("error in posting category", error);
+        window.alert("Virhe suodattimen lisäämisessä")
+    });
+}
+
+export const deleteCategory = (data) => (dispatch) => {
+
+    axios.get(
+        _API_PATH_ + "/Categories/" + data.category_id + "/triplocations/count"
+    ).then(response => {
+        if (response.data.count === 0) {
+            axios.delete("/Categories/" + data.category_id);
+            console.log("deleted");
+            dispatch(fetchFilters())
+        } else {
+            window.alert("et voi poistaa kategoriaa joka on käytössä")
+        }
+
+    }).catch(error => {
+        window.alert("Virhe poistamisessa")
+        console.log("error in deleting", error);
+    });
+}
+export const deleteFilter = (data) => (dispatch) => {
+
+    axios.get(
+        _API_PATH_ + "/Filters/" + data.filter_id + "/triplocations/count"
+    ).then(response => {
+        if (response.data.count === 0) {
+            axios.delete(_API_PATH_ + "/Filters/" + data.filter_id);
+            console.log("deleted");
+            dispatch(fetchFilters())
+        } else {
+            window.alert("et voi poistaa suodatinta joka on käytössä")
+        }
+
+    }).catch(error => {
+        window.alert("Virhe poistamisessa")
+        console.log("error in deleting", error);
     });
 }
 

@@ -37,6 +37,7 @@
 }
 .side-slider-data{
     padding-top:10px;
+    min-width:150px;
 }
 .map-side-slider h4{
      font-weight: 100;
