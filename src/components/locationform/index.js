@@ -87,7 +87,9 @@ class LocationForm extends React.Component {
             } else {
                 dataObj["object_type"] = "city";
                 if (!dataObj.location_category) {
-                    dataObj.location_category = 1;
+                    let newTypes = [...this.props.typeFilters];
+                    newTypes.splice(0, 1);
+                    dataObj.location_category = newTypes[0].category_id;
                 }
                 console.log(dataObj)
                 this.submitForm(dataObj, false);
