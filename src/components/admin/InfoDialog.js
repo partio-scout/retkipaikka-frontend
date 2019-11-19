@@ -111,6 +111,8 @@ class InfoDialog extends React.Component {
 
         deleteLocation(objToId);
         handleClose();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+
 
     }
 

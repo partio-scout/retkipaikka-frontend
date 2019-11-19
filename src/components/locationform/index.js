@@ -45,11 +45,12 @@ class LocationForm extends React.Component {
                     let chbox = checkboxes[i];
                     if (chbox.id === "box-location_accepted" && chbox.defaultChecked !== chbox.checked) {
                         dataObj.location_accepted = chbox.checked;
-                    } else if (chbox.checked && chbox.id !== "box-location_accepted") {
+                    } else if (chbox.checked && chbox.defaultChecked !== chbox.checked && chbox.id !== "box-location_accepted") {
                         dataObj.filters.push(chbox.id.split("-")[1]);
                     }
 
                 }
+                console.log(dataObj, "dataObj after loop");
             }
 
             for (let i = 0; i < stateKeys.length; i++) {
@@ -74,12 +75,22 @@ class LocationForm extends React.Component {
                             return;
                         }
                     }
-
                 } else {
-                    dataObj[key] = this.state[key];
+                    if (!key.includes("box")) {
+                        let currentKey = JSON.parse(JSON.stringify(this.state[key]));
+                        let tempTextValue = currentKey.split(' ').join('');
+                        if (tempTextValue.length !== 0) {
+                            dataObj[key] = this.state[key];
+                        } else {
+                            window.alert("Et voi lähettää tyhjiä kenttiä!")
+                            return;
+
+                        }
+
+                    }
+
+
                 }
-
-
             }
             // check if form was from edit page or main page
             if (edit) {
@@ -95,9 +106,10 @@ class LocationForm extends React.Component {
                 this.submitForm(dataObj, false);
 
             }
+
+
+
         }
-
-
     }
 
 
@@ -125,6 +137,7 @@ class LocationForm extends React.Component {
             data["location_id"] = editPageObj.location_id;
             postEditData(data);
             this.props.handleClose();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         } else {
             postFormData(data).then(res => {
                 console.log(res);
