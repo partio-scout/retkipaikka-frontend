@@ -45,12 +45,12 @@ class LocationForm extends React.Component {
                     let chbox = checkboxes[i];
                     if (chbox.id === "box-location_accepted" && chbox.defaultChecked !== chbox.checked) {
                         dataObj.location_accepted = chbox.checked;
-                    } else if (chbox.checked && chbox.defaultChecked !== chbox.checked && chbox.id !== "box-location_accepted") {
+                    } else if (chbox.checked && chbox.id !== "box-location_accepted") {
                         dataObj.filters.push(chbox.id.split("-")[1]);
                     }
 
                 }
-                console.log(dataObj, "dataObj after loop");
+
             }
 
             for (let i = 0; i < stateKeys.length; i++) {
@@ -77,10 +77,9 @@ class LocationForm extends React.Component {
                     }
                 } else {
                     if (!key.includes("box")) {
-                        let currentKey = JSON.parse(JSON.stringify(this.state[key]));
-                        let tempTextValue = currentKey.split(' ').join('');
-                        if (tempTextValue.length !== 0) {
-                            dataObj[key] = this.state[key];
+                        let tempTextValue = JSON.parse(JSON.stringify(this.state[key]));
+                        if (tempTextValue.trim().length !== 0) {
+                            dataObj[key] = this.state[key].trim();
                         } else {
                             window.alert("Et voi lähettää tyhjiä kenttiä!")
                             return;
@@ -92,17 +91,22 @@ class LocationForm extends React.Component {
 
                 }
             }
+            if (!dataObj.location_geo && !edit) {
+                return;
+            }
             // check if form was from edit page or main page
             if (edit) {
                 this.handleEditSubmit(dataObj)
             } else {
+                if (!dataObj.location_geo) {
+                    return;
+                }
                 dataObj["object_type"] = "city";
                 if (!dataObj.location_category) {
                     let newTypes = [...this.props.typeFilters];
                     newTypes.splice(0, 1);
                     dataObj.location_category = newTypes[0].category_id;
                 }
-                console.log(dataObj)
                 this.submitForm(dataObj, false);
 
             }

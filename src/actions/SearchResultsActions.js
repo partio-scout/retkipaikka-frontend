@@ -60,6 +60,7 @@ export const postFormData = (data) => (dispatch) => {
 export const postEditData = (data) => (dispatch) => {
     console.log("in edit")
     let stringifiedData = JSON.stringify(data);
+    console.log(JSON.parse(stringifiedData), "in edit post")
     axios.patch(
         _API_PATH_ + "/Triplocations/editLocation?locationData=" + stringifiedData
 

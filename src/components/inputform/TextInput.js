@@ -9,11 +9,22 @@ class TextInput extends React.Component {
     }
 
     getNamesFromData = (data) => {
-        console.log(data);
-        let newArr = data.map(value => {
-            return value.object_name;
+        console.log(data, "inget names");
+        let newArr = [];
+        data.forEach(value => {
+            if (newArr.filter(obj => obj === value.object_name).length === 0) {
+                newArr.push(value.object_name);
+            }
         })
-        return newArr;
+        return newArr
+
+
+        //data.forEach(value => {
+        //  if (
+        //}
+        // })
+
+
     }
     handleFiltering = (e) => {
         const { data } = this.props;
