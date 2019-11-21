@@ -6,7 +6,7 @@ import AdminPanel from "../components/admin/AdminPanel"
 import LocationList from "../components/admin/LocationList"
 import FilterHandler from "../components/admin/FilterHandler";
 import { fetchLocations } from "../actions/SearchResultsActions"
-import { fetchFilters } from "../actions/FilterActions"
+import { fetchFilters, fetchRegionsAndMunicipalities } from "../actions/FilterActions"
 import { connect } from "react-redux";
 
 
@@ -15,13 +15,16 @@ class Admin extends React.Component {
         element: "locations"
     }
     componentWillMount() {
-        const { fetchLocations, fetchFilters, results, filtersLoc, filtersCom } = this.props;
+        const { fetchLocations, fetchFilters, fetchRegionsAndMunicipalities, results, filtersLoc, filtersCom, regions, municipalities } = this.props;
         if (results.searchResults.length === 0) {
             fetchLocations(true);
             fetchLocations(false);
         }
         if (filtersLoc.length === 0 || filtersCom.length === 0) {
             fetchFilters();
+        }
+        if (regions.length === 0 || municipalities.length === 0) {
+            fetchRegionsAndMunicipalities();
         }
     }
 
@@ -109,7 +112,9 @@ const mapStateToProps = state => {
     return {
         results: state.searchResults,
         filtersLoc: state.filters.locationTypeFilterList,
-        filtersCom: state.filters.commonFilterList
+        filtersCom: state.filters.commonFilterList,
+        regions: state.filters.regions,
+        municipalities: state.filters.municipalities
     }
 }
-export default connect(mapStateToProps, { fetchLocations, fetchFilters })(Admin);
+export default connect(mapStateToProps, { fetchLocations, fetchFilters, fetchRegionsAndMunicipalities })(Admin);

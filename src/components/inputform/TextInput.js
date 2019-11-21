@@ -10,9 +10,7 @@ class TextInput extends React.Component {
 
     getNamesFromData = () => {
         const { data } = this.props;
-        console.log(data, "inget names");
         let newArr = [];
-        console.log(data);
         data.forEach(value => {
             newArr.push(value.object_name);
 
@@ -43,15 +41,16 @@ class TextInput extends React.Component {
     }
     render() {
         const { currentText } = this.state;
-        const { title, data, customClassName, helper, required } = this.props;
+        const { title, data, customClassName, helper, required, defaultInputValue } = this.props;
+        let req = required ? true : false;
         let className = customClassName ? customClassName : "inputform-select";
         return (
             <div className={customClassName}>
                 {title !== undefined && helper ? <label >{title}</label> : <span className="inputform-title">{title}</span>}
 
                 <Typeahead
-                    inputProps={{ required: true }}
-
+                    inputProps={{ required: req }}
+                    defaultInputValue={defaultInputValue ? defaultInputValue : ""}
                     id={"type-ahead " + className}
                     placeholder={currentText}
                     onChange={(selected) => {

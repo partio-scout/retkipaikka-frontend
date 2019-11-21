@@ -78,13 +78,16 @@ class LocationForm extends React.Component {
                     }
                 } else {
                     if (!key.includes("box")) {
-                        let tempTextValue = JSON.parse(JSON.stringify(this.state[key]));
-                        if (tempTextValue.trim().length !== 0) {
-                            dataObj[key] = this.state[key].trim();
-                        } else {
-                            window.alert("Et voi lähettää tyhjiä kenttiä!")
-                            return;
+                        if (this.state[key] !== null) {
+                            let tempTextValue = JSON.parse(JSON.stringify(this.state[key]));
+                            if (tempTextValue.trim().length !== 0) {
 
+                                dataObj[key] = this.state[key].trim();
+                            } else {
+                                window.alert("Et voi lähettää tyhjiä kenttiä!")
+                                return;
+
+                            }
                         }
 
                     }
@@ -141,6 +144,7 @@ class LocationForm extends React.Component {
         if (edit) {
             data["location_id"] = editPageObj.location_id;
             postEditData(data);
+            console.log(data);
             this.props.handleClose();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         } else {
@@ -208,8 +212,9 @@ class LocationForm extends React.Component {
             </div>)
     }
     generateEditForm = () => {
-        const { typeFilters, commonFilters, editPageObj } = this.props;
+        const { typeFilters, commonFilters, editPageObj, regions, municipalities } = this.props;
         let newTypes = [...typeFilters];
+        let allArr = regions.concat(municipalities);
         newTypes.splice(0, 1);
         // generate form for edit page
         return (<form className="needs-validation" noValidate>
@@ -225,7 +230,7 @@ class LocationForm extends React.Component {
             />
             <small id={"Help"} className="form-text text-muted form-group">Valitse retkipaikan tyyppi</small>
             <div className="form-row">
-                <TextInput defaultValue={editPageObj.object_name} handleChange={this.handleChange} id="object_name" placeholder="Paikan sijainti" helper="Kirjoita retkipaikan sijainti" text="Sijainti" size="col-md-6" required={true} />
+                <AutoCompleteInput data={allArr} applyFilter={this.handleSelection} id="object_name" title="Sijainti*" customClassName="form-group col-md-6" helper="Valitse sijainti" required={true} defaultInputValue={editPageObj.location_municipality ? editPageObj.location_municipality : editPageObj.location_region} />
                 <TextInput defaultValue={editPageObj.location_geo.lat + "," + editPageObj.location_geo.lng} handleChange={this.handleChange} id="location_geo" placeholder="Koordinaatit" helper="Valitse koordinaatit kartalta" text="Koordinaatit" size="col-md-6" required={true} />
             </div>
             {this.getTextForm("3", "Kuvaus paikasta", "Kirjoita kuvaus retkipaikasta", editPageObj.location_description, "location_description")}
@@ -245,11 +250,11 @@ class LocationForm extends React.Component {
     }
 
     handleSelection = (e) => {
-        console.log(e);
+
         if (e.municipality_id) {
-            this.setState({ location_municipality: e.municipality_id, location_region: e.region_id })
+            this.setState({ location_municipality: "" + e.municipality_id, location_region: "" + e.region_id })
         } else {
-            this.setState({ location_municipality: null, location_region: e.region_id })
+            this.setState({ location_municipality: null, location_region: "" + e.region_id })
         }
 
     }
