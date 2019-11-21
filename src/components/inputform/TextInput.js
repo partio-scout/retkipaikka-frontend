@@ -8,13 +8,14 @@ class TextInput extends React.Component {
         currentText: this.props.placeholder || "Kirjoita paikannimi"
     }
 
-    getNamesFromData = (data) => {
+    getNamesFromData = () => {
+        const { data } = this.props;
         console.log(data, "inget names");
         let newArr = [];
+        console.log(data);
         data.forEach(value => {
-            if (newArr.filter(obj => obj === value.object_name).length === 0) {
-                newArr.push(value.object_name);
-            }
+            newArr.push(value.object_name);
+
         })
         return newArr
 
@@ -28,33 +29,40 @@ class TextInput extends React.Component {
     }
     handleFiltering = (e) => {
         const { data } = this.props;
+        console.log(e);
         let temp = e[0];
         if (temp !== "") {
             let value = data.filter(d => d.object_name === temp);
             if (value.length !== 0) {
-                this.props.applyFilter(value[0]);
+                let modifiedObj = JSON.parse(JSON.stringify(value[0]));
+                modifiedObj["object_type"] = "city"
+                this.props.applyFilter(modifiedObj);
             }
         }
 
     }
     render() {
         const { currentText } = this.state;
-        const { title, data, customClassName } = this.props;
+        const { title, data, customClassName, helper, required } = this.props;
         let className = customClassName ? customClassName : "inputform-select";
         return (
             <div className={customClassName}>
-                {title !== undefined && <span className="inputform-title">{title}</span>}
+                {title !== undefined && helper ? <label >{title}</label> : <span className="inputform-title">{title}</span>}
 
                 <Typeahead
+                    inputProps={{ required: true }}
+
                     id={"type-ahead " + className}
                     placeholder={currentText}
                     onChange={(selected) => {
                         this.handleFiltering(selected);
-                        this.setState({ selected: [] })
+                        !helper && this.setState({ selected: [] })
                     }}
                     options={this.getNamesFromData(data)}
                     selected={this.state.selected}
+                    maxResults={5}
                 />
+                {helper && <small id={title + "Help"} className="form-text text-muted">{helper}</small>}
 
 
             </div>

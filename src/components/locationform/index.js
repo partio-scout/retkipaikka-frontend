@@ -4,6 +4,7 @@ import { removeFilter } from "../../actions/FilterActions"
 import { postFormData, postEditData } from "../../actions/SearchResultsActions"
 import SelectInput from "../inputform/SelectInput"
 import TextInput from "./textInput"
+import AutoCompleteInput from "../inputform/TextInput"
 import "./locationform.css"
 
 import { confirmAlert } from 'react-confirm-alert';
@@ -243,10 +244,19 @@ class LocationForm extends React.Component {
         // data: { name: null, website:
     }
 
+    handleSelection = (e) => {
+        console.log(e);
+        if (e.municipality_id) {
+            this.setState({ location_municipality: e.municipality_id, location_region: e.region_id })
+        } else {
+            this.setState({ location_municipality: null, location_region: e.region_id })
+        }
 
+    }
     generateLocationForm = () => {
-        const { typeFilters, commonFilters, editPageObj } = this.props;
+        const { typeFilters, commonFilters, editPageObj, regions, municipalities } = this.props;
         let newTypes = [...typeFilters];
+        let allArr = regions.concat(municipalities);
         newTypes.splice(0, 1);
         // generate from for main page
         return (<form className="needs-validation" noValidate>
@@ -261,7 +271,9 @@ class LocationForm extends React.Component {
             />
             <small id={"Help"} className="form-text text-muted form-group">Valitse retkipaikan tyyppi</small>
             <div className="form-row">
-                <TextInput handleChange={this.handleChange} id="object_name" placeholder="Paikan sijainti" helper="Kirjoita retkipaikan sijainti" text="Sijainti*" size="col-md-6" required={true} />
+                {/* <TextInput data={allArr} applyFilter={this.addFilter} title="Paikannimi" customClassName="inputform-select form-group col-md-4 col-sm-11 " /> */}
+                <AutoCompleteInput data={allArr} applyFilter={this.handleSelection} id="object_name" title="Sijainti*" customClassName="form-group col-md-6" helper="Valitse sijainti" required={true} />
+                {/* <TextInput handleChange={this.handleChange} id="object_name" placeholder="Paikan sijainti" helper="Kirjoita retkipaikan sijainti" text="Sijainti*" size="col-md-6" required={true} /> */}
                 <TextInput handleChange={this.handleChange} id="location_geo" placeholder="Koordinaatit" helper="Valitse koordinaatit kartalta" text="Koordinaatit*" size="col-md-6" required={true} />
             </div>
             {this.getTextForm("3", "Kuvaus paikasta", "Kirjoita kuvaus retkipaikasta", null, "location_description")}
@@ -300,7 +312,9 @@ const mapStateToProps = state => {
         tagList: state.filters,
         coords: state.map.coords,
         typeFilters: state.filters.locationTypeFilterList,
-        commonFilters: state.filters.commonFilterList
+        commonFilters: state.filters.commonFilterList,
+        regions: state.filters.regions,
+        municipalities: state.filters.municipalities
     }
 }
 export default connect(mapStateToProps, { removeFilter, postEditData, postFormData })(LocationForm);

@@ -8,6 +8,7 @@ import {
     REMOVE_ALL_COMMON_FILTERS,
     REMOVE_ALL_LOCATIONTYPE_FILTERS,
     UPDATE_FETCHED_FILTERS,
+    UPDATE_FETCHED_AREAS
 
 } from "../actions/ActionTypes"
 
@@ -16,7 +17,9 @@ const initialState = {
     locationTypeFilters: [],
     commonFilters: [],
     locationTypeFilterList: [],
-    commonFilterList: []
+    commonFilterList: [],
+    regions: [],
+    municipalities: []
 }
 
 const handleDelete = (filter, removeObj) => {
@@ -34,11 +37,13 @@ export default function (state = initialState, action) {
                 locationFilters: [...state.locationFilters, action.payload]
             }
         case REMOVE_LOCATION_FILTER:
+
             return {
                 ...state,
                 locationFilters: handleDelete(state.locationFilters, action.payload)
             }
         case ADD_LOCATIONTYPE_FILTER:
+            console.log(state)
             return {
                 ...state,
                 locationTypeFilters: [...state.locationTypeFilters, action.payload]
@@ -73,6 +78,13 @@ export default function (state = initialState, action) {
                 ...state,
                 locationTypeFilterList: action.payload.categories,
                 commonFilterList: action.payload.filters
+            }
+        case UPDATE_FETCHED_AREAS:
+
+            return {
+                ...state,
+                regions: action.payload.regions,
+                municipalities: action.payload.municipalities
             }
         default:
             return state;

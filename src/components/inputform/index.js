@@ -38,9 +38,8 @@ class InputContainer extends React.Component {
         return true;
     }
     render() {
-        const { results, filtersLoc, filtersCom, adminPage } = this.props;
-
-        console.log(filtersCom, "commons")
+        const { results, filtersLoc, filtersCom, adminPage, regions, municipalities } = this.props;
+        let allArr = regions.concat(municipalities);
 
         return (
             <div>
@@ -48,7 +47,7 @@ class InputContainer extends React.Component {
                     {/* <div className="inputform-inputs form-row form-group"> */}
                     <form className="inputform-inputs" onSubmit={(e) => e.preventDefault()}>
                         <div className="form-row">
-                            <TextInput data={results.searchResults} applyFilter={this.addFilter} title="Paikannimi" customClassName="inputform-select form-group col-md-4 col-sm-11 " />
+                            <TextInput data={allArr} applyFilter={this.addFilter} title="Paikannimi" customClassName="inputform-select form-group col-md-4 col-sm-11 " />
                             <SelectInput id={"-cat"} data={filtersLoc} applyFilter={this.addFilter} title="Tyyppi" useFiltering={true} customClassName="form-group col-md-3 col-sm-11 " />
                             <SelectInput id={"filt"} data={filtersCom} applyFilter={this.addFilter} title="Suodattimet" useFiltering={true} customClassName="form-group col-md-3 col-sm-11 " />
                             <div className="inputform-inputs-button form-group col-md-1 col-sm-11 ">
@@ -70,7 +69,9 @@ const mapStateToProps = state => {
         tags: state.filters,
         results: state.searchResults,
         filtersLoc: state.filters.locationTypeFilterList,
-        filtersCom: state.filters.commonFilterList
+        filtersCom: state.filters.commonFilterList,
+        regions: state.filters.regions,
+        municipalities: state.filters.municipalities
     }
 }
 export default connect(mapStateToProps, { addFilter, filterFromResults, resetLocation })(InputContainer);
