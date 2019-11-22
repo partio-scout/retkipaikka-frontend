@@ -39,7 +39,7 @@ class Map extends React.Component {
         const { results } = this.props;
         let markers = results.map((reg, i) => {
             return <Marker
-                key={reg.object_name + i}
+                key={reg.location_region + i}
                 position={reg.location_geo}
                 onClick={() => this.setState({ selected: reg })}
                 icon={this.scoutIcon}
@@ -61,7 +61,7 @@ class Map extends React.Component {
 
     render() {
         const { results, filterTypes, selectedLoc } = this.props;
-        const { selected } = this.state;
+        const { selected, zoomEnabled } = this.state;
         let center = { lat: 61.29, lng: 23.45 };
         let zoom = 8;
         if (selectedLoc !== null) {
@@ -79,8 +79,10 @@ class Map extends React.Component {
                         maxZoom={15}
                         attributionControl={true}
                         zoomControl={true}
+                        onFocus={() => this.setState({ zoomEnabled: true })}
+                        onBlur={() => this.setState({ zoomEnabled: false })}
                         doubleClickZoom={true}
-                        scrollWheelZoom={true}
+                        scrollWheelZoom={zoomEnabled}
                         dragging={true}
                         animate={true}
                         easeLinearity={0.35}

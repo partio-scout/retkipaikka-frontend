@@ -35,7 +35,8 @@ class LocationList extends React.Component {
             <tr key={obj.id} onClick={(e) => this.handleObjectClick(obj, e)}>
                 <th scope="row">{obj.location_id}</th>
                 <td>{obj.location_name}</td>
-                <td>{obj.object_name}</td>
+                <td>{obj.location_municipality ? obj.location_municipality : "-"}</td>
+                <td>{obj.location_region}</td>
                 <td>{obj.location_category}</td>
                 <td>{obj.location_owner}</td>
             </tr>
@@ -99,7 +100,8 @@ class LocationList extends React.Component {
             <tr onClick={this.handleListClick}>
                 <th id="location_id" scope="col">#{currentSort === "location_id" && image}</th>
                 <th id="location_name" scope="col">Nimi{currentSort === "location_name" && image}</th>
-                <th id="object_name" scope="col">Sijainti{currentSort === "object_name" && image}</th>
+                <th id="location_municipality" scope="col">Kunta{currentSort === "location_municipality" && image}</th>
+                <th id="location_region" scope="col">Maakunta{currentSort === "location_region" && image}</th>
                 <th id="location_category" scope="col">Tyyppi{currentSort === "location_category" && image}</th>
                 <th id="location_owner" scope="col">Omistaja{currentSort === "ocation_owner" && image}</th>
             </tr>

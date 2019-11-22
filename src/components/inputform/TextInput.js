@@ -49,6 +49,7 @@ class TextInput extends React.Component {
                 {title !== undefined && helper ? <label >{title}</label> : <span className="inputform-title">{title}</span>}
 
                 <Typeahead
+                    paginationText="Näytä lisää"
                     inputProps={{ required: req }}
                     defaultInputValue={defaultInputValue ? defaultInputValue : ""}
                     id={"type-ahead " + className}
