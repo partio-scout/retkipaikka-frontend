@@ -138,20 +138,20 @@ class LocationForm extends React.Component {
         });
     };
     submitForm = (data, edit) => {
-        const { editPageObj, postEditData, postFormData } = this.props;
+        const { editPageObj, postEditData, postFormData, handleClose } = this.props;
 
 
         if (edit) {
             data["location_id"] = editPageObj.location_id;
             postEditData(data);
             console.log(data);
-            this.props.handleClose();
+            handleClose();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         } else {
             postFormData(data).then(res => {
                 console.log(res);
                 if (res) {
-                    this.setState(initialState);
+                    handleClose()
                 }
             });
             //this.setState
@@ -305,7 +305,7 @@ class LocationForm extends React.Component {
         console.log(this.state);
         return (
             <div className={className}>
-                {!editPageObj && <h4>Ilmoita retkipaikka!</h4>}
+
                 {form}
 
             </div>

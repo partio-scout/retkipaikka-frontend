@@ -10,6 +10,9 @@ import { fetchFilters, fetchRegionsAndMunicipalities } from "../actions/FilterAc
 //import {imagesPath} from "../paths"
 
 class Main extends React.Component {
+    state = {
+        formOpen: false
+    }
     componentWillMount() {
         const { fetchLocations, fetchFilters, results, filtersLoc, filtersCom, regions, municipalities, fetchRegionsAndMunicipalities } = this.props;
         if (results.searchResults.length === 0) {
@@ -23,9 +26,17 @@ class Main extends React.Component {
         }
 
     }
-
+    handleFormOpen = () => {
+        this.setState({ formOpen: !this.state.formOpen })
+    }
+    handleReOpen = () => {
+        this.setState({ formOpen: false }, () => {
+            this.setState({ formOpen: true })
+        })
+    }
     render() {
         const { location } = this.props;
+        const { formOpen } = this.state;
         const imagesPath = "/images/";
         console.log(imagesPath + "frontpage_img.jpg")
         return (
@@ -37,7 +48,9 @@ class Main extends React.Component {
                 </div>
                 <InputContainer adminPage={false} />
                 <Map />
-                <LocationForm />
+
+                <h4 className="main-input-form" >Ilmoita retkipaikka! <img onClick={this.handleFormOpen} className={formOpen ? "input-form-icon-open" : "input-form-icon"} src={_ICON_PATH_ + "arrow.svg"}></img></h4>
+                {formOpen && <LocationForm handleClose={this.handleReOpen} />}
             </div>
         )
     }

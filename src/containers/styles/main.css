@@ -15,7 +15,21 @@
     top: -300px;
     z-index:-1;
 }
+.main-input-form{
+    width:75%;
+    margin:0 auto;
+    margin-bottom:2rem;
+}
+.input-form-icon{
+    margin-left:20px;
+    opacity:0.5;
+}
 
+.input-form-icon-open{
+    transform: rotate(-180deg);
+    margin-left:20px;
+    opacity:0.5;
+}
 .login-form{
     width: 50%;
     margin: 0 auto;

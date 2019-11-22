@@ -12,9 +12,14 @@ class SideSlider extends React.Component {
                 <h4>Nimi:</h4>
                 <span>{obj.location_name}</span>
                 <br />
-                <h4>Kuvaus:</h4>
-                <span> {obj.location_description}</span>
-                <br />
+
+                {obj.location_description &&
+                    <span>
+                        <h4>Kuvaus:</h4>
+                        <span> {obj.location_description}</span>
+                        <br />
+                    </span>
+                }
                 <h4>Yhteystiedot:</h4>
                 <span>Omistaja: </span>
                 <span>{obj.location_owner}</span>
@@ -36,7 +41,20 @@ class SideSlider extends React.Component {
                         <span>Puhelin: </span>
                         <span>{obj.location_phone}</span>
                     </span>}
-                <h4>Tietoa:</h4>
+                <h4>Tietoa: </h4>
+                <span>Tyyppi: </span>
+                <span>{obj.location_category}</span>
+                <br />
+                {obj.filters.length !== 0 &&
+                    <span>
+                        <span>Ominaisuudet: </span>
+                        {obj.filters.map(f => {
+                            return <span>{f}<br /></span>
+                        })}
+                    </span>
+                }
+
+                <br />
                 <span>Lisätty: </span>
                 <span>{moment(obj.createdAt).format("DD.MM.YYYY")}</span>
                 <br />
