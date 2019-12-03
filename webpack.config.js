@@ -21,6 +21,10 @@ module.exports = (enviroment, argv) => {
                     ]
                 },
                 {
+                    test: /\.svg$/,
+                    loader: 'svg-inline-loader'
+                },
+                {
                     test: /\.css$/,
                     use: ['style-loader', 'css-loader']
                 }
@@ -38,7 +42,7 @@ module.exports = (enviroment, argv) => {
                 filename: "./index.html"
             }),
             new webpack.DefinePlugin({
-                _API_PATH_: JSON.stringify('http://192.168.1.5:3000/api'),
+                _API_PATH_: JSON.stringify('http://localhost:3000/api'),
                 _IMAGES_PATH_: (argv.mode == 'production') ? JSON.stringify('../images/') : JSON.stringify('../dist/images/'),
                 _ICON_PATH_: (argv.mode == 'production') ? JSON.stringify('../icons/') : JSON.stringify('../dist/icons/')
             })

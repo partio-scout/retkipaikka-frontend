@@ -5,6 +5,7 @@ import { postFormData, postEditData } from "../../actions/SearchResultsActions"
 import SelectInput from "../inputform/SelectInput"
 import TextInput from "./textInput"
 import AutoCompleteInput from "../inputform/TextInput"
+import FormImageUpload from "./FormImageUpload";
 import "./locationform.css"
 
 import { confirmAlert } from 'react-confirm-alert';
@@ -13,7 +14,7 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 const initialState = {}
 class LocationForm extends React.Component {
     state = {
-
+        imgArray: []
     }
 
     handleFormSubmit = (e, edit) => {
@@ -56,6 +57,7 @@ class LocationForm extends React.Component {
 
             for (let i = 0; i < stateKeys.length; i++) {
                 let key = stateKeys[i];
+                console.log(key, "statekey")
 
                 //console.log(this.state.key)
                 if (key.includes("box") && this.state[key] && !edit) {
@@ -79,22 +81,28 @@ class LocationForm extends React.Component {
                 } else {
                     if (!key.includes("box")) {
                         if (this.state[key] !== null) {
-                            let tempTextValue = JSON.parse(JSON.stringify(this.state[key]));
-                            if (tempTextValue.trim().length !== 0) {
 
-                                dataObj[key] = this.state[key].trim();
-                            } else {
-                                window.alert("Et voi lähettää tyhjiä kenttiä!")
-                                return;
 
+                            if (key !== "imgArray") {
+                                let tempTextValue = JSON.parse(JSON.stringify(this.state[key]));
+                                console.log(tempTextValue);
+                                if (tempTextValue.trim().length !== 0) {
+
+                                    dataObj[key] = this.state[key].trim();
+                                } else {
+                                    window.alert("Et voi lähettää tyhjiä kenttiä!")
+                                    return;
+
+                                }
                             }
+
                         }
 
+
                     }
-
-
                 }
             }
+
             if (!dataObj.location_geo && !edit) {
                 return;
             }
@@ -119,6 +127,7 @@ class LocationForm extends React.Component {
 
         }
     }
+
 
 
     askForConfirmation = (obj) => {
@@ -148,7 +157,8 @@ class LocationForm extends React.Component {
             handleClose();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         } else {
-            postFormData(data).then(res => {
+            console.log(this.state.imgArray, "in loc");
+            postFormData(data, this.state.imgArray).then(res => {
                 console.log(res);
                 if (res) {
                     handleClose()
@@ -258,6 +268,10 @@ class LocationForm extends React.Component {
         }
 
     }
+    applyImage = (img) => {
+        const { imgArray } = this.state;
+        this.setState({ imgArray: imgArray.concat(img) });
+    }
     generateLocationForm = () => {
         const { typeFilters, commonFilters, editPageObj, regions, municipalities } = this.props;
         let newTypes = [...typeFilters];
@@ -299,6 +313,7 @@ class LocationForm extends React.Component {
         const { editPageObj } = this.props;
         // editPageObj comes from edit page,
         // it it's not undefined, generate edit form
+        console.log(this.state);
         let form = editPageObj ? this.generateEditForm() : this.generateLocationForm();
         let className = "form-container";
         className = editPageObj ? "edit-form-container" : className
@@ -307,7 +322,7 @@ class LocationForm extends React.Component {
             <div className={className}>
 
                 {form}
-
+                <FormImageUpload applyImage={this.applyImage} />
             </div>
         )
     }

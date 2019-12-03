@@ -39,18 +39,43 @@ export const fetchLocations = (accepted) => async (dispatch) => {
 
 }
 
-export const postFormData = (data) => (dispatch) => {
+export const postFormData = (data, images) => (dispatch) => {
     return new Promise(function (resolve, reject) {
         let stringifiedData = JSON.stringify(data);
         axios.post(
             _API_PATH_ + "/Triplocations/addNewLocation?locationData=" + stringifiedData
 
-        ).then(response => {
-            console.log(response);
+        ).then(async response => {
+            console.log(response.data, "in post data");
+            let resData = response.data;
+
+            if (resData !== "fail" && images.length !== 0) {
+
+                for (let i = 0; i < images.length; ++i) {
+                    console.log(images[i]);
+                    console.log(resData);
+                    const formData = new FormData()
+                    formData.append('image', images[i]);
+                    console.log(formData);
+                    //const file = new Blob([images[i]]);
+                    try {
+                        axios.post(_API_PATH_ + "/Images/" + resData + "/upload", formData, {
+                            headers: {
+                                'content-type': 'multipart/form-data'
+                            }
+                        })
+                    } catch (error) {
+                        console.error(error)
+                    }
+
+                }
+
+            }
             resolve(true)
             window.alert("Retkipaikka ilmoitettu")
 
         }).catch(error => {
+            console.error(error);
             window.alert("Virhe retkipaikan lisäämisessä")
             reject(false)
         });
