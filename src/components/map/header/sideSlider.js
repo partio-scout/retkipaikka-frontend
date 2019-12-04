@@ -3,8 +3,15 @@ import "./mapHeader.css";
 import moment from "moment"
 import { connect } from "react-redux";
 import { selectLocation } from "../../../actions/MapActions"
+import ImageGallery from 'react-image-gallery';
+
+import "react-image-gallery/styles/css/image-gallery.css";
+
 
 class SideSlider extends React.Component {
+    state = {
+        showGallery: null
+    }
     generateFromSingleData = (obj) => {
         const { selectLocation } = this.props;
         return (
@@ -62,6 +69,10 @@ class SideSlider extends React.Component {
                 <span>{moment(obj.updatedAt).format("DD.MM.YYYY")}</span>
                 <br />
                 <br />
+                {obj.images &&
+                    <h4 onClick={() => this.setState({ showGallery: obj })}>Näytä kuvat </h4>
+
+                }
                 <h4 onClick={() => selectLocation(obj)} ><u>Näytä kartalla</u></h4>
 
             </div>
@@ -70,20 +81,36 @@ class SideSlider extends React.Component {
     getText = () => {
         return "<-";
     }
-
+    getImages = () => {
+        const { data } = this.props;
+        let imgArr = data.images.map(img => {
+            return ({ original: _API_PATH_ + "/Images/" + data.location_id + "/download/" + img })
+        })
+        console.log(imgArr);
+        return imgArr;
+    }
 
     render() {
+        const { showGallery } = this.state;
         console.log("render slider")
         let className = "map-side-slider component"
+        let imgs = this.getImages();
+        console.log(imgs)
         return (
-            <div className={this.props.class ? className + this.props.class : className}>
-                <button onClick={this.props.handleClose}>{this.getText()}</button>
-                <div className="side-slider-data">
-                    {this.generateFromSingleData(this.props.data)}
+            <div>
+                <div className={this.props.class ? className + this.props.class : className}>
+                    <button onClick={this.props.handleClose}>{this.getText()}</button>
+                    <div className="side-slider-data">
+                        {this.generateFromSingleData(this.props.data)}
+                    </div>
+
+                </div>
+                <div className="image-gallery-container">
+                    {showGallery && <ImageGallery showPlayButton={false} showThumbnails={false} items={imgs} />}
                 </div>
 
-            </div>
 
+            </div>
 
         )
     }
