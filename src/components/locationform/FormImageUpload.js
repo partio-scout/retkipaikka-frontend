@@ -9,21 +9,37 @@ class FormImageUpload extends React.Component {
 
     onDrop = (picture) => {
         const { applyImage } = this.props;
+        console.log(picture.length);
+
+
         this.setState({
-            pictures: this.state.pictures.concat(picture),
+            pictures: picture,
         });
+        if (picture.length > 5) {
+            picture.splice(5);
+        }
         applyImage(picture);
     }
 
     render() {
-        console.log(JSON.stringify(this.state.pictures));
+        const { pictures } = this.state;
+        let className = "btn btn-primary"
+        if (pictures.length >= 5) {
+            className += " upload-btn-disabled"
+        }
+        console.log(this.state.pictures.length, "pictures in state");
         return (
             <ImageUploader
-                withIcon={true}
-                buttonText='Choose images'
+                withIcon={false}
+                buttonText='Lisää kuvia'
+                buttonClassName={className}
+                fileSizeError="Kuva on liian suuri"
+                fileTypeError="Vääränlainen tiedostomuoto"
                 onChange={this.onDrop}
+                label="Maksimi tiedostokoko 7 MB, MAX 10 kuvaa. Sallitut tiedostomuodot jpg, png"
                 imgExtension={['.jpg', '.png',]}
-                maxFileSize={5242880}
+                maxFileSize={7000000}
+                withPreview={true}
             />
         );
     }

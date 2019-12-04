@@ -11,11 +11,15 @@
     margin-bottom:50px;
 }
 .btn-primary{
-    background: #28aae1;
-    border-color:#28aae1;
-    color: #fff;
+    background: #28aae1 !important;
+    border-color:#28aae1 !important;
+    color: #fff !important;
     height: 40px;
     width: 120px;
+}
+.upload-btn-disabled{
+  pointer-events:none;
+  opacity: 0.5;
 }
 
 @media only screen and (max-width: 752px) {
@@ -29,6 +33,6 @@
     }
   }
 .btn-primary:hover{
-    background-color:#f04150;
+    background-color:#f04150 !important;
     /* background: #28aae1; */
 }

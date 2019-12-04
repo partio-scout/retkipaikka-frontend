@@ -10,7 +10,6 @@ import { connect } from "react-redux";
 import { setCoordinates } from "../../actions/MapActions"
 
 
-const apiKey = "AIzaSyDCtpSTaV-7OjEPzIpgj_4Vc8ErY7NqO5k"
 
 class Map extends React.Component {
     state = {

@@ -269,8 +269,7 @@ class LocationForm extends React.Component {
 
     }
     applyImage = (img) => {
-        const { imgArray } = this.state;
-        this.setState({ imgArray: imgArray.concat(img) });
+        this.setState({ imgArray: img });
     }
     generateLocationForm = () => {
         const { typeFilters, commonFilters, editPageObj, regions, municipalities } = this.props;
