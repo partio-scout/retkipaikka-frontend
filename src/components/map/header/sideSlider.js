@@ -69,8 +69,8 @@ class SideSlider extends React.Component {
                 <span>{moment(obj.updatedAt).format("DD.MM.YYYY")}</span>
                 <br />
                 <br />
-                {obj.images &&
-                    <h4 onClick={() => this.setState({ showGallery: obj })}>Näytä kuvat </h4>
+                {obj.images.length > 0 &&
+                    <h4 onClick={() => this.setState({ showGallery: obj })}><u>Näytä kuvat</u></h4>
 
                 }
                 <h4 onClick={() => selectLocation(obj)} ><u>Näytä kartalla</u></h4>
@@ -105,9 +105,16 @@ class SideSlider extends React.Component {
                     </div>
 
                 </div>
-                <div className="image-gallery-container">
-                    {showGallery && <ImageGallery showPlayButton={false} showThumbnails={false} items={imgs} />}
-                </div>
+                {showGallery &&
+                    <div>
+                        <div className="image-gallery-blur"></div>
+                        <div className="image-gallery-container">
+                            <span onClick={() => this.setState({ showGallery: null })} className="slider-close-button">x</span>
+                            <ImageGallery showIndex={true} showPlayButton={false} showThumbnails={false} items={imgs} />
+                        </div>
+                    </div>}
+
+
 
 
             </div>
