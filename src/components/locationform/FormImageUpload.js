@@ -21,6 +21,16 @@ class FormImageUpload extends React.Component {
         applyImage(picture);
     }
 
+    getPreviewPics = () => {
+        const { pictures } = this.state;
+        let previewData = pictures.map(pic => {
+
+            return <img className="preview-img" src={img} />
+        })
+
+        return previewData
+    }
+
     render() {
         const { pictures } = this.state;
         let className = "btn btn-primary"
@@ -28,19 +38,30 @@ class FormImageUpload extends React.Component {
             className += " upload-btn-disabled"
         }
         console.log(this.state.pictures.length, "pictures in state");
+        let previewImages = this.getPreviewPics();
+
         return (
-            <ImageUploader
-                withIcon={false}
-                buttonText='Lisää kuvia'
-                buttonClassName={className}
-                fileSizeError="Kuva on liian suuri"
-                fileTypeError="Vääränlainen tiedostomuoto"
-                onChange={this.onDrop}
-                label="Maksimi tiedostokoko 7 MB, MAX 10 kuvaa. Sallitut tiedostomuodot jpg, png"
-                imgExtension={['.jpg', '.png',]}
-                maxFileSize={7000000}
-                withPreview={true}
-            />
+            <div>
+                <ImageUploader
+                    withIcon={false}
+                    buttonText='Lisää kuvia'
+                    buttonClassName={className}
+                    fileSizeError="Kuva on liian suuri"
+                    fileTypeError="Vääränlainen tiedostomuoto"
+                    onChange={this.onDrop}
+                    label="Maksimi tiedostokoko 7 MB, MAX 10 kuvaa. Sallitut tiedostomuodot jpg, png"
+                    imgExtension={['.jpg', '.png',]}
+                    maxFileSize={7000000}
+                    withPreview={false}
+                />
+                <div className="preview-wrapper" >
+                    {previewImages}
+                </div>
+            </div>
+
+
+
+            // <ImagePreviewComponent
         );
     }
 }
