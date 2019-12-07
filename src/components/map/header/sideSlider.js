@@ -99,7 +99,8 @@ class SideSlider extends React.Component {
         return (
             <div>
                 <div className={this.props.class ? className + this.props.class : className}>
-                    <button onClick={this.props.handleClose}>{this.getText()}</button>
+                    <img onClick={this.props.handleClose} className={"side-slider-icon-black-open"} src={_ICON_PATH_ + "arrow.svg"}></img>
+                    {/* <button onClick={this.props.handleClose}>{this.getText()}</button> */}
                     <div className="side-slider-data">
                         {this.generateFromSingleData(this.props.data)}
                     </div>

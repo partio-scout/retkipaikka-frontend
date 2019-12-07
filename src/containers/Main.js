@@ -49,7 +49,7 @@ class Main extends React.Component {
                 <InputContainer adminPage={false} />
                 <Map />
 
-                <h4 className="main-input-form" >Ilmoita retkipaikka! <img onClick={this.handleFormOpen} className={formOpen ? "input-form-icon-open" : "input-form-icon"} src={_ICON_PATH_ + "arrow.svg"}></img></h4>
+                <h4 onClick={this.handleFormOpen} className="main-input-form" >Ilmoita retkipaikka! <img className={formOpen ? "input-form-icon-open" : "input-form-icon"} src={_ICON_PATH_ + "arrow.svg"}></img></h4>
                 {formOpen && <LocationForm handleClose={this.handleReOpen} />}
             </div>
         )

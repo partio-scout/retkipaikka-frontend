@@ -103,7 +103,7 @@ class LocationList extends React.Component {
                 <th id="location_municipality" scope="col">Kunta{currentSort === "location_municipality" && image}</th>
                 <th id="location_region" scope="col">Maakunta{currentSort === "location_region" && image}</th>
                 <th id="location_category" scope="col">Tyyppi{currentSort === "location_category" && image}</th>
-                <th id="location_owner" scope="col">Omistaja{currentSort === "ocation_owner" && image}</th>
+                <th id="location_owner" scope="col">Omistaja{currentSort === "location_owner" && image}</th>
             </tr>
         </thead>)
 

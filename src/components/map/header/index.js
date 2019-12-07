@@ -63,8 +63,8 @@ class MapHeader extends React.Component {
             <div className="mapheader-container">
 
                 <div className="mapheader-helpers">
-                    <span className="mapheader-left">
-                        <button onClick={() => this.setState({ showSideSlider: !showSideSlider, clickedObj: null })}>{this.getText()}</button>
+                    <span onClick={() => this.setState({ showSideSlider: !showSideSlider, clickedObj: null })} className="mapheader-left">
+                        <img className={showSideSlider ? "side-slider-icon-open" : "side-slider-icon-closed"} src={_ICON_PATH_ + "arrow_white.svg"}></img>
                         <span className="mapheader-text">Partion retkipaikat</span>
                         <span className="mapheader-results"> {resultAmount}</span>
                     </span>

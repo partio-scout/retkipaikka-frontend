@@ -168,7 +168,7 @@ class FilterHandler extends React.Component {
 
                 <form onSubmit={(e) => this.handleSubmit(e, "filter")}>
                     <div className="form-row">
-                        <TextInput handleChange={this.handleChange} id="filter" placeholder="suodatin" helper="Kirjoita lisättävän suodattimen nimi" text="Lisää suodatin" size="col-md-3" required={true} />
+                        <TextInput handleChange={this.handleChange} id="filter" placeholder="Suodatin" helper="Kirjoita lisättävän suodattimen nimi" text="Lisää suodatin" size="col-md-3" required={true} />
                         <button className="btn btn-primary admin-filter-button">Lisää</button>
                     </div>
                 </form>
