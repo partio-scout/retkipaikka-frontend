@@ -78,10 +78,8 @@ class Map extends React.Component {
                         maxZoom={15}
                         attributionControl={true}
                         zoomControl={true}
-                        onFocus={() => this.setState({ zoomEnabled: true })}
-                        onBlur={() => this.setState({ zoomEnabled: false })}
                         doubleClickZoom={true}
-                        scrollWheelZoom={zoomEnabled}
+                        scrollWheelZoom={true}
                         dragging={true}
                         animate={true}
                         easeLinearity={0.35}

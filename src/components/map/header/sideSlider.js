@@ -3,9 +3,10 @@ import "./mapHeader.css";
 import moment from "moment"
 import { connect } from "react-redux";
 import { selectLocation } from "../../../actions/MapActions"
-import ImageGallery from 'react-image-gallery';
+import { CustomImgSlider } from "./CustomImgSlider"
+// import ImageGallery from 'react-image-gallery';
 
-import "react-image-gallery/styles/css/image-gallery.css";
+// import "react-image-gallery/styles/css/image-gallery.css";
 
 
 class SideSlider extends React.Component {
@@ -84,12 +85,11 @@ class SideSlider extends React.Component {
     getImages = () => {
         const { data } = this.props;
         let imgArr = data.images.map(img => {
-            return ({ original: _API_PATH_ + "/Images/" + data.location_id + "/download/" + img })
+            return { src: _API_PATH_ + "/Images/" + data.location_id + "/download/" + img }
+
         })
-        console.log(imgArr);
         return imgArr;
     }
-
     render() {
         const { showGallery } = this.state;
         console.log("render slider")
@@ -107,11 +107,15 @@ class SideSlider extends React.Component {
                 </div>
                 {showGallery &&
                     <div>
-                        <div className="image-gallery-blur"></div>
+                        <CustomImgSlider handleClose={() => this.setState({ showGallery: null })} photos={imgs} />
+
+
+                        {/* <div className="image-gallery-blur"></div>
                         <div className="image-gallery-container">
                             <span onClick={() => this.setState({ showGallery: null })} className="slider-close-button">x</span>
                             <ImageGallery showIndex={true} showPlayButton={false} showThumbnails={false} items={imgs} />
-                        </div>
+
+                        </div> */}
                     </div>}
 
 

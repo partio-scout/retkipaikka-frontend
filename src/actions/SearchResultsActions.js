@@ -52,14 +52,10 @@ export const postFormData = (data, images) => (dispatch) => {
             if (resData !== "fail" && images.length !== 0) {
 
                 for (let i = 0; i < images.length; ++i) {
-                    console.log(images[i]);
-                    console.log(resData);
                     const formData = new FormData()
                     formData.append('image', images[i]);
-                    console.log(formData);
-                    //const file = new Blob([images[i]]);
                     try {
-                        axios.post(_API_PATH_ + "/Images/" + resData + "/upload", formData, {
+                        await axios.post(_API_PATH_ + "/Images/" + resData + "/upload", formData, {
                             headers: {
                                 'content-type': 'multipart/form-data'
                             }
@@ -81,16 +77,32 @@ export const postFormData = (data, images) => (dispatch) => {
         });
     })
 }
-
-export const postEditData = (data) => (dispatch) => {
+export const postEditData = (data, images) => (dispatch) => {
     console.log("in edit")
     let stringifiedData = JSON.stringify(data);
     console.log(JSON.parse(stringifiedData), "in edit post")
     axios.patch(
         _API_PATH_ + "/Triplocations/editLocation?locationData=" + stringifiedData
 
-    ).then(response => {
+    ).then(async response => {
         console.log(response, "edit res");
+        if (images.length > 0) {
+            for (let i = 0; i < images.length; ++i) {
+                const formData = new FormData()
+                formData.append('image', images[i]);
+                try {
+                    await axios.post(_API_PATH_ + "/Images/" + data.location_id + "/upload", formData, {
+                        headers: {
+                            'content-type': 'multipart/form-data'
+                        }
+                    })
+                } catch (error) {
+                    console.error(error)
+                }
+            }
+
+
+        }
         dispatch(fetchLocations(true));
         dispatch(fetchLocations(false));
 
@@ -99,13 +111,24 @@ export const postEditData = (data) => (dispatch) => {
     });
 }
 
+export const removeEditImages = (id, imgArr) => async (dispatch) => {
+    for (let i = 0; i < imgArr.length; ++i) {
+        try {
+            await axios.delete(_API_PATH_ + "/Images/" + id + "/files/" + imgArr[i])
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+}
+
 export const deleteLocation = (data) => (dispatch) => {
     let stringifiedData = JSON.stringify(data);
     console.log(stringifiedData);
     axios.delete(
         _API_PATH_ + "/Triplocations/deleteLocation?locationData=" + stringifiedData
-    ).then(response => {
-        console.log(response);
+    ).then(async response => {
+        await axios.delete(_API_PATH_ + "/Images/" + data.location_id);
         dispatch(fetchLocations(true));
         dispatch(fetchLocations(false));
     }).catch(error => {

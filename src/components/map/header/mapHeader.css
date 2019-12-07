@@ -60,12 +60,17 @@
     opacity: 0.5;
 }
 .image-gallery-container{
-    width: 80%;
+    height:550px;
     top: 0px;
     left: 10%;
     position: absolute;
     z-index: 4;
-
+}
+.react-images__blanket{
+    z-index:6 !important;
+}
+.react-images__positioner{
+    z-index:7 !important;
 }
 .component button{
     margin-left: 20px;

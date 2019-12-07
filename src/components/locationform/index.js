@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { removeFilter } from "../../actions/FilterActions"
-import { postFormData, postEditData } from "../../actions/SearchResultsActions"
+import { postFormData, postEditData, removeEditImages } from "../../actions/SearchResultsActions"
 import SelectInput from "../inputform/SelectInput"
 import TextInput from "./textInput"
 import AutoCompleteInput from "../inputform/TextInput"
@@ -14,7 +14,8 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 const initialState = {}
 class LocationForm extends React.Component {
     state = {
-        imgArray: []
+        imgArray: [],
+        oldImgArray: []
     }
 
     handleFormSubmit = (e, edit) => {
@@ -83,7 +84,7 @@ class LocationForm extends React.Component {
                         if (this.state[key] !== null) {
 
 
-                            if (key !== "imgArray") {
+                            if (key !== "imgArray" && key !== "oldImgArray") {
                                 let tempTextValue = JSON.parse(JSON.stringify(this.state[key]));
                                 console.log(tempTextValue);
                                 if (tempTextValue.trim().length !== 0) {
@@ -146,19 +147,31 @@ class LocationForm extends React.Component {
             ]
         });
     };
+    checkDeleteImgs = (fromState, fromObj) => {
+        console.log(fromState, fromObj)
+        if (fromState.length === fromObj.length) {
+            return [];
+        }
+        return fromObj.filter(fObj => fromState.filter(fState => fObj === fState.name).length === 0);
+    }
     submitForm = (data, edit) => {
-        const { editPageObj, postEditData, postFormData, handleClose } = this.props;
-
+        const { editPageObj, postEditData, postFormData, handleClose, removeEditImages } = this.props;
+        const { imgArray, oldImgArray } = this.state;
 
         if (edit) {
+            const oldImgs = editPageObj.images;
             data["location_id"] = editPageObj.location_id;
-            postEditData(data);
+            console.log("asdasd")
+            let imagesToDelete = this.checkDeleteImgs(oldImgArray, oldImgs);
+            if (imagesToDelete.length > 0) {
+                removeEditImages(editPageObj.location_id, imagesToDelete)
+            }
+            postEditData(data, imgArray);
             console.log(data);
             handleClose();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         } else {
-            console.log(this.state.imgArray, "in loc");
-            postFormData(data, this.state.imgArray).then(res => {
+            postFormData(data, imgArray).then(res => {
                 console.log(res);
                 if (res) {
                     handleClose()
@@ -268,8 +281,8 @@ class LocationForm extends React.Component {
         }
 
     }
-    applyImage = (img) => {
-        this.setState({ imgArray: img });
+    applyImage = (img, oldImgs) => {
+        this.setState({ imgArray: img, oldImgArray: oldImgs });
     }
     generateLocationForm = () => {
         const { typeFilters, commonFilters, editPageObj, regions, municipalities } = this.props;
@@ -319,9 +332,8 @@ class LocationForm extends React.Component {
         console.log(this.state);
         return (
             <div className={className}>
-
                 {form}
-                <FormImageUpload applyImage={this.applyImage} />
+                <FormImageUpload applyImage={this.applyImage} imagesFromLocation={editPageObj} />
             </div>
         )
     }
@@ -336,5 +348,5 @@ const mapStateToProps = state => {
         municipalities: state.filters.municipalities
     }
 }
-export default connect(mapStateToProps, { removeFilter, postEditData, postFormData })(LocationForm);
+export default connect(mapStateToProps, { removeFilter, postEditData, postFormData, removeEditImages })(LocationForm);
 
