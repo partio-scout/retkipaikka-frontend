@@ -94,11 +94,12 @@ export const fetchRegionsAndMunicipalities = () => async (dispatch) => {
     })
 
 }
-export const postFilter = (data) => (dispatch) => {
-    console.log("in add post")
+export const postFilter = (data) => (dispatch, getState) => {
 
+    let accessToken = getState().login.accessToken;
+    accessToken = "?access_token=" + accessToken;
     axios.post(
-        _API_PATH_ + "/Filters", data
+        _API_PATH_ + "/Filters" + accessToken, data
     ).then(response => {
         console.log("succes")
         dispatch(fetchFilters())
@@ -106,10 +107,12 @@ export const postFilter = (data) => (dispatch) => {
         window.alert("Virhe suodattimen lisäämisessä")
     });
 }
-export const postCategory = (data) => (dispatch) => {
+export const postCategory = (data) => (dispatch, getState) => {
     console.log("in add cate")
+    let accessToken = getState().login.accessToken;
+    accessToken = "?access_token=" + accessToken;
     axios.post(
-        _API_PATH_ + "/Categories", data
+        _API_PATH_ + "/Categories" + accessToken, data
     ).then(response => {
         dispatch(fetchFilters())
     }).catch(error => {
@@ -117,13 +120,14 @@ export const postCategory = (data) => (dispatch) => {
     });
 }
 
-export const deleteCategory = (data) => (dispatch) => {
-
+export const deleteCategory = (data) => (dispatch, getState) => {
+    let accessToken = getState().login.accessToken;
+    accessToken = "?access_token=" + accessToken;
     axios.get(
         _API_PATH_ + "/Categories/" + data.category_id + "/triplocations/count"
     ).then(response => {
         if (response.data.count === 0) {
-            axios.delete(_API_PATH_ + "/Categories/" + data.category_id).then(res => {
+            axios.delete(_API_PATH_ + "/Categories/" + data.category_id + accessToken).then(res => {
                 dispatch(fetchFilters())
                 console.log("deleted");
             })
@@ -137,13 +141,14 @@ export const deleteCategory = (data) => (dispatch) => {
         console.log("error in deleting", error);
     });
 }
-export const deleteFilter = (data) => (dispatch) => {
-
+export const deleteFilter = (data) => (dispatch, getState) => {
+    let accessToken = getState().login.accessToken;
+    accessToken = "?access_token=" + accessToken;
     axios.get(
         _API_PATH_ + "/Filters/" + data.filter_id + "/triplocations/count"
     ).then(response => {
         if (response.data.count === 0) {
-            axios.delete(_API_PATH_ + "/Filters/" + data.filter_id).then(res => {
+            axios.delete(_API_PATH_ + "/Filters/" + data.filter_id + accessToken).then(res => {
                 console.log("deleted");
                 dispatch(fetchFilters())
             });

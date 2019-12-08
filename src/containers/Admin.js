@@ -6,6 +6,7 @@ import AdminPanel from "../components/admin/AdminPanel"
 import LocationList from "../components/admin/LocationList"
 import FilterHandler from "../components/admin/FilterHandler";
 import { fetchLocations } from "../actions/SearchResultsActions"
+import { login } from "../actions/LoginActions";
 import { fetchFilters, fetchRegionsAndMunicipalities } from "../actions/FilterActions"
 import { connect } from "react-redux";
 
@@ -29,6 +30,8 @@ class Admin extends React.Component {
     }
 
     handleFormSubmit = (e) => {
+        const { login } = this.props;
+
         e.preventDefault();
         let emptyFound = false;
         var forms = document.getElementsByClassName('needs-validation');
@@ -43,6 +46,10 @@ class Admin extends React.Component {
         if (emptyFound) {
             return;
         }
+
+        let dataObj = { email: this.state.location_email, password: this.state.location_password }
+        login(dataObj);
+
     }
 
     handleChange = (e) => {
@@ -98,7 +105,9 @@ class Admin extends React.Component {
         )
     }
     render() {
-        let loggedIn = true;
+        const { loginData } = this.props;
+        console.log(loginData);
+        let loggedIn = loginData.loggedIn;
         let renderElement = loggedIn ? this.getAdminPanel() : this.getLoginForm();
         return (
             <div className="frontpage-container">
@@ -114,7 +123,8 @@ const mapStateToProps = state => {
         filtersLoc: state.filters.locationTypeFilterList,
         filtersCom: state.filters.commonFilterList,
         regions: state.filters.regions,
-        municipalities: state.filters.municipalities
+        municipalities: state.filters.municipalities,
+        loginData: state.login
     }
 }
-export default connect(mapStateToProps, { fetchLocations, fetchFilters, fetchRegionsAndMunicipalities })(Admin);
+export default connect(mapStateToProps, { fetchLocations, fetchFilters, fetchRegionsAndMunicipalities, login })(Admin);

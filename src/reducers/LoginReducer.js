@@ -3,13 +3,11 @@ import {
     LOG_OUT
 } from "../actions/ActionTypes"
 
-let user = JSON.parse(localStorage.getItem('user'));
+//let user = JSON.parse(localStorage.getItem('user'));
 
 const initialState = {
-    loggedIn: user !== null,
-    loggedUser: user,
-
-
+    loggedIn: false,
+    accessToken: null,
 }
 
 
@@ -19,7 +17,7 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 loggedIn: true,
-                loggedUser: action.user
+                accessToken: action.payload
             }
         case LOG_OUT:
             return {

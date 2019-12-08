@@ -21,7 +21,7 @@ export const fetchLocations = (accepted) => async (dispatch) => {
         }
     }
     try {
-        locations = await axios.get(_API_PATH_ + "/Triplocations/fetchlocations?filter=" + JSON.stringify(query));
+        locations = await axios.get(_API_PATH_ + "/Triplocations/fetchLocations?filter=" + JSON.stringify(query));
         locations = locations.data;
     } catch (error) {
         console.error(error);
@@ -77,12 +77,16 @@ export const postFormData = (data, images) => (dispatch) => {
         });
     })
 }
-export const postEditData = (data, images) => (dispatch) => {
+export const postEditData = (data, images) => (dispatch, getState) => {
+    let accessToken = getState().login.accessToken;
+    accessToken = "&access_token=" + accessToken;
     console.log("in edit")
     let stringifiedData = JSON.stringify(data);
+    console.log(stringifiedData);
     console.log(JSON.parse(stringifiedData), "in edit post")
+    console.log(_API_PATH_ + "/Triplocations/editLocation?locationData=" + stringifiedData + accessToken)
     axios.patch(
-        _API_PATH_ + "/Triplocations/editLocation?locationData=" + stringifiedData
+        _API_PATH_ + "/Triplocations/editLocation?locationData=" + stringifiedData + accessToken
 
     ).then(async response => {
         console.log(response, "edit res");
@@ -111,10 +115,12 @@ export const postEditData = (data, images) => (dispatch) => {
     });
 }
 
-export const removeEditImages = (id, imgArr) => async (dispatch) => {
+export const removeEditImages = (id, imgArr) => async (dispatch, getState) => {
+    let accessToken = getState().login.accessToken;
+    accessToken = "&access_token=" + accessToken;
     for (let i = 0; i < imgArr.length; ++i) {
         try {
-            await axios.delete(_API_PATH_ + "/Images/" + id + "/files/" + imgArr[i])
+            await axios.delete(_API_PATH_ + "/Images/" + id + "/files/" + imgArr[i] + accessToken)
         } catch (error) {
             console.error(error)
         }
@@ -122,13 +128,14 @@ export const removeEditImages = (id, imgArr) => async (dispatch) => {
 
 }
 
-export const deleteLocation = (data) => (dispatch) => {
+export const deleteLocation = (data) => (dispatch, getState) => {
+    let accessToken = getState().login.accessToken;
     let stringifiedData = JSON.stringify(data);
     console.log(stringifiedData);
     axios.delete(
-        _API_PATH_ + "/Triplocations/deleteLocation?locationData=" + stringifiedData
+        _API_PATH_ + "/Triplocations/deleteLocation?locationData=" + stringifiedData + "&access_token=" + accessToken
     ).then(async response => {
-        await axios.delete(_API_PATH_ + "/Images/" + data.location_id);
+        await axios.delete(_API_PATH_ + "/Images/" + data.location_id + "?access_token=" + accessToken);
         dispatch(fetchLocations(true));
         dispatch(fetchLocations(false));
     }).catch(error => {
