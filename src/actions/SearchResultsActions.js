@@ -42,8 +42,9 @@ export const fetchLocations = (accepted) => async (dispatch) => {
 export const postFormData = (data, images) => (dispatch) => {
     return new Promise(function (resolve, reject) {
         let stringifiedData = JSON.stringify(data);
+        console.log(stringifiedData);
         axios.post(
-            _API_PATH_ + "/Triplocations/addNewLocation?locationData=" + stringifiedData
+            _API_PATH_ + "/Triplocations/addNewLocation", data
 
         ).then(async response => {
             console.log(response.data, "in post data");
@@ -79,14 +80,16 @@ export const postFormData = (data, images) => (dispatch) => {
 }
 export const postEditData = (data, images) => (dispatch, getState) => {
     let accessToken = getState().login.accessToken;
-    accessToken = "&access_token=" + accessToken;
+    accessToken = "access_token=" + accessToken;
+
     console.log("in edit")
     let stringifiedData = JSON.stringify(data);
-    console.log(stringifiedData);
-    console.log(JSON.parse(stringifiedData), "in edit post")
-    console.log(_API_PATH_ + "/Triplocations/editLocation?locationData=" + stringifiedData + accessToken)
+    //console.log(stringifiedData);
+    //console.log(JSON.parse(stringifiedData), "in edit post")
+    //console.log(_API_PATH_ + "/Triplocations/editLocation?locationData=" + stringifiedData + accessToken)
+    console.log(_API_PATH_ + "/Triplocations/editLocation?" + accessToken, data);
     axios.patch(
-        _API_PATH_ + "/Triplocations/editLocation?locationData=" + stringifiedData + accessToken
+        _API_PATH_ + "/Triplocations/editLocation?" + accessToken, data
 
     ).then(async response => {
         console.log(response, "edit res");
