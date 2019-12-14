@@ -49,8 +49,8 @@ export const postFormData = (data, images) => (dispatch) => {
         ).then(async response => {
             console.log(response.data, "in post data");
             let resData = response.data;
-
-            if (resData !== "fail" && images.length !== 0) {
+            console.log(response);
+            if (response.status === 200 && images.length !== 0) {
 
                 for (let i = 0; i < images.length; ++i) {
                     const formData = new FormData()
