@@ -112,7 +112,7 @@ export const postEditData = (data, images) => (dispatch, getState) => {
                 const formData = new FormData();
                 formData.append('image', images[i]);
                 try {
-                    await axios.post(_API_PATH_ + "/Images/" + data.location_id + "/upload", formData, {
+                    await axios.post(_API_PATH_ + "/Images/" + data.location_id + "/upload?" + accessToken, formData, {
                         headers: {
                             'content-type': 'multipart/form-data'
                         }
