@@ -43,8 +43,22 @@ export const postFormData = (data, images) => (dispatch) => {
     return new Promise(function (resolve, reject) {
         let stringifiedData = JSON.stringify(data);
         console.log(stringifiedData);
+        const formData = new FormData();
+        if (images.length > 0) {
+            for (let i = 0; i < images.length; ++i) {
+                formData.append('image', images[i]);
+            }
+        }
+        formData.append("object", JSON.stringify(data));
+        //let formArray = [data, formData];
+        //formData.append('object', data);
         axios.post(
-            _API_PATH_ + "/Triplocations/addNewLocation", data
+            _API_PATH_ + "/Triplocations/addNewLocation", formData,
+            {
+                headers: {
+                    'content-type': 'multipart/form-data'
+                }
+            }
 
         ).then(async response => {
             console.log(response.data, "in post data");
@@ -52,20 +66,20 @@ export const postFormData = (data, images) => (dispatch) => {
             console.log(response);
             if (response.status === 200 && images.length !== 0) {
 
-                for (let i = 0; i < images.length; ++i) {
-                    const formData = new FormData()
-                    formData.append('image', images[i]);
-                    try {
-                        await axios.post(_API_PATH_ + "/Images/" + resData + "/upload", formData, {
-                            headers: {
-                                'content-type': 'multipart/form-data'
-                            }
-                        })
-                    } catch (error) {
-                        console.error(error)
-                    }
+                // for (let i = 0; i < images.length; ++i) {
+                //     const formData = new FormData()
+                //     formData.append('image', images[i]);
+                //     try {
+                //         await axios.post(_API_PATH_ + "/Images/" + resData + "/upload", formData, {
+                //             headers: {
+                //                 'content-type': 'multipart/form-data'
+                //             }
+                //         })
+                //     } catch (error) {
+                //         console.error(error)
+                //     }
 
-                }
+                // }
 
             }
             resolve(true)
@@ -95,7 +109,7 @@ export const postEditData = (data, images) => (dispatch, getState) => {
         console.log(response, "edit res");
         if (images.length > 0) {
             for (let i = 0; i < images.length; ++i) {
-                const formData = new FormData()
+                const formData = new FormData();
                 formData.append('image', images[i]);
                 try {
                     await axios.post(_API_PATH_ + "/Images/" + data.location_id + "/upload", formData, {
