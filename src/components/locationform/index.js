@@ -22,7 +22,7 @@ class LocationForm extends React.Component {
         let emptyFound = false;
         // let dataObj = { location_name: null, object_name: null, object_type: "city", location_geo: { lat: null, lng: null }, location_description: null, location_category: null, location_pricing: null, filters: [], location_owner: null, location_mail: null, location_website: null, location_phone: null }
         let dataObj = {};
-        this.checkLocationInputValidity(this.state.location_region)
+        !edit && this.checkLocationInputValidity(this.state.location_region)
         var forms = document.getElementsByClassName('needs-validation');
 
         // check if all required fields have value in
@@ -220,11 +220,11 @@ class LocationForm extends React.Component {
     }
 
 
-    getTextForm = (rows, text, helper, description, id) => {
+    getTextForm = (rows, text, helper, description, id, maxLength) => {
         return (
             <div className="form-group">
                 <label htmlFor="text-area">{text}</label>
-                <textarea defaultValue={description !== null ? description : ""} onChange={this.handleChange} className="form-control" id={id} rows={rows}></textarea>
+                <textarea maxLength={maxLength} defaultValue={description !== null ? description : ""} onChange={this.handleChange} className="form-control" id={id} rows={rows}></textarea>
                 <small id={text + "Help"} className="form-text text-muted">{helper}</small>
             </div>)
     }
@@ -239,7 +239,7 @@ class LocationForm extends React.Component {
         newTypes.splice(0, 1);
         // generate form for edit page
         return (<form className="needs-validation" noValidate>
-            <TextInput defaultValue={editPageObj.location_name} handleChange={this.handleChange} id="location_name" placeholder="Esimerkkipaikka" helper="Kirjoita retkipaikan nimi" text="Retkipaikka" required={true} />
+            <TextInput maxLength={64} defaultValue={editPageObj.location_name} handleChange={this.handleChange} id="location_name" placeholder="Esimerkkipaikka" helper="Kirjoita retkipaikan nimi" text="Retkipaikka" required={true} />
             <SelectInput
                 id=""
                 defaultValue={editPageObj.location_category}
@@ -254,15 +254,15 @@ class LocationForm extends React.Component {
                 <AutoCompleteInput data={allArr} applyFilter={this.handleSelection} id="object_location" title="Sijainti*" customClassName="form-group col-md-6" helper="Valitse sijainti" required={true} defaultInputValue={editPageObj.location_municipality ? editPageObj.location_municipality : editPageObj.location_region} />
                 <TextInput defaultValue={editPageObj.location_geo.lat + "," + editPageObj.location_geo.lng} handleChange={this.handleChange} id="location_geo" placeholder="Koordinaatit" helper="Valitse koordinaatit kartalta" text="Koordinaatit" size="col-md-6" required={true} />
             </div>
-            {this.getTextForm("3", "Kuvaus paikasta", "Kirjoita kuvaus retkipaikasta", editPageObj.location_description, "location_description")}
-            {this.getTextForm("3", "Vuokrahintatiedot", "Kirjoita hintatietoja, jos niitä on", editPageObj.location_pricing, "location_pricing")}
+            {this.getTextForm("3", "Kuvaus paikasta", "Kirjoita kuvaus retkipaikasta", editPageObj.location_description, "location_description", 512)}
+            {this.getTextForm("3", "Vuokrahintatiedot", "Kirjoita hintatietoja, jos niitä on", editPageObj.location_pricing, "location_pricing", 280)}
             {this.generateCheckBoxes(commonFilters, editPageObj.filters)}
             <small id={"Help"} className="form-text text-muted form-group">Valitse retkipaikkaa kuvaavat asiat</small>
             <div className="form-row">
-                <TextInput defaultValue={editPageObj.location_owner} handleChange={this.handleChange} id="location_owner" placeholder="Esimerkkiomistaja" helper="Kirjoita retkipaikan omistaja (lippukunta, kaupunki, srk tms.)" text="Omistaja" size="col-md-3" required={true} />
-                <TextInput defaultValue={editPageObj.location_website} handleChange={this.handleChange} id="location_website" placeholder="www.retkipaikka.fi" helper="Kirjoita kohteen nettisivu" text="Verkkosivu" size="col-md-3" required={false} />
-                <TextInput defaultValue={editPageObj.location_mail} handleChange={this.handleChange} id="location_mail" placeholder="example@ex.com" helper="Kirjoita sähköposti" text="Sähköposti" size="col-md-3" required={false} />
-                <TextInput defaultValue={editPageObj.location_phone} handleChange={this.handleChange} id="location_phone" placeholder="0441235678" helper="Kirjoita puhelinnumero" text="Puhelinnumero" size="col-md-3" required={false} />
+                <TextInput maxLength={64} defaultValue={editPageObj.location_owner} handleChange={this.handleChange} id="location_owner" placeholder="Esimerkkiomistaja" helper="Kirjoita retkipaikan omistaja (lippukunta, kaupunki, srk tms.)" text="Omistaja" size="col-md-3" required={true} />
+                <TextInput maxLength={64} defaultValue={editPageObj.location_website} handleChange={this.handleChange} id="location_website" placeholder="www.retkipaikka.fi" helper="Kirjoita kohteen nettisivu" text="Verkkosivu" size="col-md-3" required={false} />
+                <TextInput maxLength={64} defaultValue={editPageObj.location_mail} handleChange={this.handleChange} id="location_mail" placeholder="example@ex.com" helper="Kirjoita sähköposti" text="Sähköposti" size="col-md-3" required={false} />
+                <TextInput maxLength={64} defaultValue={editPageObj.location_phone} handleChange={this.handleChange} id="location_phone" placeholder="0441235678" helper="Kirjoita puhelinnumero" text="Puhelinnumero" size="col-md-3" required={false} />
             </div>
             {this.generateAcceptBox(editPageObj)}
             <button onClick={(e) => this.handleFormSubmit(e, true)} type="submit" className="btn btn-primary">Hyväksy</button>
@@ -288,7 +288,7 @@ class LocationForm extends React.Component {
         newTypes.splice(0, 1);
         // generate from for main page
         return (<form className="needs-validation" noValidate>
-            <TextInput handleChange={this.handleChange} id="location_name" placeholder="Esimerkkipaikka" helper="Kirjoita retkipaikan nimi" text="Retkipaikka*" required={true} />
+            <TextInput maxLength={64} handleChange={this.handleChange} id="location_name" placeholder="Esimerkkipaikka" helper="Kirjoita retkipaikan nimi" text="Retkipaikka*" required={true} />
             <SelectInput
                 id=""
                 data={newTypes}
@@ -304,15 +304,15 @@ class LocationForm extends React.Component {
                 {/* <TextInput handleChange={this.handleChange} id="object_name" placeholder="Paikan sijainti" helper="Kirjoita retkipaikan sijainti" text="Sijainti*" size="col-md-6" required={true} /> */}
                 <TextInput handleChange={this.handleChange} id="location_geo" placeholder="Koordinaatit" helper="Valitse koordinaatit kartalta" text="Koordinaatit*" size="col-md-6" required={true} />
             </div>
-            {this.getTextForm("3", "Kuvaus paikasta", "Kirjoita kuvaus retkipaikasta", null, "location_description")}
-            {this.getTextForm("3", "Vuokrahintatiedot", "Kirjoita hintatietoja, jos niitä on", null, "location_pricing")}
+            {this.getTextForm("3", "Kuvaus paikasta", "Kirjoita kuvaus retkipaikasta", null, "location_description", 512)}
+            {this.getTextForm("3", "Vuokrahintatiedot", "Kirjoita hintatietoja, jos niitä on", null, "location_pricing", 280)}
             {this.generateCheckBoxes(commonFilters, [])}
             <small id={"Help"} className="form-text text-muted form-group">Valitse retkipaikkaa kuvaavat asiat</small>
             <div className="form-row">
-                <TextInput handleChange={this.handleChange} id="location_owner" placeholder="Esimerkkiomistaja" helper="Kirjoita retkipaikan omistaja (lippukunta, kaupunki, srk tms.)" text="Omistaja/Yhteystieto*" size="col-md-3" required={true} />
-                <TextInput handleChange={this.handleChange} id="location_website" placeholder="www.retkipaikka.fi" helper="Kirjoita kohteen nettisivu" text="Verkkosivu" size="col-md-3" required={false} />
-                <TextInput handleChange={this.handleChange} id="location_mail" placeholder="example@ex.com" helper="Kirjoita sähköposti" text="Sähköposti" size="col-md-3" required={false} />
-                <TextInput handleChange={this.handleChange} id="location_phone" placeholder="0441235678" helper="Kirjoita puhelinnumero" text="Puhelinnumero" size="col-md-3" required={false} />
+                <TextInput maxLength={64} handleChange={this.handleChange} id="location_owner" placeholder="Esimerkkiomistaja" helper="Kirjoita retkipaikan omistaja (lippukunta, kaupunki, srk tms.)" text="Omistaja/Yhteystieto*" size="col-md-3" required={true} />
+                <TextInput maxLength={64} handleChange={this.handleChange} id="location_website" placeholder="www.retkipaikka.fi" helper="Kirjoita kohteen nettisivu" text="Verkkosivu" size="col-md-3" required={false} />
+                <TextInput maxLength={64} handleChange={this.handleChange} id="location_mail" placeholder="example@ex.com" helper="Kirjoita sähköposti" text="Sähköposti" size="col-md-3" required={false} />
+                <TextInput maxLength={64} handleChange={this.handleChange} id="location_phone" placeholder="0441235678" helper="Kirjoita puhelinnumero" text="Puhelinnumero" size="col-md-3" required={false} />
             </div>
             <button onClick={(e) => this.handleFormSubmit(e, false)} type="submit" className="btn btn-primary">Lähetä</button>
         </form>)

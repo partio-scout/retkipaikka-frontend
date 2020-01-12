@@ -14,7 +14,6 @@ class FormImageUpload extends React.Component {
     }
 
     onDrop = (picture) => {
-        const { applyImage } = this.props;
         const { pictures, previousPictures } = this.state;
         if (pictures.length + picture.length + previousPictures.length > 10) {
             let maxImgs = 10 - (previousPictures.length + pictures.length);

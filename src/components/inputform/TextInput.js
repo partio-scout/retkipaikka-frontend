@@ -44,6 +44,7 @@ class TextInput extends React.Component {
         const { title, data, customClassName, helper, required, defaultInputValue, id } = this.props;
         let req = required ? true : false;
         let className = customClassName ? customClassName : "inputform-select";
+        let inputVal = defaultInputValue ? defaultInputValue : "";
         return (
             <div className={customClassName}>
                 {title !== undefined && helper ? <label >{title}</label> : <span className="inputform-title">{title}</span>}
@@ -51,7 +52,7 @@ class TextInput extends React.Component {
                 <Typeahead
                     paginationText="Näytä lisää"
                     inputProps={{ required: req, id: "type-ahead-" + id }}
-                    defaultInputValue={defaultInputValue ? defaultInputValue : ""}
+                    defaultInputValue={inputVal}
                     id={"type-ahead-" + id}
                     placeholder={currentText}
                     onChange={(selected) => {

@@ -102,7 +102,11 @@
 }
 .side-slider-data{
     padding-top:10px;
+    max-width:850px;
     min-width:150px;
+}
+.side-slider-data{
+    word-wrap: break-word;
 }
 .map-side-slider h4{
     font-weight: 100;
@@ -122,4 +126,7 @@
     position:relative;
     top:24px;
     
+}
+.map-side-slider span{
+    word-wrap: break-word;
 }
