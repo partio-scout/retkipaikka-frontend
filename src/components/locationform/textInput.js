@@ -13,7 +13,7 @@ const TextInput = (props) => {
             <div className="input-group">
                 {defaultValue ? <input maxLength={maxLength} onChange={handleChange} defaultValue={defaultValue} type={customType || "text"} className="form-control" id={id} placeholder={placeholder} required={required} /> :
                     id === "location_geo" ?
-                        <input onChange={handleChange} value={coords ? coords.lat + ", " + coords.lng : ""} type={customType || "text"} className="form-control" id={id} placeholder={placeholder} readOnly required={required} /> :
+                        <input onClick={() => window.scrollTo({ top: 250, behavior: 'smooth' })} onChange={handleChange} value={coords ? coords.lat + ", " + coords.lng : ""} type={customType || "text"} className="form-control" id={id} placeholder={placeholder} readOnly required={required} /> :
                         <input maxLength={maxLength} onChange={handleChange} type={customType || "text"} className="form-control" id={id} placeholder={placeholder} required={required} />}
             </div>
 

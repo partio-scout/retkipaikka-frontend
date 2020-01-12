@@ -13,7 +13,8 @@ import { setCoordinates } from "../../actions/MapActions"
 
 class Map extends React.Component {
     state = {
-        selected: null
+        selected: null,
+        userMarker: null,
     }
 
 
@@ -36,16 +37,27 @@ class Map extends React.Component {
     });
     generateMarkers = () => {
         const { results } = this.props;
+        const { userMarker } = this.state;
         let markers = results.map((reg, i) => {
             return <Marker
                 key={reg.location_region + i}
                 position={reg.location_geo}
                 onClick={() => this.setState({ selected: reg })}
                 icon={this.scoutIcon}
-
             />
         });
+        if (userMarker) {
+            markers.push(userMarker)
+        }
         return markers;
+    }
+
+
+    generateUserIcon = (coords) => {
+        return (<Marker
+            key={"user-marker"}
+            position={coords}
+        />)
     }
     handleMarkerClose = () => {
         this.setState({ selected: null })
@@ -54,19 +66,23 @@ class Map extends React.Component {
         const { setCoordinates } = this.props;
 
         let obj = { lat: e.latlng.lat, lng: e.latlng.lng }
+        this.setState({ userMarker: this.generateUserIcon(obj) })
         setCoordinates(obj);
+
 
     }
 
     render() {
         const { results, filterTypes, selectedLoc } = this.props;
-        const { selected, zoomEnabled } = this.state;
+        const { selected } = this.state;
         let center = { lat: 61.29, lng: 23.45 };
         let zoom = 8;
+        let windowWidth = window.screen.width;
         if (selectedLoc !== null) {
             center = selectedLoc.location_geo;
             zoom = 11;
         }
+
 
         return (
             <div className="map-container">
@@ -80,7 +96,7 @@ class Map extends React.Component {
                         zoomControl={true}
                         doubleClickZoom={true}
                         scrollWheelZoom={true}
-                        dragging={false}
+                        dragging={windowWidth >= 768}
                         animate={true}
                         easeLinearity={0.35}
                         onClick={this.handleMapClick}
