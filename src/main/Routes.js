@@ -4,16 +4,14 @@ import { withRouter } from 'react-router';
 import { compose } from 'redux'
 import { connect } from "react-redux";
 
+//const Main = React.lazy(() => import("../containers/Main"));
+//const Admin = React.lazy(() => import("../containers/Admin"));
 import Main from "../containers/Main";
 import Admin from "../containers/Admin";
 
 
 
 class Routes extends Component {
-    componentWillMount() {
-
-    }
-
     render() {
         return (
             <Switch>

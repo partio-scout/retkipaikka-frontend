@@ -43,11 +43,12 @@ class InputContainer extends React.Component {
 
         return (
             <div>
+
                 <div className="inputform-container" style={adminPage ? { backgroundColor: 'white' } : {}}>
                     {/* <div className="inputform-inputs form-row form-group"> */}
                     <form className="inputform-inputs" onSubmit={(e) => e.preventDefault()}>
                         <div className="form-row">
-                            <TextInput data={allArr} applyFilter={this.addFilter} title="Paikannimi" customClassName="inputform-select form-group col-md-4 col-sm-11 " />
+                            <TextInput data={allArr} applyFilter={this.addFilter} id={"header-text"} title="Paikannimi" customClassName="inputform-select form-group col-md-4 col-sm-11 " />
                             <SelectInput id={"-cat"} data={filtersLoc} applyFilter={this.addFilter} title="Tyyppi" useFiltering={true} customClassName="form-group col-md-3 col-sm-11 " />
                             <SelectInput id={"filt"} data={filtersCom} applyFilter={this.addFilter} title="Suodattimet" useFiltering={true} customClassName="form-group col-md-3 col-sm-11 " />
                             <div className="inputform-inputs-button form-group col-md-1 col-sm-11 ">

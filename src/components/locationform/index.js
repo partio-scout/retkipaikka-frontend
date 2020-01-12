@@ -7,7 +7,6 @@ import TextInput from "./textInput"
 import AutoCompleteInput from "../inputform/TextInput"
 import FormImageUpload from "./FormImageUpload";
 import "./locationform.css"
-
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 
@@ -23,6 +22,7 @@ class LocationForm extends React.Component {
         let emptyFound = false;
         // let dataObj = { location_name: null, object_name: null, object_type: "city", location_geo: { lat: null, lng: null }, location_description: null, location_category: null, location_pricing: null, filters: [], location_owner: null, location_mail: null, location_website: null, location_phone: null }
         let dataObj = {};
+        this.checkLocationInputValidity(this.state.location_region)
         var forms = document.getElementsByClassName('needs-validation');
 
         // check if all required fields have value in
@@ -32,13 +32,13 @@ class LocationForm extends React.Component {
                 emptyFound = true;
             }
             form.classList.add('was-validated');
+
         })
+
         // if all required fields had value,
         // loop through state and put the data in object
-        console.log(this.state, emptyFound);
         if (!emptyFound) {
             let stateKeys = Object.keys(this.state);
-            console.log(JSON.stringify(this.state))
             if (edit) {
                 let checkboxes = document.getElementsByClassName("form-check-input");
                 if (!dataObj.filters) {
@@ -58,9 +58,6 @@ class LocationForm extends React.Component {
 
             for (let i = 0; i < stateKeys.length; i++) {
                 let key = stateKeys[i];
-                console.log(key, "statekey")
-
-                //console.log(this.state.key)
                 if (key.includes("box") && this.state[key] && !edit) {
                     let splitted = key.split("-");
                     if (!dataObj.filters) {
@@ -82,13 +79,9 @@ class LocationForm extends React.Component {
                 } else {
                     if (!key.includes("box")) {
                         if (this.state[key] !== null) {
-
-
                             if (key !== "imgArray" && key !== "oldImgArray") {
                                 let tempTextValue = JSON.parse(JSON.stringify(this.state[key]));
-                                console.log(tempTextValue);
                                 if (tempTextValue.trim().length !== 0) {
-
                                     dataObj[key] = this.state[key].trim();
                                 } else {
                                     window.alert("Et voi lähettää tyhjiä kenttiä!")
@@ -128,6 +121,13 @@ class LocationForm extends React.Component {
 
         }
     }
+    checkLocationInputValidity = (toCheck) => {
+        if (!toCheck) {
+            let locItem = document.getElementById("type-ahead-object_location")
+            locItem.value = "";
+        }
+    }
+
 
 
 
@@ -148,7 +148,6 @@ class LocationForm extends React.Component {
         });
     };
     checkDeleteImgs = (fromState, fromObj) => {
-        console.log(fromState, fromObj)
         if (fromState.length === fromObj.length) {
             return [];
         }
@@ -161,18 +160,15 @@ class LocationForm extends React.Component {
         if (edit) {
             const oldImgs = editPageObj.images;
             data["location_id"] = editPageObj.location_id;
-            console.log("asdasd")
             let imagesToDelete = this.checkDeleteImgs(oldImgArray, oldImgs);
             if (imagesToDelete.length > 0) {
                 removeEditImages(editPageObj.location_id, imagesToDelete)
             }
             postEditData(data, imgArray);
-            console.log(data);
             handleClose();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         } else {
             postFormData(data, imgArray).then(res => {
-                console.log(res);
                 if (res) {
                     handleClose()
                 }
@@ -188,7 +184,6 @@ class LocationForm extends React.Component {
     }
     handleChange = (e) => {
         let value = e.target.type === "checkbox" ? e.target.checked : e.target.value;
-        console.log(e.target.id, value);
         if (e.target.id === "location_category") {
             let id = e.target.options[e.target.options.selectedIndex].id;
             value = id;
@@ -197,7 +192,6 @@ class LocationForm extends React.Component {
     }
 
     generateCheckBoxes = (arr, has) => {
-        console.log(arr);
         let boxes = arr.map(item => {
             if (item.object_type !== "nofilter") {
                 return (<div className="form-check form-check-inline">
@@ -234,10 +228,14 @@ class LocationForm extends React.Component {
                 <small id={text + "Help"} className="form-text text-muted">{helper}</small>
             </div>)
     }
+    getLocationArr = () => {
+        const { regions, municipalities } = this.props;
+        return regions.concat(municipalities);
+    }
     generateEditForm = () => {
-        const { typeFilters, commonFilters, editPageObj, regions, municipalities } = this.props;
+        const { typeFilters, commonFilters, editPageObj } = this.props;
         let newTypes = [...typeFilters];
-        let allArr = regions.concat(municipalities);
+        let allArr = this.getLocationArr();
         newTypes.splice(0, 1);
         // generate form for edit page
         return (<form className="needs-validation" noValidate>
@@ -253,7 +251,7 @@ class LocationForm extends React.Component {
             />
             <small id={"Help"} className="form-text text-muted form-group">Valitse retkipaikan tyyppi</small>
             <div className="form-row">
-                <AutoCompleteInput data={allArr} applyFilter={this.handleSelection} id="object_name" title="Sijainti*" customClassName="form-group col-md-6" helper="Valitse sijainti" required={true} defaultInputValue={editPageObj.location_municipality ? editPageObj.location_municipality : editPageObj.location_region} />
+                <AutoCompleteInput data={allArr} applyFilter={this.handleSelection} id="object_location" title="Sijainti*" customClassName="form-group col-md-6" helper="Valitse sijainti" required={true} defaultInputValue={editPageObj.location_municipality ? editPageObj.location_municipality : editPageObj.location_region} />
                 <TextInput defaultValue={editPageObj.location_geo.lat + "," + editPageObj.location_geo.lng} handleChange={this.handleChange} id="location_geo" placeholder="Koordinaatit" helper="Valitse koordinaatit kartalta" text="Koordinaatit" size="col-md-6" required={true} />
             </div>
             {this.getTextForm("3", "Kuvaus paikasta", "Kirjoita kuvaus retkipaikasta", editPageObj.location_description, "location_description")}
@@ -273,7 +271,6 @@ class LocationForm extends React.Component {
     }
 
     handleSelection = (e) => {
-
         if (e.municipality_id) {
             this.setState({ location_municipality: "" + e.municipality_id, location_region: "" + e.region_id })
         } else {
@@ -285,9 +282,9 @@ class LocationForm extends React.Component {
         this.setState({ imgArray: img, oldImgArray: oldImgs });
     }
     generateLocationForm = () => {
-        const { typeFilters, commonFilters, editPageObj, regions, municipalities } = this.props;
+        const { typeFilters, commonFilters } = this.props;
         let newTypes = [...typeFilters];
-        let allArr = regions.concat(municipalities);
+        let allArr = this.getLocationArr();
         newTypes.splice(0, 1);
         // generate from for main page
         return (<form className="needs-validation" noValidate>
@@ -303,7 +300,7 @@ class LocationForm extends React.Component {
             <small id={"Help"} className="form-text text-muted form-group">Valitse retkipaikan tyyppi</small>
             <div className="form-row">
                 {/* <TextInput data={allArr} applyFilter={this.addFilter} title="Paikannimi" customClassName="inputform-select form-group col-md-4 col-sm-11 " /> */}
-                <AutoCompleteInput data={allArr} applyFilter={this.handleSelection} id="object_name" title="Sijainti*" customClassName="form-group col-md-6" helper="Valitse sijainti" required={true} />
+                <AutoCompleteInput data={allArr} applyFilter={this.handleSelection} id="object_location" title="Sijainti*" customClassName="form-group col-md-6" helper="Valitse sijainti" required={true} />
                 {/* <TextInput handleChange={this.handleChange} id="object_name" placeholder="Paikan sijainti" helper="Kirjoita retkipaikan sijainti" text="Sijainti*" size="col-md-6" required={true} /> */}
                 <TextInput handleChange={this.handleChange} id="location_geo" placeholder="Koordinaatit" helper="Valitse koordinaatit kartalta" text="Koordinaatit*" size="col-md-6" required={true} />
             </div>
@@ -325,11 +322,9 @@ class LocationForm extends React.Component {
         const { editPageObj } = this.props;
         // editPageObj comes from edit page,
         // it it's not undefined, generate edit form
-        console.log(this.state);
         let form = editPageObj ? this.generateEditForm() : this.generateLocationForm();
         let className = "form-container";
         className = editPageObj ? "edit-form-container" : className
-        console.log(this.state);
         return (
             <div className={className}>
                 {form}

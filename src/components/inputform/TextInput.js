@@ -41,7 +41,7 @@ class TextInput extends React.Component {
     }
     render() {
         const { currentText } = this.state;
-        const { title, data, customClassName, helper, required, defaultInputValue } = this.props;
+        const { title, data, customClassName, helper, required, defaultInputValue, id } = this.props;
         let req = required ? true : false;
         let className = customClassName ? customClassName : "inputform-select";
         return (
@@ -50,9 +50,9 @@ class TextInput extends React.Component {
 
                 <Typeahead
                     paginationText="Näytä lisää"
-                    inputProps={{ required: req }}
+                    inputProps={{ required: req, id: "type-ahead-" + id }}
                     defaultInputValue={defaultInputValue ? defaultInputValue : ""}
-                    id={"type-ahead " + className}
+                    id={"type-ahead-" + id}
                     placeholder={currentText}
                     onChange={(selected) => {
                         this.handleFiltering(selected);

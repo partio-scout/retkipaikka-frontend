@@ -2,7 +2,7 @@ import React from "react";
 import "./map.css";
 import MapHeader from "./header"
 import SideSlider from "./header/sideSlider"
-import { Map as LeafletMap, Marker, Popup, TileLayer } from 'react-leaflet'
+import { Map as LeafletMap, Marker, TileLayer } from 'react-leaflet'
 import L from "leaflet"
 import MarkerClusterGroup from 'react-leaflet-markercluster/dist/react-leaflet-markercluster';
 
@@ -80,7 +80,7 @@ class Map extends React.Component {
                         zoomControl={true}
                         doubleClickZoom={true}
                         scrollWheelZoom={true}
-                        dragging={true}
+                        dragging={false}
                         animate={true}
                         easeLinearity={0.35}
                         onClick={this.handleMapClick}

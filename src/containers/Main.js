@@ -10,10 +10,18 @@ import { fetchFilters, fetchRegionsAndMunicipalities } from "../actions/FilterAc
 //import {imagesPath} from "../paths"
 
 class Main extends React.Component {
-    state = {
-        formOpen: false
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            formOpen: false
+        }
+        this.handleInitialFetch();
+
+
     }
-    componentWillMount() {
+    handleInitialFetch = () => {
         const { fetchLocations, fetchFilters, results, filtersLoc, filtersCom, regions, municipalities, fetchRegionsAndMunicipalities } = this.props;
         if (results.searchResults.length === 0) {
             fetchLocations(true);

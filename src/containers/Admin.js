@@ -12,10 +12,18 @@ import { connect } from "react-redux";
 
 
 class Admin extends React.Component {
-    state = {
-        element: "locations"
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            element: "locations"
+        }
+        this.handleInitialFetch();
+
+
     }
-    componentWillMount() {
+
+    handleInitialFetch = () => {
         const { fetchLocations, fetchFilters, fetchRegionsAndMunicipalities, results, filtersLoc, filtersCom, regions, municipalities } = this.props;
         if (results.searchResults.length === 0) {
             fetchLocations(true);
@@ -28,6 +36,9 @@ class Admin extends React.Component {
             fetchRegionsAndMunicipalities();
         }
     }
+
+
+
 
     handleFormSubmit = (e) => {
         const { login } = this.props;
