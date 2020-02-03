@@ -26,23 +26,33 @@ class FilterHandler extends React.Component {
         this.setState({ [e.target.id]: value });
 
     }
+    generateObj = (type) => {
+        let langArr = ["en", "sv", "sa"]
+        let obj = { object_type: type }
+        obj.object_name = this.state[type];
+        langArr.forEach(l => {
+            let stateVal = this.state[type + "_" + l]
+            obj["object_name_" + l] = stateVal ? stateVal : null;
+        })
+        return obj;
+    }
     handleSubmit = (e, value) => {
         e.preventDefault();
+
+
         let data = this.state[value];
         if (data) {
-            let obj = { object_type: "filter", object_name: data };
+            let obj = {}
             switch (value) {
                 case "filter":
-
+                    obj = this.generateObj(value);
                     this.askForConfirmation("suodattimen " + data, "Suodattimen lisääminen", obj)
 
 
                     break;
-                case "types":
-                    obj.object_type = "locationtype"
+                case "locationtype":
+                    obj = this.generateObj(value);
                     this.askForConfirmation("kategorian " + data, "Kategorian lisääminen", obj)
-
-
                     break;
                 default:
                     break;
@@ -55,6 +65,10 @@ class FilterHandler extends React.Component {
             <tr key={obj[dataId + "id"]} onClick={(e) => this.handleObjectClick(obj, e)}>
                 <th scope="row">{obj[dataId + "id"]}</th>
                 <td>{obj.object_name}</td>
+                <td>{obj.object_name_sv ? obj.object_name_sv : "-"}</td>
+                <td>{obj.object_name_sa ? obj.object_name_sa : "-"}</td>
+                <td>{obj.object_name_en}</td>
+
             </tr>
         )
 
@@ -71,7 +85,7 @@ class FilterHandler extends React.Component {
     }
     handlePost = (obj) => {
         const { postFilter, postCategory } = this.props;
-
+        console.log(obj);
         if (obj.object_type === "filter") {
             postFilter(obj);
         } else {
@@ -140,6 +154,9 @@ class FilterHandler extends React.Component {
             <tr>
                 <th id={dataId + "id"} scope="col">#</th>
                 <th id="object_name" scope="col">Nimi</th>
+                <th id="object_name_sv" scope="col">SV</th>
+                <th id="object_name_sa" scope="col">SMN</th>
+                <th id="object_name_en" scope="col">EN</th>
             </tr>
         </thead>)
 
@@ -168,15 +185,21 @@ class FilterHandler extends React.Component {
 
                 <form onSubmit={(e) => this.handleSubmit(e, "filter")}>
                     <div className="form-row">
-                        <TextInput handleChange={this.handleChange} id="filter" placeholder="Suodatin" helper="Kirjoita lisättävän suodattimen nimi" text="Lisää suodatin" size="col-md-3" required={true} />
+                        <TextInput handleChange={this.handleChange} id="filter" placeholder="Suomeksi" helper="Kirjoita lisättävän suodattimen nimi*" text="Suodatin" size="col-md-3" required={true} />
+                        <TextInput handleChange={this.handleChange} id="filter_sv" placeholder="Ruotsiksi" helper="Kirjoita lisättävän suodattimen nimi" text="-" size="col-md-3" required={false} />
+                        <TextInput handleChange={this.handleChange} id="filter_sa" placeholder="Saameksi" helper="Kirjoita lisättävän suodattimen nimi" text="-" size="col-md-3" required={false} />
+                        <TextInput handleChange={this.handleChange} id="filter_en" placeholder="Englanniksi" helper="Kirjoita lisättävän suodattimen nimi*" text="-" size="col-md-3" required={false} />
                         <button className="btn btn-primary admin-filter-button">Lisää</button>
                     </div>
                 </form>
                 <h5>Kategoriat</h5>
                 {this.getTable(locationTypes, "category_")}
-                <form onSubmit={(e) => this.handleSubmit(e, "types")}>
+                <form onSubmit={(e) => this.handleSubmit(e, "locationtype")}>
                     <div className="form-row">
-                        <TextInput handleChange={this.handleChange} id="types" placeholder="Kategoria" helper="Kirjoita lisättävän kategorian nimi" text="Lisää kategoria" size="col-md-3" required={true} />
+                        <TextInput handleChange={this.handleChange} id="locationtype" placeholder="Suomeksi" helper="Kirjoita lisättävän kategorian nimi*" text="Kategoria" size="col-md-3" required={true} />
+                        <TextInput handleChange={this.handleChange} id="locationtype_sv" placeholder="Ruotsiksi" helper="Kirjoita lisättävän kategorian nimi" text="-" size="col-md-3" required={false} />
+                        <TextInput handleChange={this.handleChange} id="locationtype_sa" placeholder="Saameksi" helper="Kirjoita lisättävän kategorian nimi" text="-" size="col-md-3" required={false} />
+                        <TextInput handleChange={this.handleChange} id="locationtype_en" placeholder="Englanniksi" helper="Kirjoita lisättävän kategorian nimi" text="-" size="col-md-3" required={false} />
                         <button className="btn btn-primary admin-filter-button">Lisää</button>
                     </div>
                 </form>
