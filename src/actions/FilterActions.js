@@ -107,6 +107,33 @@ export const postFilter = (data) => (dispatch, getState) => {
         window.alert("Virhe suodattimen lisäämisessä")
     });
 }
+export const editFilter = (data) => (dispatch, getState) => {
+
+    let accessToken = getState().login.accessToken;
+    accessToken = "?access_token=" + accessToken;
+    axios.patch(
+        _API_PATH_ + "/Filters/" + data.filter_id + accessToken, data
+    ).then(response => {
+        console.log("succes")
+        dispatch(fetchFilters())
+    }).catch(error => {
+        window.alert("Virhe suodattimen muokkaamisessa")
+    });
+
+}
+export const editCategory = (data) => (dispatch, getState) => {
+
+    let accessToken = getState().login.accessToken;
+    accessToken = "?access_token=" + accessToken;
+    axios.patch(
+        _API_PATH_ + "/Categories/" + data.category_id + accessToken, data
+    ).then(response => {
+        dispatch(fetchFilters())
+    }).catch(error => {
+        window.alert("Virhe kategorian muokkaamisessa")
+    });
+
+}
 export const postCategory = (data) => (dispatch, getState) => {
     console.log("in add cate")
     let accessToken = getState().login.accessToken;

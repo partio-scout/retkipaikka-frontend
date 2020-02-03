@@ -4,8 +4,9 @@ import { connect } from "react-redux";
 import { selectLocation } from "../../actions/MapActions"
 import LocationForm from "../locationform"
 import Draggable from 'react-draggable';
+import TextInput from "../locationform/textInput"
 import { deleteLocation } from "../../actions/SearchResultsActions"
-
+import { editFilter, editCategory } from "../../actions/FilterActions"
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 
@@ -17,7 +18,6 @@ class InfoDialog extends React.Component {
         editEnabled: null
     }
     generateFromSingleData = (obj) => {
-        console.log(obj);
         return (
             <div>
                 <h4 className="move-handle">#{obj.location_id}</h4>
@@ -70,20 +70,87 @@ class InfoDialog extends React.Component {
             </div>
         )
     }
+    submitFilterEdit = async (obj) => {
+        const { editCategory, editFilter, handleClose } = this.props;
+        let langArr = ["en", "sv", "sa"]
+        let newObj = {}
+        console.log(this.state)
+        let type = obj.object_type;
+        let idField = type === "locationtype" ? "category_id" : "filter_id"
+        newObj[idField] = obj[idField];
+        if (this.state[type]) {
+            newObj.object_name = this.state[type];
+        }
+        langArr.forEach(l => {
+            let stateVal = this.state[type + "_" + l]
+            console.log(type)
+            console.log(stateVal)
+            if (stateVal) {
+                newObj["object_name_" + l] = stateVal
+            }
+        })
+
+        switch (type) {
+            case "locationtype":
+                await editCategory(newObj)
+                break;
+            case "filter":
+                await editFilter(newObj)
+                break;
+        }
+        handleClose();
+
+    }
+
+    handleFilterChange = (e) => {
+        let value = e.target.type === "checkbox" ? e.target.checked : e.target.value;
+        this.setState({ [e.target.id]: value });
+
+    }
+
+    askForEditConfirmation = (name, title, obj) => {
+        confirmAlert({
+            title: title + " muokkaaminen",
+            message: 'Haluatko tallentaa tekemäsi muokkaukset?',
+            buttons: [
+                {
+                    label: 'Kyllä',
+                    onClick: () => this.submitFilterEdit(obj)
+                },
+                {
+                    label: 'Ei',
+
+                }
+            ]
+        });
+    };
+    getForms = (obj) => {
+        let textInfo = obj.object_type === "locationtype" ? "kategorian" : "suodattimen"
+        let helperInfo = obj.object_type === "locationtype" ? "Kategoria" : "Suodatin"
+        return (
+            <div className="form-row">
+                <TextInput defaultValue={obj.object_name} handleChange={this.handleFilterChange} id={obj.object_type} placeholder="Suomeksi" helper={"Kirjoita lisättävän " + textInfo + " nimi*"} text={helperInfo} size="col-md-3" required={false} />
+                <TextInput defaultValue={obj.object_name_sv} handleChange={this.handleFilterChange} id={obj.object_type + "_sv"} placeholder="Ruotsiksi" helper={"Kirjoita lisättävän " + textInfo + " nimi"} text="-" size="col-md-3" required={false} />
+                <TextInput defaultValue={obj.object_name_sa} handleChange={this.handleFilterChange} id={obj.object_type + "_sa"} placeholder="Saameksi" helper={"Kirjoita lisättävän " + textInfo + " nimi"} text="-" size="col-md-3" required={false} />
+                <TextInput defaultValue={obj.object_name_en} handleChange={this.handleFilterChange} id={obj.object_type + "_en"} placeholder="Englanniksi" helper={"Kirjoita lisättävän " + textInfo + " nimi"} text="-" size="col-md-3" required={false} />
+            </div>)
+    }
     generateFilterInfo = (obj) => {
         const { handleDelete } = this.props;
         let id = obj.filter_id ? obj.filter_id : obj.category_id;
         let name = obj.object_name
-        let title = obj.filter_id ? "Suodattimen poisto" : "Kategorian poisto";
+        let title = obj.filter_id ? "Suodattimen " : "Kategorian ";
+
         return (
             <div>
                 <h4 className="move-handle">#{id}</h4>
 
                 <h4>Nimi:</h4>
-                <span>{name}</span>
+                {this.getForms(obj)}
                 <br />
                 <br />
                 <button onClick={() => handleDelete(name, title, obj)} className="btn btn-primary info-button">Poista</button>
+                <button onClick={() => this.askForEditConfirmation(name, title, obj)} className="btn btn-primary info-button">Tallenna</button>
             </div>
         )
 
@@ -185,4 +252,4 @@ const mapStateToProps = state => {
         filterTypes: state.filters.locationTypeFilterList
     }
 }
-export default connect(mapStateToProps, { selectLocation, deleteLocation })(InfoDialog);
+export default connect(mapStateToProps, { selectLocation, deleteLocation, editFilter, editCategory })(InfoDialog);

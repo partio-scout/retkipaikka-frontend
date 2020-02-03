@@ -67,10 +67,7 @@ class LocationList extends React.Component {
         const { results, notifications, type } = this.props;
         const { currentSort, sortType } = this.state;
         // component is used in two places, if it's in locations, use search results
-        console.log(results, "res");
-        console.log(notifications, "noet");
         let newResults = this.checkType(type) ? [...results] : [...notifications];
-        console.log(newResults);
         newResults = newResults.sort((a, b) => {
             switch (sortType) {
                 case 1:

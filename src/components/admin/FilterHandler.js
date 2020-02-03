@@ -67,7 +67,7 @@ class FilterHandler extends React.Component {
                 <td>{obj.object_name}</td>
                 <td>{obj.object_name_sv ? obj.object_name_sv : "-"}</td>
                 <td>{obj.object_name_sa ? obj.object_name_sa : "-"}</td>
-                <td>{obj.object_name_en}</td>
+                <td>{obj.object_name_en ? obj.object_name_en : "-"}</td>
 
             </tr>
         )
@@ -128,7 +128,7 @@ class FilterHandler extends React.Component {
     }
     askForDelConfirmation = (name, title, obj) => {
         confirmAlert({
-            title: title,
+            title: title + " poistaminen",
             message: 'Haluatko poistaa ' + name + '?',
             buttons: [
                 {
