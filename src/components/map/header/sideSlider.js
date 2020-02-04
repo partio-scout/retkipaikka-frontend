@@ -14,48 +14,54 @@ class SideSlider extends React.Component {
         showGallery: null
     }
     generateFromSingleData = (obj) => {
-        const { selectLocation } = this.props;
+        const { selectLocation, t } = this.props;
         return (
             <div>
-                <h4>Nimi:</h4>
+                <h4>{t("admin.name")}:</h4>
                 <span>{obj.location_name}</span>
                 <br />
 
                 {obj.location_description &&
                     <span>
-                        <h4>Kuvaus:</h4>
+                        <h4>{t("form.description")}</h4>
                         <span> {obj.location_description}</span>
                         <br />
                     </span>
                 }
-                <h4>Yhteystiedot:</h4>
-                <span>Omistaja: </span>
+                {obj.location_pricing &&
+                    <span>
+                        <h4>{t("form.pricing")}:</h4>
+                        <span> {obj.location_pricing}</span>
+
+                    </span>}
+                <h4>{t("form.contact")}:</h4>
+                <span>{t("admin.owner")}: </span>
                 <span>{obj.location_owner}</span>
                 {obj.location_website &&
                     <span>
                         <br />
-                        <span>Nettisivu: </span>
+                        <span>{t("form.website")}: </span>
                         <span>{obj.location_website}</span>
                     </span>}
                 {obj.location_mail &&
                     <span>
                         <br />
-                        <span>Sähköposti: </span>
+                        <span>{t("form.email")}: </span>
                         <span>{obj.location_mail}</span>
                     </span>}
                 {obj.location_phone &&
                     <span>
                         <br />
-                        <span>Puhelin: </span>
+                        <span>{t("form.phone")}: </span>
                         <span>{obj.location_phone}</span>
                     </span>}
-                <h4>Tietoa: </h4>
-                <span>Tyyppi: </span>
+                <h4>{t("form.info")}: </h4>
+                <span>{t("admin.type")}: </span>
                 <span>{obj.location_category}</span>
                 <br />
                 {obj.filters.length !== 0 &&
                     <span>
-                        <span>Ominaisuudet: </span>
+                        <span>{t("form.properties")}: </span>
                         {obj.filters.map(f => {
                             return <span>{f}<br /></span>
                         })}
@@ -63,18 +69,18 @@ class SideSlider extends React.Component {
                 }
 
                 <br />
-                <span>Lisätty: </span>
+                <span>{t("form.added")}: </span>
                 <span>{moment(obj.createdAt).format("DD.MM.YYYY")}</span>
                 <br />
-                <span>Muokattu: </span>
+                <span>{t("form.edited")}: </span>
                 <span>{moment(obj.updatedAt).format("DD.MM.YYYY")}</span>
                 <br />
                 <br />
                 {obj.images.length > 0 &&
-                    <h4 onClick={() => this.setState({ showGallery: obj })}><u>Näytä kuvat</u></h4>
+                    <h4 onClick={() => this.setState({ showGallery: obj })}><u>{t("form.photos")}</u></h4>
 
                 }
-                <h4 onClick={() => selectLocation(obj)} ><u>Näytä kartalla</u></h4>
+                <h4 onClick={() => selectLocation(obj)} ><u>{t("form.show_on_map")}</u></h4>
 
             </div>
         )

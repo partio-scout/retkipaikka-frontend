@@ -73,7 +73,7 @@ class Map extends React.Component {
     }
 
     render() {
-        const { results, filterTypes, selectedLoc } = this.props;
+        const { results, filterTypes, selectedLoc, t } = this.props;
         const { selected } = this.state;
         let center = { lat: 61.29, lng: 23.45 };
         let zoom = 8;
@@ -83,11 +83,10 @@ class Map extends React.Component {
             zoom = 11;
         }
 
-
         return (
             <div className="map-container">
                 <div className="map">
-                    <MapHeader types={filterTypes} results={results} renderMenu resultAmount={results.length} data={results} />
+                    <MapHeader t={t} types={filterTypes} results={results} renderMenu resultAmount={results.length} data={results} />
                     <LeafletMap
                         center={center}
                         zoom={zoom}
@@ -112,7 +111,7 @@ class Map extends React.Component {
                         </MarkerClusterGroup>
 
                     </LeafletMap>
-                    {selected !== null && <SideSlider class={" map-slider"} handleClose={this.handleMarkerClose} data={selected} />}
+                    {selected !== null && <SideSlider t={t} class={" map-slider"} handleClose={this.handleMarkerClose} data={selected} />}
                 </div>
 
             </div>

@@ -1,6 +1,6 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const webpack = require("webpack");
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+//const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 var ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin');
 
 module.exports = (enviroment, argv) => {
@@ -33,7 +33,7 @@ module.exports = (enviroment, argv) => {
             ]
         },
         optimization: {
-            minimizer: [new UglifyJsPlugin()],
+            //minimizer: [new UglifyJsPlugin()],
 
             splitChunks: {
                 cacheGroups: {

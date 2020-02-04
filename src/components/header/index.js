@@ -4,13 +4,13 @@ import { Link } from "react-router-dom";
 import LanguageMenu from "./LanguageMenu"
 
 
-const Header = ({ location }) => {
+const Header = ({ location, t }) => {
 
     return (
         <div className="header-container">
-            <Link to="/" ><h4 className="header-container-text">Partion retkipaikat</h4></Link>
+            <Link to="/" ><h4 className="header-container-text">{t("main.title")}</h4></Link>
             <div className="language-menu-container">
-                <LanguageMenu />
+                <LanguageMenu t={t} />
             </div>
             {/* {location.pathname !== "/hallinta" && <span className="header-login-button">
                     <Link to="/hallinta" >

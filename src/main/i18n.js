@@ -8,14 +8,18 @@ i18n
     .init({
         lng: 'fi',
         fallbackLng: 'fi',
+        preload: ["fi", "en", "sv", "sa"],
         backend: {
             loadPath: `${_LOCALES_PATH_}{{lng}}/{{ns}}.json`
         },
+        ns: ["translations"],
+        defaultNS: "translations",
         interpolation: {
             escapeValue: false
         },
         react: {
-            wait: true
+            wait: true,
+            useSuspense: false
         }
     });
 

@@ -89,14 +89,15 @@ class Admin extends React.Component {
     }
     getAdminPanel = () => {
         const { element } = this.state;
+        const { t } = this.props;
         let renderElement = "";
         switch (element) {
             case "locations":
             case "notifications":
-                renderElement = <LocationList type={element} />
+                renderElement = <LocationList t={t} type={element} />
                 break;
             case "filters":
-                renderElement = <FilterHandler />
+                renderElement = <FilterHandler t={t} />
                 break;
             default:
                 renderElement = <h3>Testi</h3>
@@ -106,7 +107,7 @@ class Admin extends React.Component {
 
         return (
             <div>
-                <AdminPanel selectedTab={element} handleClick={this.handleMenuClick} />
+                <AdminPanel t={t} selectedTab={element} handleClick={this.handleMenuClick} />
                 <div className="admin-data-container">
                     {renderElement}
                 </div>
@@ -116,13 +117,13 @@ class Admin extends React.Component {
         )
     }
     render() {
-        const { loginData } = this.props;
+        const { loginData, t } = this.props;
         console.log(loginData);
         let loggedIn = loginData.loggedIn;
         let renderElement = loggedIn ? this.getAdminPanel() : this.getLoginForm();
         return (
             <div className="frontpage-container">
-                <Header location={this.props.location} />
+                <Header t={t} location={this.props.location} />
                 {renderElement}
             </div>
         )

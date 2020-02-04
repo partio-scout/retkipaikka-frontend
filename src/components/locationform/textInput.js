@@ -9,7 +9,7 @@ const TextInput = (props) => {
     // also for geo input, dont allow writing and get coordinates on click
     return (
         <div className={className}>
-            <label htmlFor={text + "-input"}>{text}</label>
+            <label htmlFor={text + "-input"}>{text + (required ? "*" : "")}</label>
             <div className="input-group">
                 {defaultValue ? <input maxLength={maxLength} onChange={handleChange} defaultValue={defaultValue} type={customType || "text"} className="form-control" id={id} placeholder={placeholder} required={required} /> :
                     id === "location_geo" ?

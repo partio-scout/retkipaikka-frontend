@@ -117,7 +117,7 @@ class FilterHandler extends React.Component {
 
     handleDelete = (obj) => {
         const { deleteFilter, deleteCategory } = this.props;
-        console.log(obj);
+
         if (obj.object_type === "filter") {
             deleteFilter(obj);
         } else {
@@ -146,6 +146,7 @@ class FilterHandler extends React.Component {
 
 
     getTable = (data, dataId) => {
+        const { t } = this.props;
         let values = [...data].splice(1, data.length - 1).map(d => this.getRowData(d, dataId));
 
 
@@ -153,7 +154,7 @@ class FilterHandler extends React.Component {
         let head = (<thead>
             <tr>
                 <th id={dataId + "id"} scope="col">#</th>
-                <th id="object_name" scope="col">Nimi</th>
+                <th id="object_name" scope="col">{t("admin.name")}</th>
                 <th id="object_name_sv" scope="col">SV</th>
                 <th id="object_name_sa" scope="col">SMN</th>
                 <th id="object_name_en" scope="col">EN</th>
@@ -175,12 +176,12 @@ class FilterHandler extends React.Component {
 
     render() {
         //const items = this.generateListItems();
-        const { locationTypes, commonFilters } = this.props;
+        const { locationTypes, commonFilters, t } = this.props;
         const { clickedObj, clickPos } = this.state;
         return (
             <div className="admin-content-container">
-                <h3>Suodattimet ja kategoriat</h3>
-                <h5>Suodattimet</h5>
+                <h3>{t("admin.title")}</h3>
+                <h5>{t("admin.filters")}</h5>
                 {this.getTable(commonFilters, "filter_")}
 
                 <form onSubmit={(e) => this.handleSubmit(e, "filter")}>
@@ -189,10 +190,10 @@ class FilterHandler extends React.Component {
                         <TextInput maxLength={64} handleChange={this.handleChange} id="filter_sv" placeholder="Ruotsiksi" helper="Kirjoita lisättävän suodattimen nimi" text="-" size="col-md-3" required={false} />
                         <TextInput maxLength={64} handleChange={this.handleChange} id="filter_sa" placeholder="Saameksi" helper="Kirjoita lisättävän suodattimen nimi" text="-" size="col-md-3" required={false} />
                         <TextInput maxLength={64} handleChange={this.handleChange} id="filter_en" placeholder="Englanniksi" helper="Kirjoita lisättävän suodattimen nimi*" text="-" size="col-md-3" required={false} />
-                        <button className="btn btn-primary admin-filter-button">Lisää</button>
+                        <button className="btn btn-primary admin-filter-button">{t("admin.add")}</button>
                     </div>
                 </form>
-                <h5>Kategoriat</h5>
+                <h5>{t("admin.categories")}</h5>
                 {this.getTable(locationTypes, "category_")}
                 <form onSubmit={(e) => this.handleSubmit(e, "locationtype")}>
                     <div className="form-row">
@@ -200,10 +201,10 @@ class FilterHandler extends React.Component {
                         <TextInput maxLength={64} handleChange={this.handleChange} id="locationtype_sv" placeholder="Ruotsiksi" helper="Kirjoita lisättävän kategorian nimi" text="-" size="col-md-3" required={false} />
                         <TextInput maxLength={64} handleChange={this.handleChange} id="locationtype_sa" placeholder="Saameksi" helper="Kirjoita lisättävän kategorian nimi" text="-" size="col-md-3" required={false} />
                         <TextInput maxLength={64} handleChange={this.handleChange} id="locationtype_en" placeholder="Englanniksi" helper="Kirjoita lisättävän kategorian nimi" text="-" size="col-md-3" required={false} />
-                        <button className="btn btn-primary admin-filter-button">Lisää</button>
+                        <button className="btn btn-primary admin-filter-button">{t("admin.add")}</button>
                     </div>
                 </form>
-                {clickedObj !== null && <InfoDialog data={clickedObj} handleDelete={this.askForDelConfirmation} clickHeight={clickPos} handleClose={this.handleClose}></InfoDialog>}
+                {clickedObj !== null && <InfoDialog t={t} data={clickedObj} handleDelete={this.askForDelConfirmation} clickHeight={clickPos} handleClose={this.handleClose}></InfoDialog>}
 
 
 

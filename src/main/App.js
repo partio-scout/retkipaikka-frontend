@@ -9,11 +9,11 @@ import { I18nextProvider } from "react-i18next"
 class App extends React.Component {
     render() {
         return (
-            <BrowserRouter>
-                <I18nextProvider i18n={i18n}>
+            <I18nextProvider i18n={i18n}>
+                <BrowserRouter>
                     <Routes i18n={i18n} />
-                </I18nextProvider>
-            </BrowserRouter >
+                </BrowserRouter >
+            </I18nextProvider>
 
         )
     }

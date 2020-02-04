@@ -56,7 +56,7 @@ class MapHeader extends React.Component {
     }
     render() {
         const { showSideSlider, clickedObj } = this.state;
-        const { resultAmount, data } = this.props;
+        const { resultAmount, data, t } = this.props;
         //let tripPlace = clickedObj === null ? this.generateAllData(data) : clickedObj;
         let tripPlace = clickedObj === null ? this.generateAllData(data) : clickedObj;
         return (
@@ -70,7 +70,7 @@ class MapHeader extends React.Component {
                     </span>
                 </div>
                 {clickedObj !== null &&
-                    <SideSlider handleClose={this.handleSideSliderClose} data={tripPlace} />
+                    <SideSlider t={t} handleClose={this.handleSideSliderClose} data={tripPlace} />
                 }
                 {(showSideSlider && clickedObj === null) &&
                     <div className="map-side-slider">
