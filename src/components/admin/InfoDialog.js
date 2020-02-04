@@ -129,10 +129,10 @@ class InfoDialog extends React.Component {
         let helperInfo = obj.object_type === "locationtype" ? "Kategoria" : "Suodatin"
         return (
             <div className="form-row">
-                <TextInput defaultValue={obj.object_name} handleChange={this.handleFilterChange} id={obj.object_type} placeholder="Suomeksi" helper={"Kirjoita lisättävän " + textInfo + " nimi*"} text={helperInfo} size="col-md-3" required={false} />
-                <TextInput defaultValue={obj.object_name_sv} handleChange={this.handleFilterChange} id={obj.object_type + "_sv"} placeholder="Ruotsiksi" helper={"Kirjoita lisättävän " + textInfo + " nimi"} text="-" size="col-md-3" required={false} />
-                <TextInput defaultValue={obj.object_name_sa} handleChange={this.handleFilterChange} id={obj.object_type + "_sa"} placeholder="Saameksi" helper={"Kirjoita lisättävän " + textInfo + " nimi"} text="-" size="col-md-3" required={false} />
-                <TextInput defaultValue={obj.object_name_en} handleChange={this.handleFilterChange} id={obj.object_type + "_en"} placeholder="Englanniksi" helper={"Kirjoita lisättävän " + textInfo + " nimi"} text="-" size="col-md-3" required={false} />
+                <TextInput maxLength={64} defaultValue={obj.object_name} handleChange={this.handleFilterChange} id={obj.object_type} placeholder="Suomeksi" helper={"Kirjoita lisättävän " + textInfo + " nimi*"} text={helperInfo} size="col-md-3" required={false} />
+                <TextInput maxLength={64} defaultValue={obj.object_name_sv} handleChange={this.handleFilterChange} id={obj.object_type + "_sv"} placeholder="Ruotsiksi" helper={"Kirjoita lisättävän " + textInfo + " nimi"} text="-" size="col-md-3" required={false} />
+                <TextInput maxLength={64} defaultValue={obj.object_name_sa} handleChange={this.handleFilterChange} id={obj.object_type + "_sa"} placeholder="Saameksi" helper={"Kirjoita lisättävän " + textInfo + " nimi"} text="-" size="col-md-3" required={false} />
+                <TextInput maxLength={64} defaultValue={obj.object_name_en} handleChange={this.handleFilterChange} id={obj.object_type + "_en"} placeholder="Englanniksi" helper={"Kirjoita lisättävän " + textInfo + " nimi"} text="-" size="col-md-3" required={false} />
             </div>)
     }
     generateFilterInfo = (obj) => {

@@ -1,10 +1,10 @@
 import React from "react";
-import { connect } from "react-redux";
+import { useSelector } from "react-redux";
 
 const TextInput = (props) => {
-    const { placeholder, helper, size, handleChange, text, id, required, customType, coords, defaultValue, maxLength } = props;
+    const { placeholder, helper, size, handleChange, text, id, required, customType, defaultValue, maxLength } = props;
     let className = size ? "form-group " + size : "form-group";
-
+    const coords = useSelector(state => state.map.coords);
     // if default value prop is passed, use it
     // also for geo input, dont allow writing and get coordinates on click
     return (
@@ -21,11 +21,5 @@ const TextInput = (props) => {
         </div>)
 }
 
-const mapStateToProps = state => {
-    return {
-        coords: state.map.coords
-    }
-}
+export default TextInput
 
-
-export default connect(mapStateToProps)(TextInput);

@@ -58,7 +58,8 @@ module.exports = (enviroment, argv) => {
             new webpack.DefinePlugin({
                 _API_PATH_: JSON.stringify('http://localhost:3000/api'),
                 _IMAGES_PATH_: (argv.mode == 'production') ? JSON.stringify('../dist/images/') : JSON.stringify('../dist/images/'),
-                _ICON_PATH_: (argv.mode == 'production') ? JSON.stringify('../dist/icons/') : JSON.stringify('../dist/icons/')
+                _ICON_PATH_: (argv.mode == 'production') ? JSON.stringify('../dist/icons/') : JSON.stringify('../dist/icons/'),
+                _LOCALES_PATH_: (argv.mode == 'production') ? JSON.stringify('../dist/locales/') : JSON.stringify('../dist/locales/'),
             })
         ]
     }

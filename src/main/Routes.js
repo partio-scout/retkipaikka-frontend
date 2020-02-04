@@ -13,6 +13,12 @@ import Admin from "../containers/Admin";
 
 class Routes extends Component {
     render() {
+        const { i18n, language, t } = this.props
+        console.log(t, "trans in router")
+
+        if (i18n.language != language) {
+            i18n.changeLanguage(language);
+        }
         return (
             <Switch>
                 <Route exact path="/hallinta" render={(props) => (<Admin {...props} />)} />
@@ -26,7 +32,7 @@ class Routes extends Component {
 
 
 const mapStateToProps = state => ({
-
+    language: state.general.language
 });
 
 export default compose(withRouter, connect(mapStateToProps, {}))(Routes);

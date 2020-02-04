@@ -43,9 +43,10 @@ class Main extends React.Component {
         })
     }
     render() {
-        const { location } = this.props;
+        const { location, t } = this.props;
         const { formOpen } = this.state;
         const imagesPath = "/images/";
+        console.log(t, "translaatiokomponentti")
         console.log(imagesPath + "frontpage_img.jpg")
         return (
             <div className="frontpage-container">

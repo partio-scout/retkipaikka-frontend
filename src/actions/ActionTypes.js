@@ -20,9 +20,9 @@ export const FETCH_NON_ACCEPTED = "FETCH_NON_ACCEPTED";
 export const LOG_IN = "LOG_IN";
 export const LOG_OUT = "LOG_OUT";
 
-//alerts
-export const ALERT_MESSAGE = "ALERT_MESSAGE";
-export const RESET_MESSAGE = "RESET_MESSAGE";
+//general
+export const SET_LANGUAGE = "SET_LANGUAGE";
+
 
 //map
 export const SET_COORDINATES = "SET_COORDINATES";
