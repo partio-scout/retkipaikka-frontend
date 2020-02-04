@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { removeFilter } from "../../actions/FilterActions"
+import { removeFilter, getCorrectFilter } from "../../actions/FilterActions"
 import { postFormData, postEditData, removeEditImages } from "../../actions/SearchResultsActions"
 import SelectInput from "../inputform/SelectInput"
 import TextInput from "./textInput"
@@ -192,11 +192,13 @@ class LocationForm extends React.Component {
     }
 
     generateCheckBoxes = (arr, has) => {
+        const { language } = this.props;
         let boxes = arr.map(item => {
+            let correctName = getCorrectFilter(item, language)
             if (item.object_type !== "nofilter") {
                 return (<div className="form-check form-check-inline">
-                    <input onClick={this.handleChange} type="checkbox" className="form-check-input" id={"box-" + item.filter_id} defaultChecked={has.filter((val) => val === item.object_name).length > 0} />
-                    <label className="form-check-label" htmlFor={item.object_name}>{item.object_name}</label>
+                    <input onClick={this.handleChange} type="checkbox" className="form-check-input" id={"box-" + item.filter_id} defaultChecked={has.filter((val) => val === item.filter_id).length > 0} />
+                    <label className="form-check-label" htmlFor={correctName}>{correctName}</label>
                 </div>)
             } else {
                 return null;
@@ -233,7 +235,7 @@ class LocationForm extends React.Component {
         return regions.concat(municipalities);
     }
     generateEditForm = () => {
-        const { typeFilters, commonFilters, editPageObj, t } = this.props;
+        const { typeFilters, commonFilters, editPageObj, t, language } = this.props;
         let newTypes = [...typeFilters];
         let allArr = this.getLocationArr();
         newTypes.splice(0, 1);
@@ -241,6 +243,7 @@ class LocationForm extends React.Component {
         return (<form className="needs-validation" noValidate>
             <TextInput maxLength={64} defaultValue={editPageObj.location_name} handleChange={this.handleChange} id="location_name" placeholder={t("form.triplocation_name_ph")} helper={t("form.triplocation_name_desc")} text={t("form.triplocation_name")} required={true} />
             <SelectInput
+                language={language}
                 id=""
                 defaultValue={editPageObj.location_category}
                 data={newTypes}
@@ -282,7 +285,7 @@ class LocationForm extends React.Component {
         this.setState({ imgArray: img, oldImgArray: oldImgs });
     }
     generateLocationForm = () => {
-        const { typeFilters, commonFilters, t } = this.props;
+        const { typeFilters, commonFilters, t, language } = this.props;
         let newTypes = [...typeFilters];
         let allArr = this.getLocationArr();
         newTypes.splice(0, 1);
@@ -296,6 +299,7 @@ class LocationForm extends React.Component {
                 useFiltering={false}
                 handleFormSelect={this.handleChange}
                 customClassName={"form-select-input"}
+                language={language}
             />
             <small id={"Help"} className="form-text text-muted form-group">{t("form.triplocation_type_desc")}</small>
             <div className="form-row">
@@ -340,7 +344,8 @@ const mapStateToProps = state => {
         typeFilters: state.filters.locationTypeFilterList,
         commonFilters: state.filters.commonFilterList,
         regions: state.filters.regions,
-        municipalities: state.filters.municipalities
+        municipalities: state.filters.municipalities,
+        language: state.general.language
     }
 }
 export default connect(mapStateToProps, { removeFilter, postEditData, postFormData, removeEditImages })(LocationForm);

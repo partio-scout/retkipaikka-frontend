@@ -29,16 +29,20 @@ class MapHeader extends React.Component {
     }
 
     generateAllData = (data) => {
-        const { types } = this.props;
+        const { types, language } = this.props;
         let totalDataArr = [];
+        let langEnd = language === "fi" ? "object_name" : "object_name_" + language
         //types contain all locationtypes, first one is blank so start at 1
         for (let i = 1; i < types.length; ++i) {
             // filter locations of the current
-            let type = types[i].object_name;
-            let arr = data.filter(d => d.location_category === type);
+            console.log(types[i])
+            let id = types[i].category_id
+            //first check selected lang, then english, then finnish
+            let type = types[i][langEnd] ? types[i][langEnd] : types[i]["object_name_en"] ? types[i]["object_name_en"] : types[i]["object_name"]
+            let arr = data.filter(d => d.location_category === id);
             if (arr.length > 0) {
                 // add title and then add the rest elements
-                totalDataArr.push(<h4 key={i}>{arr[0].location_category}</h4>);
+                totalDataArr.push(<h4 key={i}>{type}</h4>);
                 for (let j = 0; j < arr.length; ++j) {
                     totalDataArr.push(this.generateLocationInfo(arr[j], j))
 

@@ -38,7 +38,7 @@ class InputContainer extends React.Component {
         return true;
     }
     render() {
-        const { results, filtersLoc, filtersCom, adminPage, regions, municipalities, t } = this.props;
+        const { results, filtersLoc, filtersCom, adminPage, regions, municipalities, t, language } = this.props;
         let allArr = regions.concat(municipalities);
         let textInput_ph = t("main.location_placeholder")
 
@@ -49,8 +49,8 @@ class InputContainer extends React.Component {
                     <form className="inputform-inputs" onSubmit={(e) => e.preventDefault()}>
                         <div className="form-row">
                             <TextInput t={t} data={allArr} applyFilter={this.addFilter} id={"header-text"} title={t("main.location")} customClassName="inputform-select form-group col-md-4 col-sm-11 " />
-                            <SelectInput id={"-cat"} data={filtersLoc} applyFilter={this.addFilter} title={t("main.type")} useFiltering={true} customClassName="form-group col-md-3 col-sm-11 " />
-                            <SelectInput id={"filt"} data={filtersCom} applyFilter={this.addFilter} title={t("main.filters")} useFiltering={true} customClassName="form-group col-md-3 col-sm-11 " />
+                            <SelectInput language={language} id={"-cat"} data={filtersLoc} applyFilter={this.addFilter} title={t("main.type")} useFiltering={true} customClassName="form-group col-md-3 col-sm-11 " />
+                            <SelectInput language={language} id={"filt"} data={filtersCom} applyFilter={this.addFilter} title={t("main.filters")} useFiltering={true} customClassName="form-group col-md-3 col-sm-11 " />
                             <div className="inputform-inputs-button form-group col-md-1 col-sm-11 ">
                                 <button className="btn btn-primary" onClick={this.filterResults}>{t("main.filter")}</button>
                             </div>
@@ -72,7 +72,8 @@ const mapStateToProps = state => {
         filtersLoc: state.filters.locationTypeFilterList,
         filtersCom: state.filters.commonFilterList,
         regions: state.filters.regions,
-        municipalities: state.filters.municipalities
+        municipalities: state.filters.municipalities,
+        language: state.general.language
     }
 }
 export default connect(mapStateToProps, { addFilter, filterFromResults, resetLocation })(InputContainer);

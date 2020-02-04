@@ -185,8 +185,10 @@ export const filterFromResults = (searchResults, filters) => {
     console.log(municipalitiesPass.length, " passed municipalities");
     // then filter locations that passed the previous filtering (city filters) if types has items
     let typeFiltersPass = municipalitiesPass;
+    console.log(municipalitiesPass, "OBJECT")
     if (types.length !== 0) {
-        typeFiltersPass = municipalitiesPass.filter(loc => types.find(({ object_name }) => loc.location_category === object_name))
+
+        typeFiltersPass = municipalitiesPass.filter(loc => types.find(({ category_id }) => loc.location_category === category_id))
     }
 
     console.log(typeFiltersPass.length, " passed typefilters");
@@ -195,7 +197,7 @@ export const filterFromResults = (searchResults, filters) => {
     if (regulars.length !== 0) {
         regularFiltersPass = typeFiltersPass.filter(loc => {
             let locationHas = loc.filters;
-            if (regulars.filter(reg => locationHas.includes(reg.object_name)).length === regulars.length) {
+            if (regulars.filter(reg => locationHas.includes(reg.filter_id)).length === regulars.length) {
                 return loc;
             }
         });

@@ -73,7 +73,7 @@ class Map extends React.Component {
     }
 
     render() {
-        const { results, filterTypes, selectedLoc, t } = this.props;
+        const { results, filterTypes, selectedLoc, t, language } = this.props;
         const { selected } = this.state;
         let center = { lat: 61.29, lng: 23.45 };
         let zoom = 8;
@@ -86,7 +86,7 @@ class Map extends React.Component {
         return (
             <div className="map-container">
                 <div className="map">
-                    <MapHeader t={t} types={filterTypes} results={results} renderMenu resultAmount={results.length} data={results} />
+                    <MapHeader t={t} language={language} types={filterTypes} results={results} renderMenu resultAmount={results.length} data={results} />
                     <LeafletMap
                         center={center}
                         zoom={zoom}
@@ -124,7 +124,8 @@ const mapStateToProps = state => {
         results: state.searchResults.filteredResults,
         coords: state.map.coords,
         selectedLoc: state.map.selectedLocation,
-        filterTypes: state.filters.locationTypeFilterList
+        filterTypes: state.filters.locationTypeFilterList,
+        language: state.general.language
     }
 }
 export default connect(mapStateToProps, { setCoordinates })(Map);

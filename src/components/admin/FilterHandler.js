@@ -60,6 +60,8 @@ class FilterHandler extends React.Component {
 
         }
     }
+
+
     getRowData = (obj, dataId) => {
         return (
             <tr key={obj[dataId + "id"]} onClick={(e) => this.handleObjectClick(obj, e)}>
@@ -180,7 +182,7 @@ class FilterHandler extends React.Component {
         const { clickedObj, clickPos } = this.state;
         return (
             <div className="admin-content-container">
-                <h3>{t("admin.title")}</h3>
+                <h3>{t("admin.filters_title")}</h3>
                 <h5>{t("admin.filters")}</h5>
                 {this.getTable(commonFilters, "filter_")}
 

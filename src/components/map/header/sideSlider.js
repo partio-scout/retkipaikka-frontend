@@ -3,6 +3,7 @@ import "./mapHeader.css";
 import moment from "moment"
 import { connect } from "react-redux";
 import { selectLocation } from "../../../actions/MapActions"
+import { getCorrectFilter } from "../../../actions/FilterActions"
 import { CustomImgSlider } from "./CustomImgSlider"
 // import ImageGallery from 'react-image-gallery';
 
@@ -13,8 +14,22 @@ class SideSlider extends React.Component {
     state = {
         showGallery: null
     }
+    getCorrectName = (id, type) => {
+        const { commonFilters, filterTypes, language } = this.props;
+        let loopArr = type === "filter" ? commonFilters : filterTypes;
+        for (let i = 0; i < loopArr.length; ++i) {
+            let filter = loopArr[i];
+            if (filter[type + "_id"] === id) {
+                return getCorrectFilter(filter, language)
+            }
+
+        }
+
+
+
+    }
     generateFromSingleData = (obj) => {
-        const { selectLocation, t } = this.props;
+        const { selectLocation, t, language } = this.props;
         return (
             <div>
                 <h4>{t("admin.name")}:</h4>
@@ -57,13 +72,13 @@ class SideSlider extends React.Component {
                     </span>}
                 <h4>{t("form.info")}: </h4>
                 <span>{t("admin.type")}: </span>
-                <span>{obj.location_category}</span>
+                <span>{this.getCorrectName(obj.location_category, "category")}</span>
                 <br />
                 {obj.filters.length !== 0 &&
                     <span>
                         <span>{t("form.properties")}: </span>
                         {obj.filters.map(f => {
-                            return <span>{f}<br /></span>
+                            return <span>{this.getCorrectName(f, "filter")}<br /></span>
                         })}
                     </span>
                 }
@@ -138,7 +153,9 @@ const mapStateToProps = state => {
     return {
         results: state.searchResults.filteredResults,
         coords: state.map.coords,
-        filterTypes: state.filters.locationTypeFilterList
+        filterTypes: state.filters.locationTypeFilterList,
+        commonFilters: state.filters.commonFilterList,
+        language: state.general.language
     }
 }
 export default connect(mapStateToProps, { selectLocation })(SideSlider);

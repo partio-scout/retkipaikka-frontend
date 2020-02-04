@@ -1,6 +1,7 @@
 import React from "react";
 import "./admin.css"
 import { connect } from "react-redux";
+import { getCorrectFilter } from "../../actions/FilterActions"
 import InfoDialog from "./InfoDialog";
 import InputContainer from "../inputform"
 class LocationList extends React.Component {
@@ -37,13 +38,25 @@ class LocationList extends React.Component {
                 <td>{obj.location_name}</td>
                 <td>{obj.location_municipality ? obj.location_municipality : "-"}</td>
                 <td>{obj.location_region}</td>
-                <td>{obj.location_category}</td>
+                <td>{this.getCorrectName(obj.location_category, "category")}</td>
                 <td>{obj.location_owner}</td>
             </tr>
         )
 
     }
 
+    getCorrectName = (id, type) => {
+        const { commonFilters, locationTypes, language } = this.props;
+        let loopArr = type === "filter" ? commonFilters : locationTypes;
+        for (let i = 0; i < loopArr.length; ++i) {
+            let filter = loopArr[i];
+            if (filter[type + "_id"] === id) {
+                return getCorrectFilter(filter, language)
+            }
+
+        }
+
+    }
     handleListClick = (e) => {
         const { currentSort, sortType } = this.state;
         let id = e.target.id;
@@ -147,7 +160,10 @@ class LocationList extends React.Component {
 const mapStateToProps = state => {
     return {
         results: state.searchResults.filteredResults,
-        notifications: state.searchResults.notificationResults
+        notifications: state.searchResults.notificationResults,
+        language: state.general.language,
+        locationTypes: state.filters.locationTypeFilterList,
+        commonFilters: state.filters.commonFilterList
 
     }
 }

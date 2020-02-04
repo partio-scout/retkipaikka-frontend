@@ -47,11 +47,9 @@
         "added": "Lisätty",
         "edited": "Muokattu",
         "info": "Tietoa",
-		"properties":"Ominaisuudet",
-		"photos":"Näytä kuvat",
-		"show_on_map":"Näytä kartalla"
-		
-		
+        "properties": "Ominaisuudet",
+        "photos": "Näytä kuvat",
+        "show_on_map": "Näytä kartalla"
     },
     "admin": {
         "email": "Sähköposti",

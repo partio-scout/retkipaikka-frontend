@@ -3,6 +3,7 @@ import "./inputform.css"
 import { Typeahead } from "react-bootstrap-typeahead"
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 
+
 class TextInput extends React.Component {
     state = {
         currentText: this.props.placeholder || "Kirjoita paikannimi"
