@@ -154,7 +154,7 @@ class LocationForm extends React.Component {
         return fromObj.filter(fObj => fromState.filter(fState => fObj === fState.name).length === 0);
     }
     submitForm = (data, edit) => {
-        const { editPageObj, postEditData, postFormData, handleClose, removeEditImages } = this.props;
+        const { editPageObj, postEditData, postFormData, handleClose, removeEditImages, t } = this.props;
         const { imgArray, oldImgArray } = this.state;
 
         if (edit) {
@@ -168,7 +168,7 @@ class LocationForm extends React.Component {
             handleClose();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         } else {
-            postFormData(data, imgArray).then(res => {
+            postFormData(data, imgArray, t).then(res => {
                 if (res) {
                     handleClose()
                 }
@@ -196,7 +196,7 @@ class LocationForm extends React.Component {
         let boxes = arr.map(item => {
             let correctName = getCorrectFilter(item, language)
             if (item.object_type !== "nofilter") {
-                return (<div className="form-check form-check-inline">
+                return (<div key={item.filter_id} className="form-check form-check-inline">
                     <input onClick={this.handleChange} type="checkbox" className="form-check-input" id={"box-" + item.filter_id} defaultChecked={has.filter((val) => val === item.filter_id).length > 0} />
                     <label className="form-check-label" htmlFor={correctName}>{correctName}</label>
                 </div>)
@@ -207,9 +207,10 @@ class LocationForm extends React.Component {
         return boxes;
     }
     generateAcceptBox = (obj) => {
+        const { t } = this.props;
         return (<div className="form-check form-check-inline">
             <input onClick={this.handleChange} type="checkbox" className="form-check-input" id={"box-location_accepted"} defaultChecked={obj.location_accepted} />
-            <label className="form-check-label" htmlFor={"Näytä käyttäjälle"}>{"Näytä käyttäjälle"}</label>
+            <label className="form-check-label" htmlFor={t("admin.show_user")}>{t("admin.show_user")}</label>
         </div>)
     }
     static getDerivedStateFromProps(newProps, currentState) {

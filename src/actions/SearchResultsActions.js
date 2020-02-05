@@ -39,7 +39,7 @@ export const fetchLocations = (accepted) => async (dispatch) => {
 
 }
 
-export const postFormData = (data, images) => (dispatch) => {
+export const postFormData = (data, images, t) => (dispatch) => {
     return new Promise(function (resolve, reject) {
         let stringifiedData = JSON.stringify(data);
         console.log(stringifiedData);
@@ -83,11 +83,11 @@ export const postFormData = (data, images) => (dispatch) => {
 
             }
             resolve(true)
-            window.alert("Retkipaikka ilmoitettu")
+            window.alert(t("main.triplocation_success"))
 
         }).catch(error => {
             console.error(error);
-            window.alert("Virhe retkipaikan lisäämisessä")
+            window.alert(t("main.triplocation_fail"))
             reject(false)
         });
     })
