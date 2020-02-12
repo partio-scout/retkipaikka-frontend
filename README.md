@@ -1,6 +1,8 @@
 # Partio-retkipaikka-frontend
 Partion retkipaikkasovelluksen frontend
 
+Trello https://trello.com/b/MZO3zDcD/retkipaikkasovellus
+
 git clone https://github.com/partio-scout/retkipaikka-frontend.git
 
 ## Ajaminen ilman dockeria
