@@ -188,10 +188,10 @@ class FilterHandler extends React.Component {
 
                 <form onSubmit={(e) => this.handleSubmit(e, "filter")}>
                     <div className="form-row">
-                        <TextInput maxLength={64} handleChange={this.handleChange} id="filter" placeholder="Suomeksi" helper="Kirjoita lisättävän suodattimen nimi" text="Suodatin" size="col-md-3" required={true} />
+                        <TextInput maxLength={64} handleChange={this.handleChange} id="filter" placeholder="Suomeksi" helper="Kirjoita lisättävän suodattimen nimi*" text="Suodatin" size="col-md-3" required={true} />
                         <TextInput maxLength={64} handleChange={this.handleChange} id="filter_sv" placeholder="Ruotsiksi" helper="Kirjoita lisättävän suodattimen nimi" text="-" size="col-md-3" required={false} />
                         <TextInput maxLength={64} handleChange={this.handleChange} id="filter_sa" placeholder="Saameksi" helper="Kirjoita lisättävän suodattimen nimi" text="-" size="col-md-3" required={false} />
-                        <TextInput maxLength={64} handleChange={this.handleChange} id="filter_en" placeholder="Englanniksi" helper="Kirjoita lisättävän suodattimen nimi" text="-" size="col-md-3" required={false} />
+                        <TextInput maxLength={64} handleChange={this.handleChange} id="filter_en" placeholder="Englanniksi" helper="Kirjoita lisättävän suodattimen nimi*" text="-" size="col-md-3" required={false} />
                         <button className="btn btn-primary admin-filter-button">{t("admin.add")}</button>
                     </div>
                 </form>
@@ -199,7 +199,7 @@ class FilterHandler extends React.Component {
                 {this.getTable(locationTypes, "category_")}
                 <form onSubmit={(e) => this.handleSubmit(e, "locationtype")}>
                     <div className="form-row">
-                        <TextInput maxLength={64} handleChange={this.handleChange} id="locationtype" placeholder="Suomeksi" helper="Kirjoita lisättävän kategorian nimi" text="Kategoria" size="col-md-3" required={true} />
+                        <TextInput maxLength={64} handleChange={this.handleChange} id="locationtype" placeholder="Suomeksi" helper="Kirjoita lisättävän kategorian nimi*" text="Kategoria" size="col-md-3" required={true} />
                         <TextInput maxLength={64} handleChange={this.handleChange} id="locationtype_sv" placeholder="Ruotsiksi" helper="Kirjoita lisättävän kategorian nimi" text="-" size="col-md-3" required={false} />
                         <TextInput maxLength={64} handleChange={this.handleChange} id="locationtype_sa" placeholder="Saameksi" helper="Kirjoita lisättävän kategorian nimi" text="-" size="col-md-3" required={false} />
                         <TextInput maxLength={64} handleChange={this.handleChange} id="locationtype_en" placeholder="Englanniksi" helper="Kirjoita lisättävän kategorian nimi" text="-" size="col-md-3" required={false} />

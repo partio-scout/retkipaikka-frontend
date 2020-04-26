@@ -3,6 +3,7 @@ import "./styles/main.css";
 import Header from "../components/header"
 import TextInput from "../components/locationform/textInput";
 import AdminPanel from "../components/admin/AdminPanel"
+import AdminSettings from "../components/admin/AdminSettings"
 import LocationList from "../components/admin/LocationList"
 import FilterHandler from "../components/admin/FilterHandler";
 import { fetchLocations } from "../actions/SearchResultsActions"
@@ -99,6 +100,8 @@ class Admin extends React.Component {
             case "filters":
                 renderElement = <FilterHandler t={t} />
                 break;
+            case "settings":
+                renderElement = <AdminSettings t={t} />
             default:
                 renderElement = <h3>Testi</h3>
                 break;

@@ -74,6 +74,7 @@
         "delete": "Poista",
         "add": "Lisää",
         "save": "Tallenna",
-        "show_user": "Näytä käyttäjälle"
+        "show_user": "Näytä käyttäjälle",
+        "settings": "Asetukset"
     }
 }

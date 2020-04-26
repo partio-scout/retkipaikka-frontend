@@ -23,9 +23,8 @@
     background-color: #28aae1 !important;
 }
 .admin-filter-button{
-    margin-top: 1rem;
-    margin-left: 1rem;
-    margin-bottom:3rem;
+    margin-top: 2rem;
+    margin-left: 1rem
 }
 .info-close-button:hover{
     background-color:#f04150;
