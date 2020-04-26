@@ -1,6 +1,7 @@
 import React from "react";
 import "./admin.css"
 import { connect } from "react-redux";
+import { getCorrectFilter } from "../../actions/FilterActions"
 import InfoDialog from "./InfoDialog";
 import InputContainer from "../inputform"
 class LocationList extends React.Component {
@@ -37,13 +38,25 @@ class LocationList extends React.Component {
                 <td>{obj.location_name}</td>
                 <td>{obj.location_municipality ? obj.location_municipality : "-"}</td>
                 <td>{obj.location_region}</td>
-                <td>{obj.location_category}</td>
+                <td>{this.getCorrectName(obj.location_category, "category")}</td>
                 <td>{obj.location_owner}</td>
             </tr>
         )
 
     }
 
+    getCorrectName = (id, type) => {
+        const { commonFilters, locationTypes, language } = this.props;
+        let loopArr = type === "filter" ? commonFilters : locationTypes;
+        for (let i = 0; i < loopArr.length; ++i) {
+            let filter = loopArr[i];
+            if (filter[type + "_id"] === id) {
+                return getCorrectFilter(filter, language)
+            }
+
+        }
+
+    }
     handleListClick = (e) => {
         const { currentSort, sortType } = this.state;
         let id = e.target.id;
@@ -67,10 +80,7 @@ class LocationList extends React.Component {
         const { results, notifications, type } = this.props;
         const { currentSort, sortType } = this.state;
         // component is used in two places, if it's in locations, use search results
-        console.log(results, "res");
-        console.log(notifications, "noet");
         let newResults = this.checkType(type) ? [...results] : [...notifications];
-        console.log(newResults);
         newResults = newResults.sort((a, b) => {
             switch (sortType) {
                 case 1:
@@ -89,6 +99,7 @@ class LocationList extends React.Component {
     }
     generateListItems = () => {
         const { currentSort, sortType } = this.state;
+        const { t } = this.props;
         let results = this.handleSort();
         const values = results.map((location, i) => {
             return this.getRowData(location, i)
@@ -99,11 +110,11 @@ class LocationList extends React.Component {
         let head = (<thead>
             <tr onClick={this.handleListClick}>
                 <th id="location_id" scope="col">#{currentSort === "location_id" && image}</th>
-                <th id="location_name" scope="col">Nimi{currentSort === "location_name" && image}</th>
-                <th id="location_municipality" scope="col">Kunta{currentSort === "location_municipality" && image}</th>
-                <th id="location_region" scope="col">Maakunta{currentSort === "location_region" && image}</th>
-                <th id="location_category" scope="col">Tyyppi{currentSort === "location_category" && image}</th>
-                <th id="location_owner" scope="col">Omistaja{currentSort === "location_owner" && image}</th>
+                <th id="location_name" scope="col">{t("admin.name")}{currentSort === "location_name" && image}</th>
+                <th id="location_municipality" scope="col">{t("admin.municipality")}{currentSort === "location_municipality" && image}</th>
+                <th id="location_region" scope="col">{t("admin.region")}{currentSort === "location_region" && image}</th>
+                <th id="location_category" scope="col">{t("admin.type")}{currentSort === "location_category" && image}</th>
+                <th id="location_owner" scope="col">{t("admin.owner")}{currentSort === "location_owner" && image}</th>
             </tr>
         </thead>)
 
@@ -122,21 +133,21 @@ class LocationList extends React.Component {
 
     render() {
         const { clickedObj, clickPos } = this.state;
-        const { type } = this.props;
+        const { type, t } = this.props;
         // this same component is used in admin notification and admin location list page
         let isLocation = this.checkType(type);
-        let title = isLocation ? "Nykyiset retkipaikat" : "Hyväksymättömät retkipaikat"
+        let title = isLocation ? t("admin.current") : t("admin.unaccepted")
         const items = this.generateListItems();
         console.log(clickedObj, "in locationList clicked")
         return (
             <div className="admin-content-container">
                 <h3>{title}</h3>
-                {isLocation && <InputContainer adminPage={true} />}
+                {isLocation && <InputContainer t={t} adminPage={true} />}
                 <div className="location-list-container">
                     {items}
                 </div>
 
-                {clickedObj !== null && <InfoDialog data={clickedObj} locationPage={true} clickHeight={clickPos} handleClose={this.handleClose}></InfoDialog>}
+                {clickedObj !== null && <InfoDialog t={t} data={clickedObj} locationPage={true} clickHeight={clickPos} handleClose={this.handleClose}></InfoDialog>}
 
 
             </div>
@@ -149,7 +160,10 @@ class LocationList extends React.Component {
 const mapStateToProps = state => {
     return {
         results: state.searchResults.filteredResults,
-        notifications: state.searchResults.notificationResults
+        notifications: state.searchResults.notificationResults,
+        language: state.general.language,
+        locationTypes: state.filters.locationTypeFilterList,
+        commonFilters: state.filters.commonFilterList
 
     }
 }

@@ -1,13 +1,12 @@
 import React from "react";
 import { connect } from "react-redux";
-import { removeFilter } from "../../actions/FilterActions"
+import { removeFilter, getCorrectFilter } from "../../actions/FilterActions"
 import { postFormData, postEditData, removeEditImages } from "../../actions/SearchResultsActions"
 import SelectInput from "../inputform/SelectInput"
 import TextInput from "./textInput"
 import AutoCompleteInput from "../inputform/TextInput"
 import FormImageUpload from "./FormImageUpload";
 import "./locationform.css"
-
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 
@@ -23,6 +22,7 @@ class LocationForm extends React.Component {
         let emptyFound = false;
         // let dataObj = { location_name: null, object_name: null, object_type: "city", location_geo: { lat: null, lng: null }, location_description: null, location_category: null, location_pricing: null, filters: [], location_owner: null, location_mail: null, location_website: null, location_phone: null }
         let dataObj = {};
+        !edit && this.checkLocationInputValidity(this.state.location_region)
         var forms = document.getElementsByClassName('needs-validation');
 
         // check if all required fields have value in
@@ -32,13 +32,13 @@ class LocationForm extends React.Component {
                 emptyFound = true;
             }
             form.classList.add('was-validated');
+
         })
+
         // if all required fields had value,
         // loop through state and put the data in object
-        console.log(this.state, emptyFound);
         if (!emptyFound) {
             let stateKeys = Object.keys(this.state);
-            console.log(JSON.stringify(this.state))
             if (edit) {
                 let checkboxes = document.getElementsByClassName("form-check-input");
                 if (!dataObj.filters) {
@@ -58,9 +58,6 @@ class LocationForm extends React.Component {
 
             for (let i = 0; i < stateKeys.length; i++) {
                 let key = stateKeys[i];
-                console.log(key, "statekey")
-
-                //console.log(this.state.key)
                 if (key.includes("box") && this.state[key] && !edit) {
                     let splitted = key.split("-");
                     if (!dataObj.filters) {
@@ -82,13 +79,9 @@ class LocationForm extends React.Component {
                 } else {
                     if (!key.includes("box")) {
                         if (this.state[key] !== null) {
-
-
                             if (key !== "imgArray" && key !== "oldImgArray") {
                                 let tempTextValue = JSON.parse(JSON.stringify(this.state[key]));
-                                console.log(tempTextValue);
                                 if (tempTextValue.trim().length !== 0) {
-
                                     dataObj[key] = this.state[key].trim();
                                 } else {
                                     window.alert("Et voi lähettää tyhjiä kenttiä!")
@@ -128,6 +121,13 @@ class LocationForm extends React.Component {
 
         }
     }
+    checkLocationInputValidity = (toCheck) => {
+        if (!toCheck) {
+            let locItem = document.getElementById("type-ahead-object_location")
+            locItem.value = "";
+        }
+    }
+
 
 
 
@@ -148,31 +148,27 @@ class LocationForm extends React.Component {
         });
     };
     checkDeleteImgs = (fromState, fromObj) => {
-        console.log(fromState, fromObj)
         if (fromState.length === fromObj.length) {
             return [];
         }
         return fromObj.filter(fObj => fromState.filter(fState => fObj === fState.name).length === 0);
     }
     submitForm = (data, edit) => {
-        const { editPageObj, postEditData, postFormData, handleClose, removeEditImages } = this.props;
+        const { editPageObj, postEditData, postFormData, handleClose, removeEditImages, t } = this.props;
         const { imgArray, oldImgArray } = this.state;
 
         if (edit) {
             const oldImgs = editPageObj.images;
             data["location_id"] = editPageObj.location_id;
-            console.log("asdasd")
             let imagesToDelete = this.checkDeleteImgs(oldImgArray, oldImgs);
             if (imagesToDelete.length > 0) {
                 removeEditImages(editPageObj.location_id, imagesToDelete)
             }
             postEditData(data, imgArray);
-            console.log(data);
             handleClose();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         } else {
-            postFormData(data, imgArray).then(res => {
-                console.log(res);
+            postFormData(data, imgArray, t).then(res => {
                 if (res) {
                     handleClose()
                 }
@@ -188,7 +184,6 @@ class LocationForm extends React.Component {
     }
     handleChange = (e) => {
         let value = e.target.type === "checkbox" ? e.target.checked : e.target.value;
-        console.log(e.target.id, value);
         if (e.target.id === "location_category") {
             let id = e.target.options[e.target.options.selectedIndex].id;
             value = id;
@@ -197,12 +192,13 @@ class LocationForm extends React.Component {
     }
 
     generateCheckBoxes = (arr, has) => {
-        console.log(arr);
+        const { language } = this.props;
         let boxes = arr.map(item => {
+            let correctName = getCorrectFilter(item, language)
             if (item.object_type !== "nofilter") {
-                return (<div className="form-check form-check-inline">
-                    <input onClick={this.handleChange} type="checkbox" className="form-check-input" id={"box-" + item.filter_id} defaultChecked={has.filter((val) => val === item.object_name).length > 0} />
-                    <label className="form-check-label" htmlFor={item.object_name}>{item.object_name}</label>
+                return (<div key={item.filter_id} className="form-check form-check-inline">
+                    <input onClick={this.handleChange} type="checkbox" className="form-check-input" id={"box-" + item.filter_id} defaultChecked={has.filter((val) => val === item.filter_id).length > 0} />
+                    <label className="form-check-label" htmlFor={correctName}>{correctName}</label>
                 </div>)
             } else {
                 return null;
@@ -211,9 +207,10 @@ class LocationForm extends React.Component {
         return boxes;
     }
     generateAcceptBox = (obj) => {
+        const { t } = this.props;
         return (<div className="form-check form-check-inline">
             <input onClick={this.handleChange} type="checkbox" className="form-check-input" id={"box-location_accepted"} defaultChecked={obj.location_accepted} />
-            <label className="form-check-label" htmlFor={"Näytä käyttäjälle"}>{"Näytä käyttäjälle"}</label>
+            <label className="form-check-label" htmlFor={t("admin.show_user")}>{t("admin.show_user")}</label>
         </div>)
     }
     static getDerivedStateFromProps(newProps, currentState) {
@@ -226,54 +223,58 @@ class LocationForm extends React.Component {
     }
 
 
-    getTextForm = (rows, text, helper, description, id) => {
+    getTextForm = (rows, text, helper, description, id, maxLength) => {
         return (
             <div className="form-group">
                 <label htmlFor="text-area">{text}</label>
-                <textarea defaultValue={description !== null ? description : ""} onChange={this.handleChange} className="form-control" id={id} rows={rows}></textarea>
+                <textarea maxLength={maxLength} defaultValue={description !== null ? description : ""} onChange={this.handleChange} className="form-control" id={id} rows={rows}></textarea>
                 <small id={text + "Help"} className="form-text text-muted">{helper}</small>
             </div>)
     }
+    getLocationArr = () => {
+        const { regions, municipalities } = this.props;
+        return regions.concat(municipalities);
+    }
     generateEditForm = () => {
-        const { typeFilters, commonFilters, editPageObj, regions, municipalities } = this.props;
+        const { typeFilters, commonFilters, editPageObj, t, language } = this.props;
         let newTypes = [...typeFilters];
-        let allArr = regions.concat(municipalities);
+        let allArr = this.getLocationArr();
         newTypes.splice(0, 1);
         // generate form for edit page
         return (<form className="needs-validation" noValidate>
-            <TextInput defaultValue={editPageObj.location_name} handleChange={this.handleChange} id="location_name" placeholder="Esimerkkipaikka" helper="Kirjoita retkipaikan nimi" text="Retkipaikka" required={true} />
+            <TextInput maxLength={64} defaultValue={editPageObj.location_name} handleChange={this.handleChange} id="location_name" placeholder={t("form.triplocation_name_ph")} helper={t("form.triplocation_name_desc")} text={t("form.triplocation_name")} required={true} />
             <SelectInput
+                language={language}
                 id=""
                 defaultValue={editPageObj.location_category}
                 data={newTypes}
-                title="Retkipaikan tyyppi"
+                title={t("form.triplocation_type")}
                 useFiltering={false}
                 handleFormSelect={this.handleChange}
                 customClassName={"form-select-input"}
             />
-            <small id={"Help"} className="form-text text-muted form-group">Valitse retkipaikan tyyppi</small>
+            <small id={"Help"} className="form-text text-muted form-group">{t("form.triplocation_type_desc")}</small>
             <div className="form-row">
-                <AutoCompleteInput data={allArr} applyFilter={this.handleSelection} id="object_name" title="Sijainti*" customClassName="form-group col-md-6" helper="Valitse sijainti" required={true} defaultInputValue={editPageObj.location_municipality ? editPageObj.location_municipality : editPageObj.location_region} />
-                <TextInput defaultValue={editPageObj.location_geo.lat + "," + editPageObj.location_geo.lng} handleChange={this.handleChange} id="location_geo" placeholder="Koordinaatit" helper="Valitse koordinaatit kartalta" text="Koordinaatit" size="col-md-6" required={true} />
+                <AutoCompleteInput t={t} data={allArr} applyFilter={this.handleSelection} id="object_location" title={t("main.location")} customClassName="form-group col-md-6" helper={t("main.location_desc")} required={true} defaultInputValue={editPageObj.location_municipality ? editPageObj.location_municipality : editPageObj.location_region} />
+                <TextInput defaultValue={editPageObj.location_geo.lat + "," + editPageObj.location_geo.lng} handleChange={this.handleChange} id="location_geo" placeholder={t("form.triplocation_coords")} helper={t("form.triplocation_coords_desc")} text={t("form.triplocation_coords")} size="col-md-6" required={true} />
             </div>
-            {this.getTextForm("3", "Kuvaus paikasta", "Kirjoita kuvaus retkipaikasta", editPageObj.location_description, "location_description")}
-            {this.getTextForm("3", "Vuokrahintatiedot", "Kirjoita hintatietoja, jos niitä on", editPageObj.location_pricing, "location_pricing")}
+            {this.getTextForm("3", t("form.triplocation_desc"), t("form.triplocation_desc_desc"), editPageObj.location_description, "location_description", 512)}
+            {this.getTextForm("3", t("form.triplocation_rent"), t("form.triplocation_rent_desc"), editPageObj.location_pricing, "location_pricing", 280)}
             {this.generateCheckBoxes(commonFilters, editPageObj.filters)}
-            <small id={"Help"} className="form-text text-muted form-group">Valitse retkipaikkaa kuvaavat asiat</small>
+            <small id={"Help"} className="form-text text-muted form-group">{t("form.triplocation_filter_desc")}</small>
             <div className="form-row">
-                <TextInput defaultValue={editPageObj.location_owner} handleChange={this.handleChange} id="location_owner" placeholder="Esimerkkiomistaja" helper="Kirjoita retkipaikan omistaja (lippukunta, kaupunki, srk tms.)" text="Omistaja" size="col-md-3" required={true} />
-                <TextInput defaultValue={editPageObj.location_website} handleChange={this.handleChange} id="location_website" placeholder="www.retkipaikka.fi" helper="Kirjoita kohteen nettisivu" text="Verkkosivu" size="col-md-3" required={false} />
-                <TextInput defaultValue={editPageObj.location_mail} handleChange={this.handleChange} id="location_mail" placeholder="example@ex.com" helper="Kirjoita sähköposti" text="Sähköposti" size="col-md-3" required={false} />
-                <TextInput defaultValue={editPageObj.location_phone} handleChange={this.handleChange} id="location_phone" placeholder="0441235678" helper="Kirjoita puhelinnumero" text="Puhelinnumero" size="col-md-3" required={false} />
+                <TextInput maxLength={64} defaultValue={editPageObj.location_owner} handleChange={this.handleChange} id="location_owner" placeholder={t("form.triplocation_owner_ph")} helper={t("form.triplocation_owner_desc")} text={t("form.triplocation_owner")} size="col-md-3" required={true} />
+                <TextInput maxLength={64} defaultValue={editPageObj.location_website} handleChange={this.handleChange} id="location_website" placeholder="www.retkipaikka.fi" helper={t("form.triplocation_website_desc")} text={t("form.triplocation_website")} size="col-md-3" required={false} />
+                <TextInput maxLength={64} defaultValue={editPageObj.location_mail} handleChange={this.handleChange} id="location_mail" placeholder="example@ex.com" helper={t("form.triplocation_email_desc")} text={t("form.triplocation_email")} size="col-md-3" required={false} />
+                <TextInput maxLength={64} defaultValue={editPageObj.location_phone} handleChange={this.handleChange} id="location_phone" placeholder="0441235678" helper={t("form.triplocation_phone_desc")} text={t("form.triplocation_phone")} size="col-md-3" required={false} />
             </div>
             {this.generateAcceptBox(editPageObj)}
-            <button onClick={(e) => this.handleFormSubmit(e, true)} type="submit" className="btn btn-primary">Hyväksy</button>
+            <button onClick={(e) => this.handleFormSubmit(e, true)} type="submit" className="btn btn-primary">{t("admin.save")}</button>
         </form>)
         // data: { name: null, website:
     }
 
     handleSelection = (e) => {
-
         if (e.municipality_id) {
             this.setState({ location_municipality: "" + e.municipality_id, location_region: "" + e.region_id })
         } else {
@@ -285,39 +286,40 @@ class LocationForm extends React.Component {
         this.setState({ imgArray: img, oldImgArray: oldImgs });
     }
     generateLocationForm = () => {
-        const { typeFilters, commonFilters, editPageObj, regions, municipalities } = this.props;
+        const { typeFilters, commonFilters, t, language } = this.props;
         let newTypes = [...typeFilters];
-        let allArr = regions.concat(municipalities);
+        let allArr = this.getLocationArr();
         newTypes.splice(0, 1);
         // generate from for main page
         return (<form className="needs-validation" noValidate>
-            <TextInput handleChange={this.handleChange} id="location_name" placeholder="Esimerkkipaikka" helper="Kirjoita retkipaikan nimi" text="Retkipaikka*" required={true} />
+            <TextInput maxLength={64} handleChange={this.handleChange} id="location_name" placeholder={t("form.triplocation_name_ph")} helper={t("form.triplocation_name_desc")} text={t("form.triplocation_name")} required={true} />
             <SelectInput
                 id=""
                 data={newTypes}
-                title="Retkipaikan tyyppi*"
+                title={t("form.triplocation_type")}
                 useFiltering={false}
                 handleFormSelect={this.handleChange}
                 customClassName={"form-select-input"}
+                language={language}
             />
-            <small id={"Help"} className="form-text text-muted form-group">Valitse retkipaikan tyyppi</small>
+            <small id={"Help"} className="form-text text-muted form-group">{t("form.triplocation_type_desc")}</small>
             <div className="form-row">
                 {/* <TextInput data={allArr} applyFilter={this.addFilter} title="Paikannimi" customClassName="inputform-select form-group col-md-4 col-sm-11 " /> */}
-                <AutoCompleteInput data={allArr} applyFilter={this.handleSelection} id="object_name" title="Sijainti*" customClassName="form-group col-md-6" helper="Valitse sijainti" required={true} />
+                <AutoCompleteInput t={t} data={allArr} applyFilter={this.handleSelection} id="object_location" title={t("main.location")} customClassName="form-group col-md-6" helper={t("main.location_desc")} required={true} />
                 {/* <TextInput handleChange={this.handleChange} id="object_name" placeholder="Paikan sijainti" helper="Kirjoita retkipaikan sijainti" text="Sijainti*" size="col-md-6" required={true} /> */}
-                <TextInput handleChange={this.handleChange} id="location_geo" placeholder="Koordinaatit" helper="Valitse koordinaatit kartalta" text="Koordinaatit*" size="col-md-6" required={true} />
+                <TextInput handleChange={this.handleChange} id="location_geo" placeholder={t("form.triplocation_coords")} helper={t("form.triplocation_coords_desc")} text={t("form.triplocation_coords")} size="col-md-6" required={true} />
             </div>
-            {this.getTextForm("3", "Kuvaus paikasta", "Kirjoita kuvaus retkipaikasta", null, "location_description")}
-            {this.getTextForm("3", "Vuokrahintatiedot", "Kirjoita hintatietoja, jos niitä on", null, "location_pricing")}
+            {this.getTextForm("3", t("form.triplocation_desc"), t("form.triplocation_desc_desc"), null, "location_description", 512)}
+            {this.getTextForm("3", t("form.triplocation_rent"), t("form.triplocation_rent_desc"), null, "location_pricing", 280)}
             {this.generateCheckBoxes(commonFilters, [])}
-            <small id={"Help"} className="form-text text-muted form-group">Valitse retkipaikkaa kuvaavat asiat</small>
+            <small id={"Help"} className="form-text text-muted form-group">{t("form.triplocation_filter_desc")}</small>
             <div className="form-row">
-                <TextInput handleChange={this.handleChange} id="location_owner" placeholder="Esimerkkiomistaja" helper="Kirjoita retkipaikan omistaja (lippukunta, kaupunki, srk tms.)" text="Omistaja/Yhteystieto*" size="col-md-3" required={true} />
-                <TextInput handleChange={this.handleChange} id="location_website" placeholder="www.retkipaikka.fi" helper="Kirjoita kohteen nettisivu" text="Verkkosivu" size="col-md-3" required={false} />
-                <TextInput handleChange={this.handleChange} id="location_mail" placeholder="example@ex.com" helper="Kirjoita sähköposti" text="Sähköposti" size="col-md-3" required={false} />
-                <TextInput handleChange={this.handleChange} id="location_phone" placeholder="0441235678" helper="Kirjoita puhelinnumero" text="Puhelinnumero" size="col-md-3" required={false} />
+                <TextInput maxLength={64} handleChange={this.handleChange} id="location_owner" placeholder={t("form.triplocation_owner_ph")} helper={t("form.triplocation_owner_desc")} text={t("form.triplocation_owner")} size="col-md-3" required={true} />
+                <TextInput maxLength={64} handleChange={this.handleChange} id="location_website" placeholder="www.retkipaikka.fi" helper={t("form.triplocation_website_desc")} text={t("form.triplocation_website")} size="col-md-3" required={false} />
+                <TextInput maxLength={64} handleChange={this.handleChange} id="location_mail" placeholder="example@ex.com" helper={t("form.triplocation_email_desc")} text={t("form.triplocation_email")} size="col-md-3" required={false} />
+                <TextInput maxLength={64} handleChange={this.handleChange} id="location_phone" placeholder="0441235678" helper={t("form.triplocation_phone_desc")} text={t("form.triplocation_phone")} size="col-md-3" required={false} />
             </div>
-            <button onClick={(e) => this.handleFormSubmit(e, false)} type="submit" className="btn btn-primary">Lähetä</button>
+            <button onClick={(e) => this.handleFormSubmit(e, false)} type="submit" className="btn btn-primary">{t("form.triplocation_send")}</button>
         </form>)
     }
 
@@ -325,11 +327,9 @@ class LocationForm extends React.Component {
         const { editPageObj } = this.props;
         // editPageObj comes from edit page,
         // it it's not undefined, generate edit form
-        console.log(this.state);
         let form = editPageObj ? this.generateEditForm() : this.generateLocationForm();
         let className = "form-container";
         className = editPageObj ? "edit-form-container" : className
-        console.log(this.state);
         return (
             <div className={className}>
                 {form}
@@ -345,7 +345,8 @@ const mapStateToProps = state => {
         typeFilters: state.filters.locationTypeFilterList,
         commonFilters: state.filters.commonFilterList,
         regions: state.filters.regions,
-        municipalities: state.filters.municipalities
+        municipalities: state.filters.municipalities,
+        language: state.general.language
     }
 }
 export default connect(mapStateToProps, { removeFilter, postEditData, postFormData, removeEditImages })(LocationForm);

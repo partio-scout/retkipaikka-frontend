@@ -10,10 +10,18 @@ import { fetchFilters, fetchRegionsAndMunicipalities } from "../actions/FilterAc
 //import {imagesPath} from "../paths"
 
 class Main extends React.Component {
-    state = {
-        formOpen: false
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            formOpen: false
+        }
+        this.handleInitialFetch();
+
+
     }
-    componentWillMount() {
+    handleInitialFetch = () => {
         const { fetchLocations, fetchFilters, results, filtersLoc, filtersCom, regions, municipalities, fetchRegionsAndMunicipalities } = this.props;
         if (results.searchResults.length === 0) {
             fetchLocations(true);
@@ -35,22 +43,21 @@ class Main extends React.Component {
         })
     }
     render() {
-        const { location } = this.props;
+        const { location, t } = this.props;
         const { formOpen } = this.state;
-        const imagesPath = "/images/";
-        console.log(imagesPath + "frontpage_img.jpg")
+
         return (
             <div className="frontpage-container">
-                <Header location={location} />
+                <Header t={t} location={location} />
                 <div className="frontpage-image-container">
                     <img alt="frontpage_image" src={_IMAGES_PATH_ + "frontpage_img.jpg"} />
                     <h2 className="main-header">Partion retkipaikat</h2>
                 </div>
-                <InputContainer adminPage={false} />
-                <Map />
+                <InputContainer t={t} adminPage={false} />
+                <Map t={t} />
 
-                <h4 onClick={this.handleFormOpen} className="main-input-form" >Ilmoita retkipaikka! <img className={formOpen ? "input-form-icon-open" : "input-form-icon"} src={_ICON_PATH_ + "arrow.svg"}></img></h4>
-                {formOpen && <LocationForm handleClose={this.handleReOpen} />}
+                <h4 onClick={this.handleFormOpen} className="main-input-form" >{t("main.inform")} <img className={formOpen ? "input-form-icon-open" : "input-form-icon"} src={_ICON_PATH_ + "arrow.svg"}></img></h4>
+                {formOpen && <LocationForm t={t} handleClose={this.handleReOpen} />}
             </div>
         )
     }

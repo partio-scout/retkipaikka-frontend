@@ -107,6 +107,33 @@ export const postFilter = (data) => (dispatch, getState) => {
         window.alert("Virhe suodattimen lisäämisessä")
     });
 }
+export const editFilter = (data) => (dispatch, getState) => {
+
+    let accessToken = getState().login.accessToken;
+    accessToken = "?access_token=" + accessToken;
+    axios.patch(
+        _API_PATH_ + "/Filters/" + data.filter_id + accessToken, data
+    ).then(response => {
+        console.log("succes")
+        dispatch(fetchFilters())
+    }).catch(error => {
+        window.alert("Virhe suodattimen muokkaamisessa")
+    });
+
+}
+export const editCategory = (data) => (dispatch, getState) => {
+
+    let accessToken = getState().login.accessToken;
+    accessToken = "?access_token=" + accessToken;
+    axios.patch(
+        _API_PATH_ + "/Categories/" + data.category_id + accessToken, data
+    ).then(response => {
+        dispatch(fetchFilters())
+    }).catch(error => {
+        window.alert("Virhe kategorian muokkaamisessa")
+    });
+
+}
 export const postCategory = (data) => (dispatch, getState) => {
     console.log("in add cate")
     let accessToken = getState().login.accessToken;
@@ -123,6 +150,7 @@ export const postCategory = (data) => (dispatch, getState) => {
 export const deleteCategory = (data) => (dispatch, getState) => {
     let accessToken = getState().login.accessToken;
     accessToken = "?access_token=" + accessToken;
+    console.log(data)
     axios.get(
         _API_PATH_ + "/Categories/" + data.category_id + "/triplocations/count"
     ).then(response => {
@@ -168,8 +196,8 @@ export const deleteFilter = (data) => (dispatch, getState) => {
 export const fetchFilters = () => async (dispatch) => {
     // fetch filters from database 
     let locations = {
-        categories: [{ category_id: 0, object_type: "nolocationtype", object_name: "Kaikki" }],
-        filters: [{ filter_id: 0, object_type: "nofilter", object_name: "Ei suodattimia" }]
+        categories: [{ category_id: 0, object_type: "nolocationtype", object_name: "Kaikki", object_name_en: "All", object_name_sv: "Allt", object_name_sa: "Buot" }],
+        filters: [{ filter_id: 0, object_type: "nofilter", object_name: "Ei suodattimia", object_name_en: "No filters", object_name_sv: "Inga filter", object_name_sa: "Ii filterduhpát" }]
     }
     try {
         const categoryResponse = await axios.get(_API_PATH_ + "/Categories");
@@ -191,6 +219,13 @@ export const fetchFilters = () => async (dispatch) => {
         type: UPDATE_FETCHED_FILTERS,
         payload: locations
     })
+
+}
+
+export const getCorrectFilter = (filter, lang) => {
+    let langEnd = "object_name_" + lang
+    return (lang === "fi" ? filter["object_name"] : filter[langEnd] ? filter[langEnd] : filter["object_name_en"] ? filter["object_name_en"] : filter["object_name"])
+
 
 }
 

@@ -3,6 +3,7 @@ import "./inputform.css"
 import { Typeahead } from "react-bootstrap-typeahead"
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 
+
 class TextInput extends React.Component {
     state = {
         currentText: this.props.placeholder || "Kirjoita paikannimi"
@@ -41,19 +42,20 @@ class TextInput extends React.Component {
     }
     render() {
         const { currentText } = this.state;
-        const { title, data, customClassName, helper, required, defaultInputValue } = this.props;
+        const { title, data, customClassName, helper, required, defaultInputValue, id, t } = this.props;
         let req = required ? true : false;
         let className = customClassName ? customClassName : "inputform-select";
+        let inputVal = defaultInputValue ? defaultInputValue : "";
         return (
             <div className={customClassName}>
                 {title !== undefined && helper ? <label >{title}</label> : <span className="inputform-title">{title}</span>}
 
                 <Typeahead
-                    paginationText="Näytä lisää"
-                    inputProps={{ required: req }}
-                    defaultInputValue={defaultInputValue ? defaultInputValue : ""}
-                    id={"type-ahead " + className}
-                    placeholder={currentText}
+                    paginationText={t("main.show_more")}
+                    inputProps={{ required: req, id: "type-ahead-" + id }}
+                    defaultInputValue={inputVal}
+                    id={"type-ahead-" + id}
+                    placeholder={t("main.location_placeholder")}
                     onChange={(selected) => {
                         this.handleFiltering(selected);
                         !helper && this.setState({ selected: [] })

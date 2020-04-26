@@ -2,7 +2,7 @@ import React from "react";
 import "./map.css";
 import MapHeader from "./header"
 import SideSlider from "./header/sideSlider"
-import { Map as LeafletMap, Marker, Popup, TileLayer } from 'react-leaflet'
+import { Map as LeafletMap, Marker, TileLayer } from 'react-leaflet'
 import L from "leaflet"
 import MarkerClusterGroup from 'react-leaflet-markercluster/dist/react-leaflet-markercluster';
 
@@ -13,7 +13,8 @@ import { setCoordinates } from "../../actions/MapActions"
 
 class Map extends React.Component {
     state = {
-        selected: null
+        selected: null,
+        userMarker: null,
     }
 
 
@@ -36,16 +37,27 @@ class Map extends React.Component {
     });
     generateMarkers = () => {
         const { results } = this.props;
+        const { userMarker } = this.state;
         let markers = results.map((reg, i) => {
             return <Marker
                 key={reg.location_region + i}
                 position={reg.location_geo}
                 onClick={() => this.setState({ selected: reg })}
                 icon={this.scoutIcon}
-
             />
         });
+        if (userMarker) {
+            markers.push(userMarker)
+        }
         return markers;
+    }
+
+
+    generateUserIcon = (coords) => {
+        return (<Marker
+            key={"user-marker"}
+            position={coords}
+        />)
     }
     handleMarkerClose = () => {
         this.setState({ selected: null })
@@ -54,15 +66,18 @@ class Map extends React.Component {
         const { setCoordinates } = this.props;
 
         let obj = { lat: e.latlng.lat, lng: e.latlng.lng }
+        this.setState({ userMarker: this.generateUserIcon(obj) })
         setCoordinates(obj);
+
 
     }
 
     render() {
-        const { results, filterTypes, selectedLoc } = this.props;
-        const { selected, zoomEnabled } = this.state;
+        const { results, filterTypes, selectedLoc, t, language } = this.props;
+        const { selected } = this.state;
         let center = { lat: 61.29, lng: 23.45 };
         let zoom = 8;
+        let windowWidth = window.screen.width;
         if (selectedLoc !== null) {
             center = selectedLoc.location_geo;
             zoom = 11;
@@ -71,7 +86,7 @@ class Map extends React.Component {
         return (
             <div className="map-container">
                 <div className="map">
-                    <MapHeader types={filterTypes} results={results} renderMenu resultAmount={results.length} data={results} />
+                    <MapHeader t={t} language={language} types={filterTypes} results={results} renderMenu resultAmount={results.length} data={results} />
                     <LeafletMap
                         center={center}
                         zoom={zoom}
@@ -80,7 +95,7 @@ class Map extends React.Component {
                         zoomControl={true}
                         doubleClickZoom={true}
                         scrollWheelZoom={true}
-                        dragging={true}
+                        dragging={windowWidth >= 768}
                         animate={true}
                         easeLinearity={0.35}
                         onClick={this.handleMapClick}
@@ -96,7 +111,7 @@ class Map extends React.Component {
                         </MarkerClusterGroup>
 
                     </LeafletMap>
-                    {selected !== null && <SideSlider class={" map-slider"} handleClose={this.handleMarkerClose} data={selected} />}
+                    {selected !== null && <SideSlider t={t} class={" map-slider"} handleClose={this.handleMarkerClose} data={selected} />}
                 </div>
 
             </div>
@@ -109,7 +124,8 @@ const mapStateToProps = state => {
         results: state.searchResults.filteredResults,
         coords: state.map.coords,
         selectedLoc: state.map.selectedLocation,
-        filterTypes: state.filters.locationTypeFilterList
+        filterTypes: state.filters.locationTypeFilterList,
+        language: state.general.language
     }
 }
 export default connect(mapStateToProps, { setCoordinates })(Map);

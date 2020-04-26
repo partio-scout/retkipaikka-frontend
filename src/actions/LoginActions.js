@@ -1,8 +1,7 @@
 
 import {
     LOG_IN,
-    LOG_OUT,
-    ALERT_MESSAGE
+    LOG_OUT
 } from "./ActionTypes"
 import axios from "axios";
 
@@ -32,14 +31,7 @@ export const login = (dataObj) => async (dispatch) => {
     }
 }
 
-const loginFail = () => {
-    return {
-        type: ALERT_MESSAGE,
-        success: true,
-        msg: "Kirjautuminen epäonnistui"
 
-    }
-}
 
 
 

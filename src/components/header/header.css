@@ -18,3 +18,28 @@
     float: right;
     padding: 10px;
 }
+
+.language-icon{
+ 
+    float:right;
+      
+}
+.inverse-icon-lang{
+ transform: rotate(-180deg);
+}
+.language-menu-container{
+    width: 120px;
+    float: right;
+}
+.language-menu-container span{
+    color:white;
+}
+.language-menu-item{
+    display:inline-flex;
+    margin-right:5px;
+    
+}
+.lang-selected{
+    font-weight: bold;
+    text-decoration: underline;
+}

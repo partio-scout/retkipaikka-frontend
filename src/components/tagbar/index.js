@@ -14,7 +14,7 @@ class TagBar extends React.Component {
         removeFilter(tag);
     }
     createTags = () => {
-        const { tagList } = this.props;
+        const { tagList, language } = this.props;
         let tagArr = [];
         tagArr = tagArr.concat(tagList.commonFilters, tagList.locationFilters, tagList.locationTypeFilters);
         //tag types are
@@ -24,7 +24,7 @@ class TagBar extends React.Component {
         //let tagList = [{ type: "city", text: "Tampere" }, { type: "filter", text: "sauna" }, { type: "filter", text: "vessa" }, { type: "locationtype", text: "laavu" }]
         return tagArr.map((tag, i) => {
             return (
-                <Tag key={tag.object_name + i} tag={tag} handleTagRemove={this.handleTagRemove} />
+                <Tag key={tag.object_name + i} language={language} tag={tag} handleTagRemove={this.handleTagRemove} />
             )
         })
     }
@@ -41,7 +41,8 @@ class TagBar extends React.Component {
 }
 const mapStateToProps = state => {
     return {
-        tagList: state.filters
+        tagList: state.filters,
+        language: state.general.language
     }
 }
 export default connect(mapStateToProps, { removeFilter })(TagBar);

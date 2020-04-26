@@ -1,12 +1,10 @@
 import React from "react";
-
-
-
+import { getCorrectFilter } from "../../actions/FilterActions"
 const Tag = (props) => {
-    const { tag } = props;
+    const { tag, language } = props;
     return (
         <span key={tag.object_name} className={"tag tag-" + tag.object_type}>
-            {tag.object_name}
+            {getCorrectFilter(tag, language)}
             <span className="tag-cross" onClick={() => props.handleTagRemove(tag)}>
                 x
         </span>
