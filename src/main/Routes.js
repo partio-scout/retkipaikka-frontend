@@ -4,12 +4,12 @@ import { withRouter } from 'react-router';
 import { compose } from 'redux'
 import { connect } from "react-redux";
 import { withTranslation } from "react-i18next"
-
+import PrivateRoute from "./PrivateRoute"
 //const Main = React.lazy(() => import("../containers/Main"));
 //const Admin = React.lazy(() => import("../containers/Admin"));
 import Main from "../containers/Main";
 import Admin from "../containers/Admin";
-
+import Login from "../containers/Login"
 
 
 class Routes extends Component {
@@ -23,8 +23,10 @@ class Routes extends Component {
         }
         return (
             <Switch>
-                <Route exact path="/hallinta" render={(props) => (<Admin {...props} t={t} />)} />
+                <PrivateRoute exact path="/hallinta" t={t} component={Admin} />
+                {/* <Route exact path="/hallinta" render={(props) => (<Admin {...props} t={t} />)} /> */}
                 <Route exact path="/" render={(props) => (<Main {...props} t={t} />)} />
+                <Route exact path="/kirjaudu" render={(props) => (<Login {...props} t={t} />)} />
                 <Route render={() => (<h1>Sivua ei löydy</h1>)} />
             </Switch>
         )

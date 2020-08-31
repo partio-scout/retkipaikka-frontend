@@ -7,9 +7,10 @@ import AdminSettings from "../components/admin/AdminSettings"
 import LocationList from "../components/admin/LocationList"
 import FilterHandler from "../components/admin/FilterHandler";
 import { fetchLocations } from "../actions/SearchResultsActions"
-import { login } from "../actions/LoginActions";
+import { login, checkLoginStatus } from "../actions/LoginActions";
 import { fetchFilters, fetchRegionsAndMunicipalities } from "../actions/FilterActions"
 import { connect } from "react-redux";
+import ClipLoader from "react-spinners/ClipLoader";
 
 
 class Admin extends React.Component {
@@ -19,6 +20,7 @@ class Admin extends React.Component {
         this.state = {
             element: "locations"
         }
+
         this.handleInitialFetch();
 
 
@@ -40,54 +42,13 @@ class Admin extends React.Component {
 
 
 
-
-    handleFormSubmit = (e) => {
-        const { login } = this.props;
-
-        e.preventDefault();
-        let emptyFound = false;
-        var forms = document.getElementsByClassName('needs-validation');
-
-        Array.prototype.filter.call(forms, function (form) {
-            if (form.checkValidity() === false) {
-                e.stopPropagation();
-                emptyFound = true;
-            }
-            form.classList.add('was-validated');
-        })
-        if (emptyFound) {
-            return;
-        }
-
-        let dataObj = { email: this.state.location_email, password: this.state.location_password }
-        login(dataObj);
-
-    }
-
-    handleChange = (e) => {
-        let value = e.target.type === "checkbox" ? e.target.checked : e.target.value;
-        this.setState({ [e.target.id]: value });
-    }
-
-
-
-    getLoginForm = () => {
-        return (
-            <div className="login-form">
-                <form className="needs-validation" noValidate>
-                    <TextInput handleChange={this.handleChange} id="location_email" placeholder="Sähköpostiosoite" helper="Kirjoita sähköpostiosoitteesi" text="Sähköposti" required={true} />
-                    <TextInput handleChange={this.handleChange} id="location_password" placeholder="Salasana" helper="Kirjoita salasanasi" text="Salasana" customType="password" required={true} />
-                    <button onClick={this.handleFormSubmit} type="submit" className="btn btn-primary">Kirjaudu</button>
-                </form>
-            </div>
-        )
-    }
     handleMenuClick = (e) => {
         let type = e.target.id;
         if (type) {
             this.setState({ element: type })
         }
     }
+
     getAdminPanel = () => {
         const { element } = this.state;
         const { t } = this.props;
@@ -119,11 +80,11 @@ class Admin extends React.Component {
             </div>
         )
     }
+
+
     render() {
-        const { loginData, t } = this.props;
-        console.log(loginData);
-        let loggedIn = loginData.loggedIn;
-        let renderElement = loggedIn ? this.getAdminPanel() : this.getLoginForm();
+        const { t } = this.props;
+        let renderElement = this.getAdminPanel()
         return (
             <div className="frontpage-container">
                 <Header t={t} location={this.props.location} />
@@ -138,8 +99,7 @@ const mapStateToProps = state => {
         filtersLoc: state.filters.locationTypeFilterList,
         filtersCom: state.filters.commonFilterList,
         regions: state.filters.regions,
-        municipalities: state.filters.municipalities,
-        loginData: state.login
+        municipalities: state.filters.municipalities
     }
 }
-export default connect(mapStateToProps, { fetchLocations, fetchFilters, fetchRegionsAndMunicipalities, login })(Admin);
+export default connect(mapStateToProps, { fetchLocations, fetchFilters, fetchRegionsAndMunicipalities })(Admin);
