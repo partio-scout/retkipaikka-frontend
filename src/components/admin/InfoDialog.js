@@ -7,8 +7,7 @@ import Draggable from 'react-draggable';
 import TextInput from "../locationform/textInput"
 import { deleteLocation } from "../../actions/SearchResultsActions"
 import { editFilter, editCategory } from "../../actions/FilterActions"
-import { confirmAlert } from 'react-confirm-alert';
-import 'react-confirm-alert/src/react-confirm-alert.css';
+import { askForConfirmation } from "../helpers/Helpers"
 
 
 
@@ -110,21 +109,9 @@ class InfoDialog extends React.Component {
     }
 
     askForEditConfirmation = (name, title, obj) => {
-        confirmAlert({
-            title: title + " muokkaaminen",
-            message: 'Haluatko tallentaa tekemäsi muokkaukset?',
-            buttons: [
-                {
-                    label: 'Kyllä',
-                    onClick: () => this.submitFilterEdit(obj)
-                },
-                {
-                    label: 'Ei',
-
-                }
-            ]
-        });
+        askForConfirmation("Haluatko tallentaa tekemäsi muokkaukset?", title + " muokkaaminen", () => this.submitFilterEdit(obj), () => { })
     };
+
     getForms = (obj) => {
         let textInfo = obj.object_type === "locationtype" ? "kategorian" : "suodattimen"
         let helperInfo = obj.object_type === "locationtype" ? "Kategoria" : "Suodatin"
@@ -141,7 +128,6 @@ class InfoDialog extends React.Component {
         let id = obj.filter_id ? obj.filter_id : obj.category_id;
         let name = obj.object_name
         let title = obj.filter_id ? "Suodattimen " : "Kategorian ";
-
         return (
             <div>
                 <h4 className="move-handle">#{id}</h4>
@@ -150,7 +136,7 @@ class InfoDialog extends React.Component {
                 {this.getForms(obj)}
                 <br />
                 <br />
-                <button onClick={() => handleDelete(name, title, obj)} className="btn btn-primary info-button">{t("admin.delete")}</button>
+                <button onClick={() => handleDelete(title + " poistaminen", "Haluatko poistaa " + name, obj)} className="btn btn-primary info-button">{t("admin.delete")}</button>
                 <button onClick={() => this.askForEditConfirmation(name, title, obj)} className="btn btn-primary info-button">{t("admin.save")}</button>
             </div>
         )
@@ -185,21 +171,7 @@ class InfoDialog extends React.Component {
     }
 
     handleDelete = (obj) => {
-        confirmAlert({
-            title: 'Retkipaikan poistaminen',
-            message: 'Haluatko varmasti poistaa retkipaikan ' + obj.location_name + "?",
-            buttons: [
-                {
-                    label: 'Kyllä',
-                    onClick: () => this.submitDelete(obj)
-                },
-                {
-                    label: 'Ei',
-                    onClick: () => this.closeFunc()
-
-                }
-            ]
-        });
+        askForConfirmation('Haluatko varmasti poistaa retkipaikan ' + obj.location_name + "?", "Retkipaikan poistaminen", () => this.submitDelete(obj), this.closeFunc)
     };
 
 

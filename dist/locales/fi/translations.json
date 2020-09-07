@@ -11,7 +11,14 @@
         "filter": "Suodata",
         "show_more": "Näytä lisää",
         "triplocation_success": "Retkipaikka ilmoitettu",
-        "triplocation_fail": "Virhe retkipaikan lisäämisessä"
+        "triplocation_fail": "Virhe retkipaikan lisäämisessä",
+        "logout": "Kirjaudu ulos",
+        "logout_confirm_text": "Haluatko kirjautua ulos?",
+        "logout_confirm": "Vahvista uloskirjautuminen",
+        "register": "Pyydä käyttöoikeuksia hallintasivulle",
+        "login": "Kirjaudu",
+        "register_button": "Rekisteröidy",
+        "register_text": "Rekisteröitymisen jälkeen järjestelmään tulee ilmoitus käyttäjän luonnista, jonka jälkeen ylläpitäjä käy hyväksymässä käyttäjähakemuksen. Saat ilmoituksen sähköpostiisi kun luotua käyttäjää voidaan käyttää kirjautumiseen"
     },
     "form": {
         "triplocation_name": "Retkipaikka",

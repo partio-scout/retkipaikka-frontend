@@ -8,7 +8,7 @@ import {
 
 
 import axios from "axios";
-
+import { getUser } from "./LoginActions"
 
 
 export const fetchLocations = (accepted) => async (dispatch) => {
@@ -93,7 +93,7 @@ export const postFormData = (data, images, t) => (dispatch) => {
     })
 }
 export const postEditData = (data, images) => (dispatch, getState) => {
-    let accessToken = getState().login.accessToken;
+    let accessToken = getUser().id;
     accessToken = "access_token=" + accessToken;
 
     console.log("in edit")
@@ -133,7 +133,7 @@ export const postEditData = (data, images) => (dispatch, getState) => {
 }
 
 export const removeEditImages = (id, imgArr) => async (dispatch, getState) => {
-    let accessToken = getState().login.accessToken;
+    let accessToken = getUser().id;
     accessToken = "&access_token=" + accessToken;
     for (let i = 0; i < imgArr.length; ++i) {
         try {
@@ -146,7 +146,7 @@ export const removeEditImages = (id, imgArr) => async (dispatch, getState) => {
 }
 
 export const deleteLocation = (data) => (dispatch, getState) => {
-    let accessToken = getState().login.accessToken;
+    let accessToken = getUser().id;
     let stringifiedData = JSON.stringify(data);
     console.log(stringifiedData);
     axios.delete(

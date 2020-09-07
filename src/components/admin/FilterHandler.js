@@ -3,9 +3,9 @@ import "./admin.css"
 import { connect } from "react-redux";
 import TextInput from "../locationform/textInput"
 import { postFilter, postCategory, deleteCategory, deleteFilter } from "../../actions/FilterActions"
-import { confirmAlert } from 'react-confirm-alert';
 import InfoDialog from "./InfoDialog"
-import 'react-confirm-alert/src/react-confirm-alert.css';
+import { askForConfirmation } from "../helpers/Helpers"
+
 class FilterHandler extends React.Component {
     state = {
         clickedObj: null
@@ -45,14 +45,12 @@ class FilterHandler extends React.Component {
             let obj = {}
             switch (value) {
                 case "filter":
-                    obj = this.generateObj(value);
-                    this.askForConfirmation("suodattimen " + data, "Suodattimen lisääminen", obj)
-
-
+                    obj = this.generateObj(value)
+                    askForConfirmation("Haluatko tallentaa suodattimen " + data, "Suodattimen lisääminen", () => this.handlePost(obj), this.closeFunc)
                     break;
                 case "locationtype":
                     obj = this.generateObj(value);
-                    this.askForConfirmation("kategorian " + data, "Kategorian lisääminen", obj)
+                    askForConfirmation("Haluatko tallentaa kategorian " + data, "Kategorian lisääminen", () => this.handlePost(obj), this.closeFunc)
                     break;
                 default:
                     break;
@@ -99,23 +97,6 @@ class FilterHandler extends React.Component {
         }
 
     }
-    askForConfirmation = (name, title, obj) => {
-        confirmAlert({
-            title: title,
-            message: 'Haluatko tallentaa ' + name + '?',
-            buttons: [
-                {
-                    label: 'Kyllä',
-                    onClick: () => this.handlePost(obj)
-                },
-                {
-                    label: 'Ei',
-                    onClick: () => this.closeFunc()
-
-                }
-            ]
-        });
-    };
 
     handleDelete = (obj) => {
         const { deleteFilter, deleteCategory } = this.props;
@@ -128,22 +109,9 @@ class FilterHandler extends React.Component {
         this.handleClose()
 
     }
-    askForDelConfirmation = (name, title, obj) => {
-        confirmAlert({
-            title: title + " poistaminen",
-            message: 'Haluatko poistaa ' + name + '?',
-            buttons: [
-                {
-                    label: 'Kyllä',
-                    onClick: () => this.handleDelete(obj)
-                },
-                {
-                    label: 'Ei',
-                    onClick: () => this.closeFunc()
+    askForDelConfirmation = (title, message, obj) => {
+        askForConfirmation(message, title, () => this.handleDelete(obj), this.closeFunc)
 
-                }
-            ]
-        });
     };
 
 

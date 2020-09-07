@@ -7,8 +7,7 @@ import TextInput from "./textInput"
 import AutoCompleteInput from "../inputform/TextInput"
 import FormImageUpload from "./FormImageUpload";
 import "./locationform.css"
-import { confirmAlert } from 'react-confirm-alert';
-import 'react-confirm-alert/src/react-confirm-alert.css';
+import { askForConfirmation } from "../helpers/Helpers"
 
 const initialState = {}
 class LocationForm extends React.Component {
@@ -132,20 +131,7 @@ class LocationForm extends React.Component {
 
 
     askForConfirmation = (obj) => {
-        confirmAlert({
-            title: 'Retkipaikan muokkaaminen',
-            message: 'Haluatko tallentaa tekemäsi muokkaukset?',
-            buttons: [
-                {
-                    label: 'Kyllä',
-                    onClick: () => this.submitForm(obj, true)
-                },
-                {
-                    label: 'Ei',
-
-                }
-            ]
-        });
+        askForConfirmation('Haluatko tallentaa tekemäsi muokkaukset?', "Retkipaikan muokkaaminen", () => this.submitForm(obj, true), () => { })
     };
     checkDeleteImgs = (fromState, fromObj) => {
         if (fromState.length === fromObj.length) {

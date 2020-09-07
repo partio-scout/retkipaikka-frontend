@@ -18,17 +18,34 @@
     float: right;
     padding: 10px;
 }
-
+.header-user-container{
+    color:white;
+    margin-right:5px;
+}
+.header-user-container button{
+    margin-left:5px;
+  
+}
+.header-user-container u{
+    cursor: pointer;
+}
+.left-header-container{
+    float: right;
+    display: flex;
+    flex-direction: column;
+}
 .language-icon{
  
     float:right;
       
 }
+.language-menu{
+    float:right;
+}
 .inverse-icon-lang{
  transform: rotate(-180deg);
 }
 .language-menu-container{
-    width: 120px;
     float: right;
 }
 .language-menu-container span{
@@ -38,6 +55,9 @@
     display:inline-flex;
     margin-right:5px;
     
+}
+.language-menu-item:hover{
+    cursor: pointer;
 }
 .lang-selected{
     font-weight: bold;

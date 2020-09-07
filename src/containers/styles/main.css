@@ -35,6 +35,11 @@
     margin: 0 auto;
     margin-top:15%;
 }
+.login-register-text{
+    margin-top:10px;
+    text-decoration:underline;
+    cursor: pointer;
+}
 .admin-data-container{
     margin-top:70px;
     display:inline-flex;

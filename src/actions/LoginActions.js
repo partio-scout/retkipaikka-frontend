@@ -13,7 +13,7 @@ export const login = async (dataObj) => {
     // _API_PATH_ + "/Filters", data
     let status = false;
     try {
-        await axios.post(_API_PATH_ + "/Users/login?", dataObj).then(res => {
+        await axios.post(_API_PATH_ + "/Users/login?include=user", dataObj).then(res => {
             console.log(res);
             if (res.data.id) {
                 localStorage.setItem('user', JSON.stringify(res.data))
@@ -43,6 +43,43 @@ function IsJsonString(str) {
     return true;
 }
 
+
+export const getUser = () => {
+    const user = localStorage.getItem('user')
+    if (IsJsonString(user) && user !== null) {
+        return JSON.parse(user)
+    }
+    return {};
+}
+export const register = async (object) => {
+    let status = false;
+    await axios.post(_API_PATH_ + "/Users/createUser", object).then(res => {
+        if (res.status === 204) {
+            status = true
+            window.alert("Käyttäjä luotu")
+        } else {
+            window.alert("Käyttäjän luonti epäonnistui!")
+        }
+
+    })
+    return status;
+
+}
+export const logOut = async () => {
+    const { id } = getUser();
+    let status = false;
+    await axios.post(_API_PATH_ + "/Users/logout?access_token=" + id, id).then(res => {
+        if (res.status === 204) {
+            status = true;
+            localStorage.removeItem('user')
+        } else {
+            window.alert("Uloskirjautuminen epäonnistui!")
+        }
+        //console.log(res, "RSEPONSE")
+    })
+    return status
+
+}
 export const checkLoginStatus = async () => {
     const user = localStorage.getItem('user')
     console.log("checkLoginStatus", "LOGINSTATUS")

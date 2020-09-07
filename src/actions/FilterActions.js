@@ -12,7 +12,7 @@ import {
 } from "./ActionTypes"
 
 import axios from "axios";
-
+import { getUser } from "./LoginActions"
 export const addFilter = (obj) => {
     let actionType = ""
     // handles the input form filters
@@ -95,8 +95,7 @@ export const fetchRegionsAndMunicipalities = () => async (dispatch) => {
 
 }
 export const postFilter = (data) => (dispatch, getState) => {
-
-    let accessToken = getState().login.accessToken;
+    let accessToken = getUser().id;
     accessToken = "?access_token=" + accessToken;
     axios.post(
         _API_PATH_ + "/Filters" + accessToken, data
@@ -109,7 +108,7 @@ export const postFilter = (data) => (dispatch, getState) => {
 }
 export const editFilter = (data) => (dispatch, getState) => {
 
-    let accessToken = getState().login.accessToken;
+    let accessToken = getUser().id;
     accessToken = "?access_token=" + accessToken;
     axios.patch(
         _API_PATH_ + "/Filters/" + data.filter_id + accessToken, data
@@ -123,7 +122,7 @@ export const editFilter = (data) => (dispatch, getState) => {
 }
 export const editCategory = (data) => (dispatch, getState) => {
 
-    let accessToken = getState().login.accessToken;
+    let accessToken = getUser().id;
     accessToken = "?access_token=" + accessToken;
     axios.patch(
         _API_PATH_ + "/Categories/" + data.category_id + accessToken, data
@@ -135,8 +134,7 @@ export const editCategory = (data) => (dispatch, getState) => {
 
 }
 export const postCategory = (data) => (dispatch, getState) => {
-    console.log("in add cate")
-    let accessToken = getState().login.accessToken;
+    let accessToken = getUser().id;
     accessToken = "?access_token=" + accessToken;
     axios.post(
         _API_PATH_ + "/Categories" + accessToken, data
@@ -148,7 +146,7 @@ export const postCategory = (data) => (dispatch, getState) => {
 }
 
 export const deleteCategory = (data) => (dispatch, getState) => {
-    let accessToken = getState().login.accessToken;
+    let accessToken = getUser().id;
     accessToken = "?access_token=" + accessToken;
     console.log(data)
     axios.get(
@@ -170,7 +168,7 @@ export const deleteCategory = (data) => (dispatch, getState) => {
     });
 }
 export const deleteFilter = (data) => (dispatch, getState) => {
-    let accessToken = getState().login.accessToken;
+    let accessToken = getUser().id;
     accessToken = "?access_token=" + accessToken;
     axios.get(
         _API_PATH_ + "/Filters/" + data.filter_id + "/triplocations/count"
