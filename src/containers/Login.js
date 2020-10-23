@@ -56,8 +56,10 @@ const Login = (props) => {
     }
 
     const redirect = () => {
+        console.log(location.state)
         if (location.state) {
             if (location.state.from) {
+                console.log("in here ", location.state.from.pathname)
                 history.push(location.state.from.pathname)
 
             }

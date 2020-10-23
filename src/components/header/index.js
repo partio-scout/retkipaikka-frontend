@@ -3,7 +3,7 @@ import "./header.css";
 import { Link } from "react-router-dom";
 import LanguageMenu from "./LanguageMenu"
 import { getUser, logOut } from "../../actions/LoginActions"
-import { askForConfirmation } from "../helpers/Helpers"
+import { askForConfirmation } from "../../helpers/Helpers"
 import { useHistory } from "react-router-dom"
 
 const Header = ({ location, t }) => {

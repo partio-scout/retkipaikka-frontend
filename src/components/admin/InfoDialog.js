@@ -7,7 +7,7 @@ import Draggable from 'react-draggable';
 import TextInput from "../locationform/textInput"
 import { deleteLocation } from "../../actions/SearchResultsActions"
 import { editFilter, editCategory } from "../../actions/FilterActions"
-import { askForConfirmation } from "../helpers/Helpers"
+import { askForConfirmation } from "../../helpers/Helpers"
 
 
 

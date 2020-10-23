@@ -53,6 +53,7 @@ class Admin extends React.Component {
         const { element } = this.state;
         const { t } = this.props;
         let renderElement = "";
+        console.log(element)
         switch (element) {
             case "locations":
             case "notifications":
@@ -63,6 +64,7 @@ class Admin extends React.Component {
                 break;
             case "settings":
                 renderElement = <AdminSettings t={t} />
+                break;
             default:
                 renderElement = <h3>Testi</h3>
                 break;

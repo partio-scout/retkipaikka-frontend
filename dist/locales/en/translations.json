@@ -83,5 +83,10 @@
         "save": "Tallenna",
         "show_user": "Näytä käyttäjälle",
         "settings": "Asetukset"
+    },
+    "settings": {
+        "user_settings_title": "Tietoa käyttäjästä",
+        "created": "Luotu",
+        "email": "Sähköposti"
     }
 }

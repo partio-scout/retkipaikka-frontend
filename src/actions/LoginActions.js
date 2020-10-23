@@ -51,6 +51,22 @@ export const getUser = () => {
     }
     return {};
 }
+
+export const changePassword = async (object) => {
+    const { id } = getUser();
+    let status = false;
+
+    await axios.post(_API_PATH_ + "/Users/change-password?access_token=" + id, object).then(res => {
+        console.log(res)
+        if (res.status === 204) {
+            status = true;
+            window.alert("Salasana vaihdettu")
+        }
+    }).catch(e => {
+        window.alert("Salasanan vaihto epäonnistui")
+    })
+    return status;
+}
 export const register = async (object) => {
     let status = false;
     await axios.post(_API_PATH_ + "/Users/createUser", object).then(res => {
@@ -80,6 +96,8 @@ export const logOut = async () => {
     return status
 
 }
+
+
 export const checkLoginStatus = async () => {
     const user = localStorage.getItem('user')
     console.log("checkLoginStatus", "LOGINSTATUS")
@@ -88,6 +106,9 @@ export const checkLoginStatus = async () => {
             const { id, userId } = JSON.parse(user);
             return await axios.get(_API_PATH_ + "/Users/checkAccessToken/" + id).then(res => {
                 console.log(res, "RESASDASD")
+                if (!res.data) {
+                    localStorage.removeItem('user')
+                }
                 return res.data;
             })
         }

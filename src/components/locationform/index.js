@@ -7,7 +7,7 @@ import TextInput from "./textInput"
 import AutoCompleteInput from "../inputform/TextInput"
 import FormImageUpload from "./FormImageUpload";
 import "./locationform.css"
-import { askForConfirmation } from "../helpers/Helpers"
+import { askForConfirmation } from "../../helpers/Helpers"
 
 const initialState = {}
 class LocationForm extends React.Component {

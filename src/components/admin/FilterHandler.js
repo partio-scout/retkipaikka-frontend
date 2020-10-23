@@ -4,7 +4,8 @@ import { connect } from "react-redux";
 import TextInput from "../locationform/textInput"
 import { postFilter, postCategory, deleteCategory, deleteFilter } from "../../actions/FilterActions"
 import InfoDialog from "./InfoDialog"
-import { askForConfirmation } from "../helpers/Helpers"
+import { askForConfirmation, clearFormByClassName } from "../../helpers/Helpers"
+import AdminTable from "../../helpers/AdminTable"
 
 class FilterHandler extends React.Component {
     state = {
@@ -60,10 +61,22 @@ class FilterHandler extends React.Component {
     }
 
 
-    getRowData = (obj, dataId) => {
+    commonFilterRows = (obj) => {
         return (
-            <tr key={obj[dataId + "id"]} onClick={(e) => this.handleObjectClick(obj, e)}>
-                <th scope="row">{obj[dataId + "id"]}</th>
+            <tr key={obj["filter_id"]} onClick={(e) => this.handleObjectClick(obj, e)}>
+                <th scope="row">{obj["filter_id"]}</th>
+                <td>{obj.object_name}</td>
+                <td>{obj.object_name_sv ? obj.object_name_sv : "-"}</td>
+                <td>{obj.object_name_sa ? obj.object_name_sa : "-"}</td>
+                <td>{obj.object_name_en ? obj.object_name_en : "-"}</td>
+
+            </tr>
+        )
+    }
+    categoryRows = (obj) => {
+        return (
+            <tr key={obj["category_id"]} onClick={(e) => this.handleObjectClick(obj, e)}>
+                <th scope="row">{obj["category_id"]}</th>
                 <td>{obj.object_name}</td>
                 <td>{obj.object_name_sv ? obj.object_name_sv : "-"}</td>
                 <td>{obj.object_name_sa ? obj.object_name_sa : "-"}</td>
@@ -91,10 +104,7 @@ class FilterHandler extends React.Component {
         } else {
             postCategory(obj);
         }
-        let fields = document.getElementsByClassName("form-control");
-        for (let i = 0; i < fields.length; ++i) {
-            fields[i].value = ""
-        }
+        clearFormByClassName("form-control")
 
     }
 
@@ -114,34 +124,17 @@ class FilterHandler extends React.Component {
 
     };
 
-
-    getTable = (data, dataId) => {
-        const { t } = this.props;
-        let values = [...data].splice(1, data.length - 1).map(d => this.getRowData(d, dataId));
-
-
-        // values = values.map(d => this.getRowData(d));
-        let head = (<thead>
-            <tr>
-                <th id={dataId + "id"} scope="col">#</th>
-                <th id="object_name" scope="col">{t("admin.name")}</th>
-                <th id="object_name_sv" scope="col">SV</th>
-                <th id="object_name_sa" scope="col">SMN</th>
-                <th id="object_name_en" scope="col">EN</th>
-            </tr>
-        </thead>)
-
-        let body = (<tbody>
-            {values}
-        </tbody>)
-
-        return (<table className="table table-hover">
-            {head}
-            {body}
-        </table>)
-    }
     handleClose = () => {
         this.setState({ clickedObj: null })
+    }
+    filterEntries = (type) => {
+        return [
+            { id: type, t: "#" },
+            { id: "object_name", t: "admin.name" },
+            { id: "object_name_sv", t: "SV" },
+            { id: "object_name_sa", t: "SMN" },
+            { id: "object_name_en", t: "EN" },
+        ]
     }
 
     render() {
@@ -152,8 +145,12 @@ class FilterHandler extends React.Component {
             <div className="admin-content-container">
                 <h3>{t("admin.filters_title")}</h3>
                 <h5>{t("admin.filters")}</h5>
-                {this.getTable(commonFilters, "filter_")}
-
+                <AdminTable
+                    getRowData={this.commonFilterRows}
+                    data={[...commonFilters].splice(1, commonFilters.length - 1)}
+                    objEntries={this.filterEntries("filter_id")}
+                    t={t}
+                />
                 <form onSubmit={(e) => this.handleSubmit(e, "filter")}>
                     <div className="form-row">
                         <TextInput maxLength={64} handleChange={this.handleChange} id="filter" placeholder="Suomeksi" helper="Kirjoita lisättävän suodattimen nimi*" text="Suodatin" size="col-md-3" required={true} />
@@ -164,7 +161,12 @@ class FilterHandler extends React.Component {
                     </div>
                 </form>
                 <h5>{t("admin.categories")}</h5>
-                {this.getTable(locationTypes, "category_")}
+                <AdminTable
+                    getRowData={this.categoryRows}
+                    data={[...locationTypes].splice(1, locationTypes.length - 1)}
+                    objEntries={this.filterEntries("category_id")}
+                    t={t}
+                />
                 <form onSubmit={(e) => this.handleSubmit(e, "locationtype")}>
                     <div className="form-row">
                         <TextInput maxLength={64} handleChange={this.handleChange} id="locationtype" placeholder="Suomeksi" helper="Kirjoita lisättävän kategorian nimi*" text="Kategoria" size="col-md-3" required={true} />

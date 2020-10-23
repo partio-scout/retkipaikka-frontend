@@ -19,5 +19,11 @@ const askForConfirmation = (message, title, onYesClick, onNoClick) => {
     });
 };
 
+const clearFormByClassName = (cn) => {
+    let fields = document.getElementsByClassName(cn);
+    for (let f of fields) {
+        f.value = ""
+    }
 
-export { askForConfirmation }
+}
+export { askForConfirmation, clearFormByClassName }
