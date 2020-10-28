@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { getUser, changePassword } from "../../actions/LoginActions"
+import { getUser, changePassword } from "../../helpers/UserHelper"
 import TextInput from "../locationform/textInput"
 import { askForConfirmation, clearFormByClassName } from "../../helpers/Helpers"
 
@@ -7,6 +7,8 @@ const AdminSettings = ({ handleClick, selectedTab, t }) => {
     // regular admin settings
     const [state, setState] = useState({})
     const user = getUser();
+    //const currentUsers = 
+    //const notificationUsers
 
     const regionNotifications = () => {
 

@@ -5,6 +5,7 @@ import { compose } from 'redux'
 import { connect } from "react-redux";
 import { withTranslation } from "react-i18next"
 import PrivateRoute from "./PrivateRoute"
+import Header from "../components/header/Header"
 const Main = React.lazy(() => import("../containers/Main"));
 const Admin = React.lazy(() => import("../containers/Admin"));
 const Login = React.lazy(() => import("../containers/Login"));
@@ -26,6 +27,7 @@ class Routes extends Component {
         return (
             <Switch>
                 <Suspense fallback={<Spinner loading={true} />}>
+                    <Header t={t} location={this.props.location} />
                     <PrivateRoute exact path="/hallinta" t={t} component={Admin} />
                     {/* <Route exact path="/hallinta" render={(props) => (<Admin {...props} t={t} />)} /> */}
                     <Route exact path="/" render={(props) => (<Main {...props} t={t} />)} />

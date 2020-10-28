@@ -1,13 +1,13 @@
 import React from "react";
 import "./styles/main.css";
-import Header from "../components/header"
+import Header from "../components/header/Header"
 import TextInput from "../components/locationform/textInput";
 import AdminPanel from "../components/admin/AdminPanel"
 import AdminSettings from "../components/admin/AdminSettings"
 import LocationList from "../components/admin/LocationList"
 import FilterHandler from "../components/admin/FilterHandler";
 import { fetchLocations } from "../actions/SearchResultsActions"
-import { login, checkLoginStatus } from "../actions/LoginActions";
+import { login, checkLoginStatus } from "../helpers/UserHelper";
 import { fetchFilters, fetchRegionsAndMunicipalities } from "../actions/FilterActions"
 import { connect } from "react-redux";
 import ClipLoader from "react-spinners/ClipLoader";
@@ -89,7 +89,6 @@ class Admin extends React.Component {
         let renderElement = this.getAdminPanel()
         return (
             <div className="frontpage-container">
-                <Header t={t} location={this.props.location} />
                 {renderElement}
             </div>
         )

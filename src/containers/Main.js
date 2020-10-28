@@ -1,9 +1,9 @@
 import React from "react";
 import "./styles/main.css";
-import Map from "../components/map"
-import Header from "../components/header"
-import InputContainer from "../components/inputform"
-import LocationForm from "../components/locationform"
+import Map from "../components/map/Map"
+import Header from "../components/header/Header"
+import InputContainer from "../components/inputform/InputContainer"
+import LocationForm from "../components/locationform/LocationForm"
 import { connect } from "react-redux";
 import { fetchLocations } from "../actions/SearchResultsActions"
 import { fetchFilters, fetchRegionsAndMunicipalities } from "../actions/FilterActions"
@@ -48,7 +48,6 @@ class Main extends React.Component {
 
         return (
             <div className="frontpage-container">
-                <Header t={t} location={location} />
                 <div className="frontpage-image-container">
                     <img alt="frontpage_image" src={_IMAGES_PATH_ + "frontpage_img.jpg"} />
                     <h2 className="main-header">Partion retkipaikat</h2>

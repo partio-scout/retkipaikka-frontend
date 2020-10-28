@@ -8,7 +8,7 @@ import {
 
 
 import axios from "axios";
-import { getUser } from "./LoginActions"
+import { getUser } from "../helpers/UserHelper"
 
 
 export const fetchLocations = (accepted) => async (dispatch) => {

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import "./styles/main.css";
-import Header from "../components/header"
+import Header from "../components/header/Header"
 import TextInput from "../components/locationform/textInput";
-import { login, register } from "../actions/LoginActions";
+import { login, register } from "../helpers/UserHelper";
 import { connect } from "react-redux";
 
 
@@ -108,7 +108,6 @@ const Login = (props) => {
 
     return (
         <div className="frontpage-container">
-            <Header t={t} location={location} />
             {registerForm ? getRegisterForm() : getLoginForm()}
         </div>
     )

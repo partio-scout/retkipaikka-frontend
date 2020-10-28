@@ -12,7 +12,7 @@ import {
 } from "./ActionTypes"
 
 import axios from "axios";
-import { getUser } from "./LoginActions"
+import { getUser } from "../helpers/UserHelper"
 export const addFilter = (obj) => {
     let actionType = ""
     // handles the input form filters

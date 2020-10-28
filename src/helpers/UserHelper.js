@@ -1,8 +1,3 @@
-
-import {
-    LOG_IN,
-    LOG_OUT
-} from "./ActionTypes"
 import axios from "axios";
 
 

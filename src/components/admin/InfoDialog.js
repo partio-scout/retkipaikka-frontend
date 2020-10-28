@@ -2,7 +2,7 @@ import React from "react";
 import moment from "moment"
 import { connect } from "react-redux";
 import { selectLocation } from "../../actions/MapActions"
-import LocationForm from "../locationform"
+import LocationForm from "../locationform/LocationForm"
 import Draggable from 'react-draggable';
 import TextInput from "../locationform/textInput"
 import { deleteLocation } from "../../actions/SearchResultsActions"

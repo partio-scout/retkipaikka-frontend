@@ -3,7 +3,7 @@ import "./admin.css"
 import { connect } from "react-redux";
 import { getCorrectFilter } from "../../actions/FilterActions"
 import InfoDialog from "./InfoDialog";
-import InputContainer from "../inputform"
+import InputContainer from "../inputform/InputContainer"
 import AdminTable from "../../helpers/AdminTable"
 class LocationList extends React.Component {
     state = {
