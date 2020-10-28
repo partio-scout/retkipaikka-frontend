@@ -70,10 +70,12 @@ class LocationList extends React.Component {
             { id: "location_owner", t: "admin.owner" },
         ]
     }
+
     render() {
         const { clickedObj, clickPos } = this.state;
         const { type, t, results, notifications } = this.props;
         // this same component is used in admin notification and admin location list page
+        console.log(results + "in render ")
         let isLocation = this.checkType(type);
         let title = isLocation ? t("admin.current") : t("admin.unaccepted")
         return (

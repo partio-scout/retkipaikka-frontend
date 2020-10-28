@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-
+import React from "react";
 import "./styles/main.css";
 import Header from "../components/header/Header"
 import TextInput from "../components/locationform/textInput";
@@ -8,61 +7,55 @@ import AdminSettings from "../components/admin/AdminSettings"
 import LocationList from "../components/admin/LocationList"
 import FilterHandler from "../components/admin/FilterHandler";
 import { fetchLocations } from "../actions/SearchResultsActions"
-import { useUserData } from "../helpers/UserHelper";
+import { login, checkLoginStatus } from "../helpers/UserHelper";
 import { fetchFilters, fetchRegionsAndMunicipalities } from "../actions/FilterActions"
-import { useSelector, useDispatch, batch } from "react-redux";
+import { connect, batch } from "react-redux";
 import ClipLoader from "react-spinners/ClipLoader";
 
 
+class Admin extends React.Component {
+    constructor(props) {
+        super(props);
 
-const Admin = (props) => {
-    const { t } = props;
-    const [element, setElement] = useState("locations")
-    const dispatch = useDispatch()
-    const { currentUsers, newUsers } = useUserData();
+        this.state = {
+            element: "locations"
+        }
 
-    const { results, filtersLoc, filtersCom, regions, municipalities } = useSelector(state => {
-        const results = state.searchResults
-        const filtersLoc = state.filters.locationTypeFilterList
-        const filtersCom = state.filters.commonFilterList
-        const regions = state.filters.regions
-        const municipalities = state.filters.municipalities
-        return { results, filtersLoc, filtersCom, regions, municipalities }
-    })
-
-
-    const handleInitialFetch = () => {
-        batch(() => {
-            if (results.searchResults.length === 0) {
-                dispatch(fetchLocations(true));
-                dispatch(fetchLocations(false));
-            }
-            if (filtersLoc.length === 0 || filtersCom.length === 0) {
-                dispatch(fetchFilters());
-            }
-            if (regions.length === 0 || municipalities.length === 0) {
-                dispatch(fetchRegionsAndMunicipalities());
-            }
-        })
-
-        //const { fetchLocations, fetchFilters, fetchRegionsAndMunicipalities, results, filtersLoc, filtersCom, regions, municipalities } = this.props;
+        this.handleInitialFetch();
 
 
     }
 
-    useEffect(() => {
-        handleInitialFetch()
-    }, [])
+    handleInitialFetch = () => {
+        const { fetchLocations, fetchFilters, fetchRegionsAndMunicipalities, results, filtersLoc, filtersCom, regions, municipalities } = this.props;
+        batch(() => {
+            if (results.searchResults.length === 0) {
+                fetchLocations(true);
+                fetchLocations(false);
+            }
+            if (filtersLoc.length === 0 || filtersCom.length === 0) {
+                fetchFilters();
+            }
+            if (regions.length === 0 || municipalities.length === 0) {
+                fetchRegionsAndMunicipalities();
+            }
+        })
+    }
 
-    const handleMenuClick = (e) => {
+
+
+    handleMenuClick = (e) => {
         let type = e.target.id;
         if (type) {
-            setElement(type)
+            this.setState({ element: type })
         }
     }
 
-    const getAdminPanel = () => {
+    getAdminPanel = () => {
+        const { element } = this.state;
+        const { t } = this.props;
         let renderElement = "";
+        console.log(element)
         switch (element) {
             case "locations":
             case "notifications":
@@ -72,7 +65,7 @@ const Admin = (props) => {
                 renderElement = <FilterHandler t={t} />
                 break;
             case "settings":
-                renderElement = <AdminSettings t={t} currentUsers={currentUsers} newUsers={newUsers} />
+                renderElement = <AdminSettings t={t} />
                 break;
             default:
                 renderElement = <h3>Testi</h3>
@@ -82,7 +75,7 @@ const Admin = (props) => {
 
         return (
             <div>
-                <AdminPanel t={t} selectedTab={element} handleClick={handleMenuClick} />
+                <AdminPanel t={t} selectedTab={element} handleClick={this.handleMenuClick} />
                 <div className="admin-data-container">
                     {renderElement}
                 </div>
@@ -92,13 +85,24 @@ const Admin = (props) => {
         )
     }
 
-    console.log("ADMIN RENDER")
-    return (
-        <div className="frontpage-container">
-            {getAdminPanel()}
-        </div>
 
-    )
+    render() {
+        const { t } = this.props;
+        let renderElement = this.getAdminPanel()
+        return (
+            <div className="frontpage-container">
+                {renderElement}
+            </div>
+        )
+    }
 }
-
-export default Admin;
+const mapStateToProps = state => {
+    return {
+        results: state.searchResults,
+        filtersLoc: state.filters.locationTypeFilterList,
+        filtersCom: state.filters.commonFilterList,
+        regions: state.filters.regions,
+        municipalities: state.filters.municipalities
+    }
+}
+export default connect(mapStateToProps, { fetchLocations, fetchFilters, fetchRegionsAndMunicipalities })(Admin);

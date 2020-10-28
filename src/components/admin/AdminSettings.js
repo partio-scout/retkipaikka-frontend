@@ -1,14 +1,14 @@
 import React, { useState } from "react";
-import { getUser, changePassword } from "../../helpers/UserHelper"
+import { getUser, changePassword, useUserData } from "../../helpers/UserHelper"
 import TextInput from "../locationform/textInput"
 import { askForConfirmation, clearFormByClassName } from "../../helpers/Helpers"
 
-const AdminSettings = ({ handleClick, selectedTab, t }) => {
+const AdminSettings = ({ t, currentUsers, notificationUsers }) => {
     // regular admin settings
     const [state, setState] = useState({})
     const user = getUser();
-    //const currentUsers = 
-    //const notificationUsers
+    // const { currentUsers, notificationUsers } = useUserData();
+
 
     const regionNotifications = () => {
 
@@ -68,6 +68,7 @@ const AdminSettings = ({ handleClick, selectedTab, t }) => {
     }
     // settings for super admin
     const listAllUsers = () => {
+        console.log(currentUsers, "CURRENT USERS")
         return (<div>
             list users
         </div>)
