@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { getCorrectFilter } from "../../actions/FilterActions"
 import InfoDialog from "./InfoDialog";
 import InputContainer from "../inputform/InputContainer"
-import AdminTable from "../../helpers/AdminTable"
+import AdminTable from "../shared/AdminTable"
 class LocationList extends React.Component {
     state = {
         clickedObj: null,

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Redirect, Route } from "react-router-dom"
 import { checkLoginStatus } from "../helpers/UserHelper";
-import Spinner from "../helpers/Spinner"
+import Spinner from "../components/shared/Spinner"
 
 const PrivateRoutes = ({ component: Component, ...rest }) => {
     const [loginStatus, setLoginStatus] = useState({ loading: true, loggedIn: false })

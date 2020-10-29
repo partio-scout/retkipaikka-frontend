@@ -3,8 +3,8 @@ import { connect } from "react-redux";
 import { removeFilter, getCorrectFilter } from "../../actions/FilterActions"
 import { postFormData, postEditData, removeEditImages } from "../../actions/SearchResultsActions"
 import SelectInput from "../inputform/SelectInput"
-import TextInput from "./textInput"
-import AutoCompleteInput from "../inputform/TextInput"
+import TextInput from "../shared/TextInput"
+import AutoCompleteInput from "../inputform/AutoCompleteInput"
 import FormImageUpload from "./FormImageUpload";
 import "./locationform.css"
 import { askForConfirmation } from "../../helpers/Helpers"
@@ -241,7 +241,7 @@ class LocationForm extends React.Component {
             />
             <small id={"Help"} className="form-text text-muted form-group">{t("form.triplocation_type_desc")}</small>
             <div className="form-row">
-                <AutoCompleteInput t={t} data={allArr} applyFilter={this.handleSelection} id="object_location" title={t("main.location")} customClassName="form-group col-md-6" helper={t("main.location_desc")} required={true} defaultInputValue={editPageObj.location_municipality ? editPageObj.location_municipality : editPageObj.location_region} />
+                <AutoCompleteInput t={t} data={allArr} applyFilter={this.handleSelection} id="object_location" clearSelection={false} title={t("main.location")} customClassName="form-group col-md-6" helper={t("main.location_desc")} required={true} defaultInputValue={editPageObj.location_municipality ? editPageObj.location_municipality : editPageObj.location_region} />
                 <TextInput defaultValue={editPageObj.location_geo.lat + "," + editPageObj.location_geo.lng} handleChange={this.handleChange} id="location_geo" placeholder={t("form.triplocation_coords")} helper={t("form.triplocation_coords_desc")} text={t("form.triplocation_coords")} size="col-md-6" required={true} />
             </div>
             {this.getTextForm("3", t("form.triplocation_desc"), t("form.triplocation_desc_desc"), editPageObj.location_description, "location_description", 512)}
@@ -291,7 +291,7 @@ class LocationForm extends React.Component {
             <small id={"Help"} className="form-text text-muted form-group">{t("form.triplocation_type_desc")}</small>
             <div className="form-row">
                 {/* <TextInput data={allArr} applyFilter={this.addFilter} title="Paikannimi" customClassName="inputform-select form-group col-md-4 col-sm-11 " /> */}
-                <AutoCompleteInput t={t} data={allArr} applyFilter={this.handleSelection} id="object_location" title={t("main.location")} customClassName="form-group col-md-6" helper={t("main.location_desc")} required={true} />
+                <AutoCompleteInput t={t} data={allArr} applyFilter={this.handleSelection} id="object_location" clearSelection={false} title={t("main.location")} customClassName="form-group col-md-6" helper={t("main.location_desc")} required={true} />
                 {/* <TextInput handleChange={this.handleChange} id="object_name" placeholder="Paikan sijainti" helper="Kirjoita retkipaikan sijainti" text="Sijainti*" size="col-md-6" required={true} /> */}
                 <TextInput handleChange={this.handleChange} id="location_geo" placeholder={t("form.triplocation_coords")} helper={t("form.triplocation_coords_desc")} text={t("form.triplocation_coords")} size="col-md-6" required={true} />
             </div>

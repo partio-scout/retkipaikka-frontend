@@ -9,7 +9,7 @@ import Header from "../components/header/Header"
 const Main = React.lazy(() => import("../containers/Main"));
 const Admin = React.lazy(() => import("../containers/Admin"));
 const Login = React.lazy(() => import("../containers/Login"));
-import Spinner from "../helpers/Spinner"
+import Spinner from "../components/shared/Spinner"
 // import Main from "../containers/Main";
 // import Admin from "../containers/Admin";
 // import Login from "../containers/Login"

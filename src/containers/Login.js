@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./styles/main.css";
 import Header from "../components/header/Header"
-import TextInput from "../components/locationform/textInput";
+import TextInput from "../components/shared/TextInput";
 import { login, register } from "../helpers/UserHelper";
 import { connect } from "react-redux";
 

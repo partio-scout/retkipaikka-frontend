@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { selectLocation } from "../../actions/MapActions"
 import LocationForm from "../locationform/LocationForm"
 import Draggable from 'react-draggable';
-import TextInput from "../locationform/textInput"
+import TextInput from "../shared/TextInput"
 import { deleteLocation } from "../../actions/SearchResultsActions"
 import { editFilter, editCategory } from "../../actions/FilterActions"
 import { askForConfirmation } from "../../helpers/Helpers"

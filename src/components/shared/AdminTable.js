@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Admin from "../containers/Admin";
+import Admin from "../../containers/Admin";
 
 
 const AdminTable = (props) => {

@@ -1,11 +1,11 @@
 import React from "react";
 import "./admin.css"
 import { connect } from "react-redux";
-import TextInput from "../locationform/textInput"
+import TextInput from "../shared/TextInput"
 import { postFilter, postCategory, deleteCategory, deleteFilter } from "../../actions/FilterActions"
 import InfoDialog from "./InfoDialog"
 import { askForConfirmation, clearFormByClassName } from "../../helpers/Helpers"
-import AdminTable from "../../helpers/AdminTable"
+import AdminTable from "../shared/AdminTable"
 
 class FilterHandler extends React.Component {
     state = {

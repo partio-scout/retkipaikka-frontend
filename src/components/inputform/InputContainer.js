@@ -1,6 +1,6 @@
 import React from "react";
 import "./inputform.css"
-import TextInput from "./TextInput";
+import AutoCompleteInput from "./AutoCompleteInput";
 import SelectInput from "./SelectInput";
 import TagBar from "../tagbar/TagBar";
 import { connect } from "react-redux";
@@ -48,7 +48,7 @@ class InputContainer extends React.Component {
                     {/* <div className="inputform-inputs form-row form-group"> */}
                     <form className="inputform-inputs" onSubmit={(e) => e.preventDefault()}>
                         <div className="form-row">
-                            <TextInput t={t} data={allArr} applyFilter={this.addFilter} id={"header-text"} title={t("main.location")} customClassName="inputform-select form-group col-md-4 col-sm-11 " />
+                            <AutoCompleteInput t={t} data={allArr} applyFilter={this.addFilter} id={"header-text"} title={t("main.location")} customClassName="inputform-select form-group col-md-4 col-sm-11 " />
                             <SelectInput language={language} id={"-cat"} data={filtersLoc} applyFilter={this.addFilter} title={t("main.type")} useFiltering={true} customClassName="form-group col-md-3 col-sm-11 " />
                             <SelectInput language={language} id={"filt"} data={filtersCom} applyFilter={this.addFilter} title={t("main.filters")} useFiltering={true} customClassName="form-group col-md-3 col-sm-11 " />
                             <div className="inputform-inputs-button form-group col-md-1 col-sm-11 ">

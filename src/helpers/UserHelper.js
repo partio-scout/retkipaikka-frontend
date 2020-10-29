@@ -95,6 +95,27 @@ export const logOut = async () => {
 
 }
 
+export const modifyUserNotifications = async (notificationType, regions) => {
+    const user = getUser();
+    let status = false;
+
+    if (user.id) {
+        let userCopy = JSON.parse(JSON.stringify(user.user));
+        userCopy.notifications = notificationType;
+        let dataObj = { regions: regions, user: userCopy }
+        await axios.patch(_API_PATH_ + "/Users/modifyUserNotifications?access_token=" + user.id, dataObj).then(res => {
+            console.log(res, "RESPONSE")
+            window.alert("Tallennus onnistui")
+            status = true
+        }).catch(err => {
+            console.error(err);
+            window.alert("Tallennus epäonnistui")
+
+        })
+
+    }
+    return status;
+}
 
 export const checkLoginStatus = async () => {
     const { id } = getUser();
@@ -109,35 +130,55 @@ export const checkLoginStatus = async () => {
     }
     return status;
 }
-
+export const fetchSingleUser = async () => {
+    const user = getUser();
+    const { id, userId } = user;
+    if (id) {
+        return await axios.get(_API_PATH_ + "/Users/fetchUserData/" + userId + "?access_token=" + id).then(res => {
+            let tempUser = { ...user };
+            tempUser.user = res.data;
+            console.log(res, "RESPONSE IN FETCHSINGE")
+            localStorage.setItem('user', JSON.stringify(tempUser))
+            return true
+        }).catch(e => {
+            console.error(e);
+            return false
+        })
+    }
+}
 
 
 export const useUserData = () => {
-    const { id } = getUser();
+    const { id, userId } = getUser();
+
     const [data, setData] = useState({
         currentUsers: [],
         newUsers: [],
         fetched: false
     });
-    useEffect(() => {
-        const fetchData = async () => {
-            if (id && !data.fetched) {
-                let filter = {
-                    include: [{ "relation": "roles" }]
-                }
-                await axios.get(_API_PATH_ + "/Users?filter=" + JSON.stringify(filter) + "&access_token=" + id).then(res => {
-                    let currentUsers = res.data.filter(u => !u.new_user);
-                    let newUsers = res.data.filter(u => u.new_user);
-                    setData({ currentUsers, newUsers, fetched: true });
-                }).catch(e => {
-                    console.error(e);
-                })
+
+    const fetchData = async () => {
+        if (id && !data.fetched) {
+            let filter = {
+                include: [{ "relation": "roles" }]
             }
+            await axios.get(_API_PATH_ + "/Users?filter=" + JSON.stringify(filter) + "&access_token=" + id).then(res => {
+                let currentUsers = res.data.filter(u => !u.new_user);
+                let newUsers = res.data.filter(u => u.new_user);
+                setData({ currentUsers, newUsers, fetched: true });
+            }).catch(e => {
+                console.error(e);
+            })
         }
+    }
+
+    useEffect(() => {
         fetchData();
     }, [])
 
-    return data;
+
+
+    return data
 
 }
 

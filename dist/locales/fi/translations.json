@@ -87,6 +87,10 @@
     "settings": {
         "user_settings_title": "Tietoa käyttäjästä",
         "created": "Luotu",
-        "email": "Sähköposti"
+        "email": "Sähköposti",
+        "regions_none": "Ei ilmoituksia",
+        "regions_all": "Kaikki ilmoitukset",
+        "regions_select": "Valitse maakunnat",
+        "region_notifications": "Valitse maakunnat valikosta"
     }
 }

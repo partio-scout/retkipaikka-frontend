@@ -14,9 +14,13 @@ class TagBar extends React.Component {
         removeFilter(tag);
     }
     createTags = () => {
-        const { tagList, language } = this.props;
-        let tagArr = [];
-        tagArr = tagArr.concat(tagList.commonFilters, tagList.locationFilters, tagList.locationTypeFilters);
+        const { tagList, language, localTags, useGlobalState, handleDelete } = this.props;
+        let tagArr = localTags;
+        if (useGlobalState) {
+            tagArr = tagArr.concat(tagList.commonFilters, tagList.locationFilters, tagList.locationTypeFilters);
+        }
+        console.log(tagArr)
+
         //tag types are
         //filter
         //locationtype
@@ -24,7 +28,7 @@ class TagBar extends React.Component {
         //let tagList = [{ type: "city", text: "Tampere" }, { type: "filter", text: "sauna" }, { type: "filter", text: "vessa" }, { type: "locationtype", text: "laavu" }]
         return tagArr.map((tag, i) => {
             return (
-                <Tag key={tag.object_name + i} language={language} tag={tag} handleTagRemove={this.handleTagRemove} />
+                <Tag key={tag.object_name + i} language={language} tag={tag} handleTagRemove={useGlobalState ? this.handleTagRemove : handleDelete} />
             )
         })
     }
@@ -38,6 +42,11 @@ class TagBar extends React.Component {
             </div>
         )
     }
+}
+TagBar.defaultProps = {
+    useGlobalState: true,
+    handleDelete: () => { },
+    localTags: []
 }
 const mapStateToProps = state => {
     return {

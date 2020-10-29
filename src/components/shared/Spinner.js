@@ -1,6 +1,6 @@
 import React from "react";
 import ClipLoader from "react-spinners/ClipLoader";
-import "./helpers.css"
+import "./shared.css"
 
 const Spinner = (props) => {
     const { loading, size, color } = props;

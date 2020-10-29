@@ -1,21 +1,30 @@
 import React, { useState } from "react";
 import { getUser, changePassword, useUserData } from "../../helpers/UserHelper"
-import TextInput from "../locationform/textInput"
-import { askForConfirmation, clearFormByClassName } from "../../helpers/Helpers"
+import AutoCompleteInput from "../inputform/AutoCompleteInput"
+import TextInput from "../shared/TextInput"
+import RadioButton from "../shared/RadioButton"
+
+import { askForConfirmation, clearFormByClassName, useDynamicState } from "../../helpers/Helpers"
+import RegionNotifications from "./RegionNotifications"
 
 const AdminSettings = ({ t, currentUsers, notificationUsers }) => {
     // regular admin settings
-    const [state, setState] = useState({})
+    const { state, handleChange } = useDynamicState();
     const user = getUser();
-    // const { currentUsers, notificationUsers } = useUserData();
+
+
 
 
     const regionNotifications = () => {
 
-
         // three options: none, all, selected regions
         // accept button 
+        let userNoti = user?.user?.notifications;
+        let userRegions = user?.user?.regions;
+
         return (<div>
+            <RegionNotifications t={t} userNotification={userNoti} regions={userRegions} />
+
             region notification
         </div>)
     }
@@ -47,11 +56,7 @@ const AdminSettings = ({ t, currentUsers, notificationUsers }) => {
 
         </div>)
     }
-    const handleChange = (e) => {
-        let value = e.target.type === "checkbox" ? e.target.checked : e.target.value;
-        setState({ ...state, [e.target.id]: value });
 
-    }
 
     const passwordChange = () => {
         //  two forms and a button, current pw, new pw, accept

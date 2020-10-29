@@ -87,7 +87,10 @@
      background-color:white;
      color:gray;   
 }
-
+.region-notification-select{
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
 @media only screen and (max-width: 768px) {
     .admin-filter-button {
         margin-top: 0rem;

@@ -1,7 +1,7 @@
 import React from "react";
 import "./styles/main.css";
 import Header from "../components/header/Header"
-import TextInput from "../components/locationform/textInput";
+import TextInput from "../components/shared/TextInput";
 import AdminPanel from "../components/admin/AdminPanel"
 import AdminSettings from "../components/admin/AdminSettings"
 import LocationList from "../components/admin/LocationList"
@@ -55,7 +55,6 @@ class Admin extends React.Component {
         const { element } = this.state;
         const { t } = this.props;
         let renderElement = "";
-        console.log(element)
         switch (element) {
             case "locations":
             case "notifications":
@@ -88,6 +87,7 @@ class Admin extends React.Component {
 
     render() {
         const { t } = this.props;
+        console.log("ADMIN RENDER")
         let renderElement = this.getAdminPanel()
         return (
             <div className="frontpage-container">

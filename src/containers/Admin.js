@@ -2,16 +2,16 @@ import React, { useEffect, useState } from "react";
 
 import "./styles/main.css";
 import Header from "../components/header/Header"
-import TextInput from "../components/locationform/textInput";
+import TextInput from "../components/shared/TextInput";
 import AdminPanel from "../components/admin/AdminPanel"
 import AdminSettings from "../components/admin/AdminSettings"
 import LocationList from "../components/admin/LocationList"
 import FilterHandler from "../components/admin/FilterHandler";
 import { fetchLocations } from "../actions/SearchResultsActions"
-import { useUserData } from "../helpers/UserHelper";
+import { useUserData, fetchSingleUser } from "../helpers/UserHelper";
 import { fetchFilters, fetchRegionsAndMunicipalities } from "../actions/FilterActions"
-import { useSelector, useDispatch, batch } from "react-redux";
-import ClipLoader from "react-spinners/ClipLoader";
+import { useDispatch, batch } from "react-redux";
+
 
 
 
@@ -21,37 +21,20 @@ const Admin = (props) => {
     const dispatch = useDispatch()
     const { currentUsers, newUsers } = useUserData();
 
-    const { results, filtersLoc, filtersCom, regions, municipalities } = useSelector(state => {
-        const results = state.searchResults
-        const filtersLoc = state.filters.locationTypeFilterList
-        const filtersCom = state.filters.commonFilterList
-        const regions = state.filters.regions
-        const municipalities = state.filters.municipalities
-        return { results, filtersLoc, filtersCom, regions, municipalities }
-    })
-
 
     const handleInitialFetch = () => {
         batch(() => {
-            if (results.searchResults.length === 0) {
-                dispatch(fetchLocations(true));
-                dispatch(fetchLocations(false));
-            }
-            if (filtersLoc.length === 0 || filtersCom.length === 0) {
-                dispatch(fetchFilters());
-            }
-            if (regions.length === 0 || municipalities.length === 0) {
-                dispatch(fetchRegionsAndMunicipalities());
-            }
+            dispatch(fetchLocations(true));
+            dispatch(fetchLocations(false));
+            dispatch(fetchFilters());
+            dispatch(fetchRegionsAndMunicipalities());
         })
-
-        //const { fetchLocations, fetchFilters, fetchRegionsAndMunicipalities, results, filtersLoc, filtersCom, regions, municipalities } = this.props;
-
 
     }
 
     useEffect(() => {
-        handleInitialFetch()
+        handleInitialFetch();
+        fetchSingleUser();
     }, [])
 
     const handleMenuClick = (e) => {
