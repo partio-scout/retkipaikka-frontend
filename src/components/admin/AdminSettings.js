@@ -3,11 +3,11 @@ import { getUser, changePassword, useUserData } from "../../helpers/UserHelper"
 import AutoCompleteInput from "../inputform/AutoCompleteInput"
 import TextInput from "../shared/TextInput"
 import RadioButton from "../shared/RadioButton"
-
+import AdminTable from "../shared/AdminTable"
 import { askForConfirmation, clearFormByClassName, useDynamicState } from "../../helpers/Helpers"
 import RegionNotifications from "./RegionNotifications"
-
-const AdminSettings = ({ t, currentUsers, notificationUsers }) => {
+import moment from "moment"
+const AdminSettings = ({ t, currentUsers, newUsers }) => {
     // regular admin settings
     const { state, handleChange } = useDynamicState();
     const user = getUser();
@@ -22,10 +22,8 @@ const AdminSettings = ({ t, currentUsers, notificationUsers }) => {
         let userNoti = user?.user?.notifications;
         let userRegions = user?.user?.regions;
 
-        return (<div>
+        return (<div className="notification_container">
             <RegionNotifications t={t} userNotification={userNoti} regions={userRegions} />
-
-            region notification
         </div>)
     }
     const handlePost = (e, type) => {
@@ -52,15 +50,23 @@ const AdminSettings = ({ t, currentUsers, notificationUsers }) => {
                 <h4>{t("settings.email")}:</h4>
                 <span> {user.user.email}</span>
                 <br />
+                <h4>{t("settings.username")}:</h4>
+                <span> {user.user.username}</span>
+                <br />
+                <h4>{t("settings.role")}:</h4>
+                <span> {user.user?.roles[0]?.name}</span>
+                <br />
             </div>
 
         </div>)
     }
 
 
+
     const passwordChange = () => {
         //  two forms and a button, current pw, new pw, accept
-        return (<div>
+        return (<div className="password_change_container">
+            <h3>{t("settings.password_title")}</h3>
             <form onSubmit={(e) => handlePost(e, "password")} >
                 <div className="form-row">
                     <TextInput maxLength={64} handleChange={handleChange} id="oldPassword" placeholder="" helper="Kirjoita tämänhetkinen salanasi*" text="Vanha salasana" size="col-md-6" required={true} customType="password" />
@@ -71,17 +77,49 @@ const AdminSettings = ({ t, currentUsers, notificationUsers }) => {
 
         </div>)
     }
+    const handleRowClick = (row) => {
+
+    }
+    const userRows = (obj) => {
+        return (
+            <tr key={obj.admin_id} onClick={() => handleRowClick(obj)}>
+                <th scope="row">{obj.admin_id}</th>
+                <td>{obj.email}</td>
+                <td>{t("settings.regions_" + obj.notifications)}</td>
+                <td>{obj.username}</td>
+            </tr>
+        )
+
+    }
+
+
+    const userEntries = () => {
+        return [
+            { id: "admin_id", t: "id" },
+            { id: "email", t: "settings.email" },
+            { id: "notifications", t: "settings.notifications_table" },
+            { id: "username", t: "settings.username" },
+        ]
+    }
+
     // settings for super admin
     const listAllUsers = () => {
         console.log(currentUsers, "CURRENT USERS")
         return (<div>
-            list users
+            <h3>
+                {t("settings.current_users")}
+            </h3>
+            <AdminTable t={t} getRowData={userRows} objEntries={userEntries()} data={currentUsers}></AdminTable>
         </div>)
 
     }
     const newUserNotifications = () => {
+        console.log(newUsers)
         return (<div>
-            new user notification
+            <h3>
+                {t("settings.new_users")}
+            </h3>
+            <AdminTable t={t} getRowData={userRows} objEntries={userEntries()} data={newUsers}></AdminTable>
         </div>)
 
     }

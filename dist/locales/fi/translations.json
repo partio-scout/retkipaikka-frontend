@@ -91,6 +91,11 @@
         "regions_none": "Ei ilmoituksia",
         "regions_all": "Kaikki ilmoitukset",
         "regions_select": "Valitse maakunnat",
-        "region_notifications": "Valitse maakunnat valikosta"
+        "region_notifications": "Valitse maakunnat valikosta",
+        "notification_title": "Sähköposti-ilmoitukset uusista retkipaikoista",
+        "notifications_table": "Ilmoitustyyppi",
+        "username": "Käyttäjänimi",
+        "role": "Rooli",
+        "password_title": "Salasanan vaihto"
     }
 }

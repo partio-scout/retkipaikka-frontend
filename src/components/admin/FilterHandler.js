@@ -39,8 +39,6 @@ class FilterHandler extends React.Component {
     }
     handleSubmit = (e, value) => {
         e.preventDefault();
-
-
         let data = this.state[value];
         if (data) {
             let obj = {}

@@ -91,6 +91,15 @@
     margin-top: 1rem;
     margin-bottom: 1rem;
 }
+.user_info_container{
+    margin-top:1rem;
+}
+.password_change_container{
+    margin-top:1rem;
+}
+.notification_container{
+    margin-top:1rem;
+}
 @media only screen and (max-width: 768px) {
     .admin-filter-button {
         margin-top: 0rem;

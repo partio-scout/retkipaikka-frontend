@@ -4,6 +4,7 @@ import { removeFilter, getCorrectFilter } from "../../actions/FilterActions"
 import { postFormData, postEditData, removeEditImages } from "../../actions/SearchResultsActions"
 import SelectInput from "../inputform/SelectInput"
 import TextInput from "../shared/TextInput"
+import TextArea from "../shared/TextArea"
 import AutoCompleteInput from "../inputform/AutoCompleteInput"
 import FormImageUpload from "./FormImageUpload";
 import "./locationform.css"
@@ -244,8 +245,8 @@ class LocationForm extends React.Component {
                 <AutoCompleteInput t={t} data={allArr} applyFilter={this.handleSelection} id="object_location" clearSelection={false} title={t("main.location")} customClassName="form-group col-md-6" helper={t("main.location_desc")} required={true} defaultInputValue={editPageObj.location_municipality ? editPageObj.location_municipality : editPageObj.location_region} />
                 <TextInput defaultValue={editPageObj.location_geo.lat + "," + editPageObj.location_geo.lng} handleChange={this.handleChange} id="location_geo" placeholder={t("form.triplocation_coords")} helper={t("form.triplocation_coords_desc")} text={t("form.triplocation_coords")} size="col-md-6" required={true} />
             </div>
-            {this.getTextForm("3", t("form.triplocation_desc"), t("form.triplocation_desc_desc"), editPageObj.location_description, "location_description", 512)}
-            {this.getTextForm("3", t("form.triplocation_rent"), t("form.triplocation_rent_desc"), editPageObj.location_pricing, "location_pricing", 280)}
+            <TextArea rows="3" handleChange={this.handleChange} text={t("form.triplocation_desc")} helper={t("form.triplocation_desc_desc")} defaultValue={editPageObj.location_description} id="location_description" maxLength={512}></TextArea>
+            <TextArea rows="3" handleChange={this.handleChange} text={t("form.triplocation_rent")} helper={t("form.triplocation_rent_desc")} defaultValue={editPageObj.location_pricing} id="location_pricing" maxLength={280}></TextArea>
             {this.generateCheckBoxes(commonFilters, editPageObj.filters)}
             <small id={"Help"} className="form-text text-muted form-group">{t("form.triplocation_filter_desc")}</small>
             <div className="form-row">
@@ -295,8 +296,9 @@ class LocationForm extends React.Component {
                 {/* <TextInput handleChange={this.handleChange} id="object_name" placeholder="Paikan sijainti" helper="Kirjoita retkipaikan sijainti" text="Sijainti*" size="col-md-6" required={true} /> */}
                 <TextInput handleChange={this.handleChange} id="location_geo" placeholder={t("form.triplocation_coords")} helper={t("form.triplocation_coords_desc")} text={t("form.triplocation_coords")} size="col-md-6" required={true} />
             </div>
-            {this.getTextForm("3", t("form.triplocation_desc"), t("form.triplocation_desc_desc"), null, "location_description", 512)}
-            {this.getTextForm("3", t("form.triplocation_rent"), t("form.triplocation_rent_desc"), null, "location_pricing", 280)}
+            <TextArea rows="3" handleChange={this.handleChange} text={t("form.triplocation_desc")} helper={t("form.triplocation_desc_desc")} defaultValue={null} id="location_description" maxLength={512}></TextArea>
+            <TextArea rows="3" handleChange={this.handleChange} text={t("form.triplocation_rent")} helper={t("form.triplocation_rent_desc")} defaultValue={null} id="location_pricing" maxLength={280}></TextArea>
+
             {this.generateCheckBoxes(commonFilters, [])}
             <small id={"Help"} className="form-text text-muted form-group">{t("form.triplocation_filter_desc")}</small>
             <div className="form-row">
