@@ -2,9 +2,10 @@ import React from "react";
 import "./admin.css"
 import { connect } from "react-redux";
 import { getCorrectFilter } from "../../actions/FilterActions"
-import InfoDialog from "./InfoDialog";
+import DraggableDialog from "./DraggableDialog";
 import InputContainer from "../inputform/InputContainer"
 import AdminTable from "../shared/AdminTable"
+import LocationEditDialog from "./LocationEditDialog"
 class LocationList extends React.Component {
     state = {
         clickedObj: null,
@@ -29,9 +30,9 @@ class LocationList extends React.Component {
         this.setState({ clickedObj: null });
     }
 
-    getRowData = (obj, i) => {
+    getRowData = (obj) => {
         return (
-            <tr key={obj.id} onClick={(e) => this.handleObjectClick(obj, e)}>
+            <tr key={obj.location_id} onClick={(e) => this.handleObjectClick(obj, e)}>
                 <th scope="row">{obj.location_id}</th>
                 <td>{obj.location_name}</td>
                 <td>{obj.location_municipality ? obj.location_municipality : "-"}</td>
@@ -75,7 +76,6 @@ class LocationList extends React.Component {
         const { clickedObj, clickPos } = this.state;
         const { type, t, results, notifications } = this.props;
         // this same component is used in admin notification and admin location list page
-        console.log(results + "in render ")
         let isLocation = this.checkType(type);
         let title = isLocation ? t("admin.current") : t("admin.unaccepted")
         return (
@@ -90,8 +90,16 @@ class LocationList extends React.Component {
                         t={t}
                     />
                 </div>
+                {clickedObj !== null &&
+                    <DraggableDialog t={t} clickHeight={clickPos} handleClose={this.handleClose}>
+                        <LocationEditDialog
+                            t={t}
+                            data={clickedObj}
+                            handleClose={this.handleClose}
+                        />
 
-                {clickedObj !== null && <InfoDialog t={t} data={clickedObj} locationPage={true} clickHeight={clickPos} handleClose={this.handleClose}></InfoDialog>}
+
+                    </DraggableDialog>}
 
 
             </div>

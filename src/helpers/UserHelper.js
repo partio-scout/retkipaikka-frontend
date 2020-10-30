@@ -21,8 +21,11 @@ export const login = async (dataObj) => {
 
         }
     }).catch((error) => {
-        console.error(error)
-        window.alert("Kirjautuminen epäonnistui!")
+        console.dir(error)
+        let msg = error?.response?.data?.error?.message;
+        msg ? msg : "Kirjautuminen epäonnistui";
+        msg = msg.charAt(0).toUpperCase() + msg.slice(1)
+        window.alert(msg)
     })
     return status;
 }

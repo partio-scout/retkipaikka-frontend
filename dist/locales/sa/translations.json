@@ -58,7 +58,7 @@
         "password": "Salasana",
         "email_desc": "Kirjoita sähköpostiosoitteesi",
         "password_desc": "Kirjoita salasanasi",
-        "notifications": "Katso ilmoituksia",
+        "locations": "Katso ilmoituksia",
         "unaccepted": "Hyväksymättömät retkipaikat",
         "current": "Nykyiset retkipaikat",
         "triplocations": "Selaa retkipaikkoja",

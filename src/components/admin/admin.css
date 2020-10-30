@@ -100,6 +100,9 @@
 .notification_container{
     margin-top:1rem;
 }
+.user-table-container{
+    margin-top:1rem;
+}
 @media only screen and (max-width: 768px) {
     .admin-filter-button {
         margin-top: 0rem;

@@ -58,7 +58,7 @@ const RegionNotifications = (props) => {
                 {t("settings.notification_title")}
             </h3>
             {["none", "all", "select"].map((setting => {
-                return <RadioButton handleChange={handleChange} text={t("settings.regions_" + setting)} value={setting} id={"notifications"} defaultChecked={userNotification === setting} />
+                return <RadioButton key={setting} handleChange={handleChange} text={t("settings.regions_" + setting)} value={setting} id={"notifications"} defaultChecked={userNotification === setting} />
             }))}
 
             {state.notifications === "select" &&

@@ -3,10 +3,10 @@ import "./admin.css"
 import { connect } from "react-redux";
 import TextInput from "../shared/TextInput"
 import { postFilter, postCategory, deleteCategory, deleteFilter } from "../../actions/FilterActions"
-import InfoDialog from "./InfoDialog"
+import DraggableDialog from "./DraggableDialog"
 import { askForConfirmation, clearFormByClassName } from "../../helpers/Helpers"
 import AdminTable from "../shared/AdminTable"
-
+import FilterEditDialog from "./FilterEditDialog"
 class FilterHandler extends React.Component {
     state = {
         clickedObj: null
@@ -106,21 +106,6 @@ class FilterHandler extends React.Component {
 
     }
 
-    handleDelete = (obj) => {
-        const { deleteFilter, deleteCategory } = this.props;
-
-        if (obj.object_type === "filter") {
-            deleteFilter(obj);
-        } else {
-            deleteCategory(obj);
-        }
-        this.handleClose()
-
-    }
-    askForDelConfirmation = (title, message, obj) => {
-        askForConfirmation(message, title, () => this.handleDelete(obj), this.closeFunc)
-
-    };
 
     handleClose = () => {
         this.setState({ clickedObj: null })
@@ -174,7 +159,14 @@ class FilterHandler extends React.Component {
                         <button className="btn btn-primary admin-filter-button">{t("admin.add")}</button>
                     </div>
                 </form>
-                {clickedObj !== null && <InfoDialog t={t} data={clickedObj} handleDelete={this.askForDelConfirmation} clickHeight={clickPos} handleClose={this.handleClose}></InfoDialog>}
+                {clickedObj !== null &&
+                    <DraggableDialog t={t} clickHeight={clickPos} handleClose={this.handleClose}>
+                        <FilterEditDialog
+                            t={t}
+                            handleClose={this.handleClose}
+                            data={clickedObj}
+                        />
+                    </DraggableDialog>}
 
 
 

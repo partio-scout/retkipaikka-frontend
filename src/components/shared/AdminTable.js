@@ -56,7 +56,7 @@ const AdminTable = (props) => {
         let head = (<thead>
             <tr onClick={handleListClick}>
                 {objEntries.map(entry => {
-                    return <th id={entry.id} scope="col">{t(entry.t)}{currentSort === entry.id && image}</th>
+                    return <th key={entry.id} id={entry.id} scope="col">{t(entry.t)}{currentSort === entry.id && image}</th>
                 })}
             </tr>
         </thead>)

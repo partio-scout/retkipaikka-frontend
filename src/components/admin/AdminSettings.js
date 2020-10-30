@@ -104,8 +104,7 @@ const AdminSettings = ({ t, currentUsers, newUsers }) => {
 
     // settings for super admin
     const listAllUsers = () => {
-        console.log(currentUsers, "CURRENT USERS")
-        return (<div>
+        return (<div className="user-table-container">
             <h3>
                 {t("settings.current_users")}
             </h3>
@@ -114,8 +113,7 @@ const AdminSettings = ({ t, currentUsers, newUsers }) => {
 
     }
     const newUserNotifications = () => {
-        console.log(newUsers)
-        return (<div>
+        return (<div className="user-table-container">
             <h3>
                 {t("settings.new_users")}
             </h3>

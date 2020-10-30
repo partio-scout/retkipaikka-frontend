@@ -68,7 +68,7 @@
         "notifications": "Katso ilmoituksia",
         "unaccepted": "Hyväksymättömät retkipaikat",
         "current": "Nykyiset retkipaikat",
-        "triplocations": "Selaa retkipaikkoja",
+        "locations": "Selaa retkipaikkoja",
         "filters": "Suodattimet",
         "filters_title": "Suodattimet ja kategoriat",
         "categories": "Kategoriat",
@@ -96,6 +96,8 @@
         "notifications_table": "Ilmoitustyyppi",
         "username": "Käyttäjänimi",
         "role": "Rooli",
-        "password_title": "Salasanan vaihto"
+        "password_title": "Salasanan vaihto",
+        "new_users": "Rekisteröityneet käyttäjät ilman käyttöoikeutta",
+        "current_users": "Nykyiset käyttäjät"
     }
 }
