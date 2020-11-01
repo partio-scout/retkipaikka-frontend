@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 
-const askForConfirmation = (message, title, onYesClick, onNoClick) => {
+const askForConfirmation = (message, title, onYesClick, onNoClick, childrenElement = () => { }) => {
     confirmAlert({
         title: title,
         message: message,
+        childrenElement: childrenElement,
         buttons: [
             {
                 label: 'Kyllä',

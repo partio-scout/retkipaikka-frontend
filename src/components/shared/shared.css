@@ -7,3 +7,6 @@
     margin-right: auto;
     width: 100px;
 }
+.admin-table-row tr{
+    cursor:pointer;
+}

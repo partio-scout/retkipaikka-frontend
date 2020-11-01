@@ -5,8 +5,10 @@ import { postFormData, postEditData, removeEditImages } from "../../actions/Sear
 import SelectInput from "../inputform/SelectInput"
 import TextInput from "../shared/TextInput"
 import TextArea from "../shared/TextArea"
+import CheckBox from "../shared/CheckBox"
 import AutoCompleteInput from "../inputform/AutoCompleteInput"
 import FormImageUpload from "./FormImageUpload";
+
 import "./locationform.css"
 import { askForConfirmation } from "../../helpers/Helpers"
 
@@ -183,10 +185,13 @@ class LocationForm extends React.Component {
         let boxes = arr.map(item => {
             let correctName = getCorrectFilter(item, language)
             if (item.object_type !== "nofilter") {
-                return (<div key={item.filter_id} className="form-check form-check-inline">
-                    <input onClick={this.handleChange} type="checkbox" className="form-check-input" id={"box-" + item.filter_id} defaultChecked={has.filter((val) => val === item.filter_id).length > 0} />
-                    <label className="form-check-label" htmlFor={correctName}>{correctName}</label>
-                </div>)
+                return (<CheckBox
+                    key={item.filter_id}
+                    handleChange={this.handleChange}
+                    id={"box-" + item.filter_id}
+                    defaultChecked={has.filter((val) => val === item.filter_id).length > 0}
+                    text={correctName}
+                />)
             } else {
                 return null;
             }
@@ -195,10 +200,15 @@ class LocationForm extends React.Component {
     }
     generateAcceptBox = (obj) => {
         const { t } = this.props;
-        return (<div className="form-check form-check-inline">
-            <input onClick={this.handleChange} type="checkbox" className="form-check-input" id={"box-location_accepted"} defaultChecked={obj.location_accepted} />
-            <label className="form-check-label" htmlFor={t("admin.show_user")}>{t("admin.show_user")}</label>
-        </div>)
+        return (
+            <CheckBox
+                key={obj.filter_id}
+                handleChange={this.handleChange}
+                id={"box-location_accepted"}
+                defaultChecked={obj.location_accepted}
+                text={t("admin.show_user")}
+            />
+        )
     }
     static getDerivedStateFromProps(newProps, currentState) {
         // on coordinates props change (map was clicked),

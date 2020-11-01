@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import moment from "moment"
 import { useDispatch } from "react-redux";
-import { deleteLocation } from "../../actions/SearchResultsActions"
-import LocationForm from "../locationform/LocationForm"
-import { askForConfirmation } from "../../helpers/Helpers"
+import { deleteLocation } from "../../../actions/SearchResultsActions"
+import LocationForm from "../../locationform/LocationForm"
+import { askForConfirmation } from "../../../helpers/Helpers"
 const LocationEditDialog = (props) => {
     const { t, handleClose, data } = props;
     const [editEnabled, setEditEnabled] = useState(null);
@@ -14,7 +14,6 @@ const LocationEditDialog = (props) => {
             // check if user clicked other location object, in the table
             // if clicked, disable edit form
             if (data.location_id !== editEnabled.location_id) {
-                console.log("in use effekt")
                 setEditEnabled(null);
             }
         }

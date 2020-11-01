@@ -3,10 +3,10 @@ import "./admin.css"
 import { connect } from "react-redux";
 import TextInput from "../shared/TextInput"
 import { postFilter, postCategory, deleteCategory, deleteFilter } from "../../actions/FilterActions"
-import DraggableDialog from "./DraggableDialog"
+import DraggableDialog from "./dialogs/DraggableDialog"
 import { askForConfirmation, clearFormByClassName } from "../../helpers/Helpers"
 import AdminTable from "../shared/AdminTable"
-import FilterEditDialog from "./FilterEditDialog"
+import FilterEditDialog from "./dialogs/FilterEditDialog"
 class FilterHandler extends React.Component {
     state = {
         clickedObj: null

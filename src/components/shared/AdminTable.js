@@ -61,7 +61,7 @@ const AdminTable = (props) => {
             </tr>
         </thead>)
 
-        let body = (<tbody>
+        let body = (<tbody className="admin-table-row">
             {values}
         </tbody>)
 

@@ -157,6 +157,7 @@ export const useUserData = () => {
     const [data, setData] = useState({
         currentUsers: [],
         newUsers: [],
+        allRoles: [],
         fetched: false
     });
 
@@ -165,10 +166,13 @@ export const useUserData = () => {
             let filter = {
                 include: [{ "relation": "roles" }]
             }
-            await axios.get(_API_PATH_ + "/Users?filter=" + JSON.stringify(filter) + "&access_token=" + id).then(res => {
-                let currentUsers = res.data.filter(u => !u.new_user);
-                let newUsers = res.data.filter(u => u.new_user);
-                setData({ currentUsers, newUsers, fetched: true });
+            await axios.get(_API_PATH_ + "/Users?filter=" + JSON.stringify(filter) + "&access_token=" + id).then(async res => {
+                await axios.get(_API_PATH_ + "/Users/fetchAllRoles?access_token=" + id).then(response => {
+                    let currentUsers = res.data.filter(u => !u.new_user);
+                    let newUsers = res.data.filter(u => u.new_user);
+                    setData({ currentUsers, newUsers, fetched: true, allRoles: response.data });
+                })
+
             }).catch(e => {
                 console.error(e);
             })

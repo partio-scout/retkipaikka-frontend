@@ -19,7 +19,7 @@ const Admin = (props) => {
     const { t } = props;
     const [element, setElement] = useState("locations")
     const dispatch = useDispatch()
-    const { currentUsers, newUsers } = useUserData();
+    const { currentUsers, newUsers, allRoles } = useUserData();
 
 
     const handleInitialFetch = () => {
@@ -55,7 +55,7 @@ const Admin = (props) => {
                 renderElement = <FilterHandler t={t} />
                 break;
             case "settings":
-                renderElement = <AdminSettings t={t} currentUsers={currentUsers} newUsers={newUsers} />
+                renderElement = <AdminSettings t={t} currentUsers={currentUsers} newUsers={newUsers} allRoles={allRoles} />
                 break;
             default:
                 renderElement = <h3>Testi</h3>

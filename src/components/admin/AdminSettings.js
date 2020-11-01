@@ -7,11 +7,13 @@ import AdminTable from "../shared/AdminTable"
 import { askForConfirmation, clearFormByClassName, useDynamicState } from "../../helpers/Helpers"
 import RegionNotifications from "./RegionNotifications"
 import moment from "moment"
-const AdminSettings = ({ t, currentUsers, newUsers }) => {
+import DraggableDialog from "./dialogs/DraggableDialog"
+import UserEditDialog from "./dialogs/UserEditDialog"
+const AdminSettings = ({ t, currentUsers, newUsers, allRoles }) => {
     // regular admin settings
     const { state, handleChange } = useDynamicState();
     const user = getUser();
-
+    const [clickedObj, setClickedObj] = useState(null)
 
 
 
@@ -77,12 +79,15 @@ const AdminSettings = ({ t, currentUsers, newUsers }) => {
 
         </div>)
     }
-    const handleRowClick = (row) => {
+
+    const handleObjectClick = (obj, e) => {
+        //set clickedobject and move window down by 50px and right by 50px from clicked position
+        setClickedObj({ clickedObj: obj, clickPos: { height: e.clientY + 50, width: e.clientX + 50 } });
 
     }
     const userRows = (obj) => {
         return (
-            <tr key={obj.admin_id} onClick={() => handleRowClick(obj)}>
+            <tr key={obj.admin_id} onClick={(e) => handleObjectClick(obj, e)}>
                 <th scope="row">{obj.admin_id}</th>
                 <td>{obj.email}</td>
                 <td>{t("settings.regions_" + obj.notifications)}</td>
@@ -130,6 +135,16 @@ const AdminSettings = ({ t, currentUsers, newUsers }) => {
             {passwordChange()}
             {listAllUsers()}
             {newUserNotifications()}
+            {clickedObj !== null &&
+
+                <DraggableDialog t={t} clickHeight={clickedObj.clickPos} handleClose={() => setClickedObj(null)}>
+                    <UserEditDialog
+                        t={t}
+                        data={clickedObj.clickedObj}
+                        allRoles={allRoles}
+                    />
+                </DraggableDialog>
+            }
 
 
         </div>
@@ -137,6 +152,12 @@ const AdminSettings = ({ t, currentUsers, newUsers }) => {
 
     )
 
+}
+AdminSettings.defaultProps = {
+    t: () => { },
+    currentUsers: [],
+    newUsers: [],
+    allRoles: []
 }
 
 export default AdminSettings;

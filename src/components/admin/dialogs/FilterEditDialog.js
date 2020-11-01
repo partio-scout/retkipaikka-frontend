@@ -1,8 +1,8 @@
 import React from "react";
-import { useDynamicState, askForConfirmation } from "../../helpers/Helpers";
-import TextInput from "../shared/TextInput"
+import { useDynamicState, askForConfirmation } from "../../../helpers/Helpers";
+import TextInput from "../../shared/TextInput"
 import { useDispatch } from "react-redux"
-import { editCategory, editFilter, deleteFilter, deleteCategory } from "../../actions/FilterActions"
+import { editCategory, editFilter, deleteFilter, deleteCategory } from "../../../actions/FilterActions"
 const FilterEditDialog = (props) => {
     const { t, handleClose, data } = props;
     const { state, handleChange } = useDynamicState({})

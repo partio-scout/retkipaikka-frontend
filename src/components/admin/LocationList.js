@@ -2,10 +2,10 @@ import React from "react";
 import "./admin.css"
 import { connect } from "react-redux";
 import { getCorrectFilter } from "../../actions/FilterActions"
-import DraggableDialog from "./DraggableDialog";
+import DraggableDialog from "./dialogs/DraggableDialog";
 import InputContainer from "../inputform/InputContainer"
 import AdminTable from "../shared/AdminTable"
-import LocationEditDialog from "./LocationEditDialog"
+import LocationEditDialog from "./dialogs/LocationEditDialog"
 class LocationList extends React.Component {
     state = {
         clickedObj: null,
