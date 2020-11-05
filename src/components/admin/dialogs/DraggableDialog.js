@@ -3,7 +3,6 @@ import Draggable from 'react-draggable';
 
 const DraggableDialog = (props) => {
     const { customClassName, handleClose, clickHeight, t, children } = props;
-    const [test, setTest] = useState(null);
     let className = "admin-info-dialog ";
 
     // useEffect(() => {

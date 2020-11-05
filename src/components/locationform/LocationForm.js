@@ -46,26 +46,23 @@ class LocationForm extends React.Component {
                 if (!dataObj.filters) {
                     dataObj.filters = [];
                 }
-                for (let i = 0; i < checkboxes.length; ++i) {
-                    let chbox = checkboxes[i];
+                for (let chbox of checkboxes) {
                     if (chbox.id === "box-location_accepted" && chbox.defaultChecked !== chbox.checked) {
                         dataObj.location_accepted = chbox.checked;
                     } else if (chbox.checked && chbox.id !== "box-location_accepted") {
                         dataObj.filters.push(chbox.id.split("-")[1]);
                     }
-
                 }
 
             }
-
-            for (let i = 0; i < stateKeys.length; i++) {
-                let key = stateKeys[i];
+            stateKeys.forEach(key => {
                 if (key.includes("box") && this.state[key] && !edit) {
                     let splitted = key.split("-");
                     if (!dataObj.filters) {
                         dataObj.filters = [];
                     }
                     dataObj.filters.push(splitted[1]);
+                    // location_geo is coordinate input,
                 } else if (key === "location_geo") {
                     if (this.state[key]) {
                         let splittedGeo = this.state[key].split(",");
@@ -79,6 +76,7 @@ class LocationForm extends React.Component {
                         }
                     }
                 } else {
+                    // check all text fields for empty spaces
                     if (!key.includes("box")) {
                         if (this.state[key] !== null) {
                             if (key !== "imgArray" && key !== "oldImgArray") {
@@ -97,11 +95,7 @@ class LocationForm extends React.Component {
 
                     }
                 }
-            }
-
-            if (!dataObj.location_geo && !edit) {
-                return;
-            }
+            })
             // check if form was from edit page or main page
             if (edit) {
                 this.handleEditSubmit(dataObj)

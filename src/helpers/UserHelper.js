@@ -120,6 +120,21 @@ export const modifyUserNotifications = async (notificationType, regions) => {
     return status;
 }
 
+export const modifyUser = async (data) => {
+    const { id } = getUser();
+    let status = false;
+    if (id) {
+        await axios.patch(_API_PATH_ + "/Users/editUser/?access_token=" + id, data).then(res => {
+            console.log(res);
+        }).catch((e) => {
+            status = true;
+            console.error(e);
+        })
+    }
+
+
+}
+
 export const checkLoginStatus = async () => {
     const { id } = getUser();
     let status = false;

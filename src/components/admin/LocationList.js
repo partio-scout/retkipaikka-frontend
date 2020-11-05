@@ -6,6 +6,7 @@ import DraggableDialog from "./dialogs/DraggableDialog";
 import InputContainer from "../inputform/InputContainer"
 import AdminTable from "../shared/AdminTable"
 import LocationEditDialog from "./dialogs/LocationEditDialog"
+import InfoDialog from "./dialogs/InfoDialog"
 class LocationList extends React.Component {
     state = {
         clickedObj: null,
@@ -23,7 +24,7 @@ class LocationList extends React.Component {
 
     handleObjectClick = (obj, e) => {
         //set clickedobject and move window down by 50px and right by 50px from clicked position
-        this.setState({ clickedObj: obj, clickPos: { height: e.clientY + 50, width: e.clientX + 50 } });
+        this.setState({ clickedObj: obj });
 
     }
     handleClose = () => {
@@ -91,15 +92,14 @@ class LocationList extends React.Component {
                     />
                 </div>
                 {clickedObj !== null &&
-                    <DraggableDialog t={t} clickHeight={clickPos} handleClose={this.handleClose}>
+                    <InfoDialog handleClose={this.handleClose} open={clickedObj !== null} dialogTitle={t("admin.triplocation_info")}>
                         <LocationEditDialog
                             t={t}
                             data={clickedObj}
                             handleClose={this.handleClose}
                         />
-
-
-                    </DraggableDialog>}
+                    </InfoDialog>
+                }
 
 
             </div>

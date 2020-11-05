@@ -18,6 +18,12 @@
 .info-close-button{
     background-color: #28aae1;
     float:right;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+.react-confirm-alert-overlay{
+    z-index: 1400;
 }
 .react-confirm-alert-button-group button{
     background-color: #28aae1 !important;

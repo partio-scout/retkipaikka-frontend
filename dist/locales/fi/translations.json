@@ -82,7 +82,9 @@
         "add": "Lisää",
         "save": "Tallenna",
         "show_user": "Näytä käyttäjälle",
-        "settings": "Asetukset"
+        "settings": "Asetukset",
+        "filter_category_edit": "Suodattimien ja kategorioiden muokkaus",
+        "triplocation_info": "Retkipaikan tiedot"
     },
     "settings": {
         "user_settings_title": "Tietoa käyttäjästä",
@@ -98,6 +100,7 @@
         "role": "Rooli",
         "password_title": "Salasanan vaihto",
         "new_users": "Rekisteröityneet käyttäjät ilman käyttöoikeutta",
-        "current_users": "Nykyiset käyttäjät"
+        "current_users": "Nykyiset käyttäjät",
+        "user_edit": "Käyttäjän muokkaus"
     }
 }

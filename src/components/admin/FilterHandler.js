@@ -3,7 +3,7 @@ import "./admin.css"
 import { connect } from "react-redux";
 import TextInput from "../shared/TextInput"
 import { postFilter, postCategory, deleteCategory, deleteFilter } from "../../actions/FilterActions"
-import DraggableDialog from "./dialogs/DraggableDialog"
+import InfoDialog from "./dialogs/InfoDialog"
 import { askForConfirmation, clearFormByClassName } from "../../helpers/Helpers"
 import AdminTable from "../shared/AdminTable"
 import FilterEditDialog from "./dialogs/FilterEditDialog"
@@ -87,7 +87,7 @@ class FilterHandler extends React.Component {
 
     handleObjectClick = (obj, e) => {
         //set clickedobject and move window down by 50px and right by 50px from clicked position
-        this.setState({ clickedObj: obj, clickPos: { height: e.clientY + 50, width: e.clientX + 50 } });
+        this.setState({ clickedObj: obj });
 
     }
 
@@ -123,7 +123,7 @@ class FilterHandler extends React.Component {
     render() {
         //const items = this.generateListItems();
         const { locationTypes, commonFilters, t } = this.props;
-        const { clickedObj, clickPos } = this.state;
+        const { clickedObj } = this.state;
         return (
             <div className="admin-content-container">
                 <h3>{t("admin.filters_title")}</h3>
@@ -160,13 +160,16 @@ class FilterHandler extends React.Component {
                     </div>
                 </form>
                 {clickedObj !== null &&
-                    <DraggableDialog t={t} clickHeight={clickPos} handleClose={this.handleClose}>
+
+                    <InfoDialog open={clickedObj !== null} dialogTitle={t("admin.filter_category_edit")} handleClose={this.handleClose}>
                         <FilterEditDialog
                             t={t}
                             handleClose={this.handleClose}
                             data={clickedObj}
                         />
-                    </DraggableDialog>}
+
+                    </InfoDialog>
+                }
 
 
 

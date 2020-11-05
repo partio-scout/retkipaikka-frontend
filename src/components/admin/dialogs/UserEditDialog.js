@@ -55,7 +55,7 @@ const UserEditDialog = (props) => {
 
     };
     const askForEditConfirmation = (name, title, obj) => {
-        askForConfirmation("Haluatko tallentaa tekemäsi muokkaukset?", title + " muokkaaminen", () => submitFilterEdit(obj), false)
+        askForConfirmation("Haluatko tallentaa tekemäsi muokkaukset?", "Käyttäjän muokkaaminen", () => submitFilterEdit(obj), false)
     };
 
     const getCheckBoxes = () => {
@@ -88,7 +88,7 @@ const UserEditDialog = (props) => {
             <br />
             <br />
             {/* <button onClick={() => askForDelConfirmation(title + " poistaminen", "Haluatko poistaa " + name, data)} className="btn btn-primary info-button">{t("admin.delete")}</button> */}
-            <button onClick={() => askForEditConfirmation(name, title, data)} className="btn btn-primary info-button">{t("admin.save")}</button>
+            <button onClick={() => askForEditConfirmation(null, null, data)} className="btn btn-primary info-button">{t("admin.save")}</button>
         </div>
     )
 

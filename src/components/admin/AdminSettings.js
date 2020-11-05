@@ -7,7 +7,7 @@ import AdminTable from "../shared/AdminTable"
 import { askForConfirmation, clearFormByClassName, useDynamicState } from "../../helpers/Helpers"
 import RegionNotifications from "./RegionNotifications"
 import moment from "moment"
-import DraggableDialog from "./dialogs/DraggableDialog"
+import InfoDialog from "./dialogs/InfoDialog"
 import UserEditDialog from "./dialogs/UserEditDialog"
 const AdminSettings = ({ t, currentUsers, newUsers, allRoles }) => {
     // regular admin settings
@@ -80,14 +80,10 @@ const AdminSettings = ({ t, currentUsers, newUsers, allRoles }) => {
         </div>)
     }
 
-    const handleObjectClick = (obj, e) => {
-        //set clickedobject and move window down by 50px and right by 50px from clicked position
-        setClickedObj({ clickedObj: obj, clickPos: { height: e.clientY + 50, width: e.clientX + 50 } });
 
-    }
     const userRows = (obj) => {
         return (
-            <tr key={obj.admin_id} onClick={(e) => handleObjectClick(obj, e)}>
+            <tr key={obj.admin_id} onClick={(e) => setClickedObj(obj)}>
                 <th scope="row">{obj.admin_id}</th>
                 <td>{obj.email}</td>
                 <td>{t("settings.regions_" + obj.notifications)}</td>
@@ -126,7 +122,9 @@ const AdminSettings = ({ t, currentUsers, newUsers, allRoles }) => {
         </div>)
 
     }
-
+    const closeDialog = () => {
+        setClickedObj(null);
+    }
 
     return (
         <div className="admin-settings-container">
@@ -136,18 +134,23 @@ const AdminSettings = ({ t, currentUsers, newUsers, allRoles }) => {
             {listAllUsers()}
             {newUserNotifications()}
             {clickedObj !== null &&
-
-                <DraggableDialog t={t} clickHeight={clickedObj.clickPos} handleClose={() => setClickedObj(null)}>
+                <InfoDialog open={clickedObj !== null} dialogTitle={t("settings.user_edit")} handleClose={closeDialog} maxWidth={"sm"}>
                     <UserEditDialog
                         t={t}
-                        data={clickedObj.clickedObj}
+                        data={clickedObj}
                         allRoles={allRoles}
+                        handleClose={closeDialog}
                     />
-                </DraggableDialog>
+                </InfoDialog>
             }
 
 
-        </div>
+
+
+
+
+
+        </div >
 
 
     )
