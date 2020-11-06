@@ -10,22 +10,24 @@ import {
 import axios from "axios";
 import { getUser } from "../helpers/UserHelper"
 
-
-export const fetchLocations = (accepted) => async (dispatch) => {
-    // fetch locations from database
-
+export const locationFetch = async (query) => {
     let locations = [];
-    let query = {
-        where: {
-            location_accepted: accepted
-        }
-    }
     try {
         locations = await axios.get(_API_PATH_ + "/Triplocations/fetchLocations?filter=" + JSON.stringify(query));
         locations = locations.data;
     } catch (error) {
         console.error(error);
     }
+    return locations
+}
+export const fetchLocations = (accepted) => async (dispatch) => {
+    // fetch locations from database
+    let query = {
+        where: {
+            location_accepted: accepted
+        }
+    }
+    let locations = await locationFetch(query);
     let type;
     if (accepted) {
         type = FETCH_LOCATIONS;

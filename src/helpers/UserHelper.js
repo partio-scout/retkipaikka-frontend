@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react"
 
-
+export const superRoleIds = [2];
 export const login = async (dataObj) => {
     let status = false;
 

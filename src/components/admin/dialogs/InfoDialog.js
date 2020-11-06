@@ -3,13 +3,14 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
+import DialogContentText from "@material-ui/core/DialogContentText"
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
 const InfoDialog = (props) => {
-    const { children, dialogTitle, open, handleClose, maxWidth } = props;
+    const { children, dialogTitle, open, handleClose, maxWidth, dialogInfoText } = props;
 
     return (
         <div>
@@ -26,6 +27,10 @@ const InfoDialog = (props) => {
                     <button className="btn info-close-button" onClick={handleClose}>x</button>
                 </DialogTitle>
                 <DialogContent>
+                    {dialogInfoText &&
+                        <DialogContentText id="alert-dialog-slide-description">
+                            {dialogInfoText}
+                        </DialogContentText>}
                     {children}
                 </DialogContent>
             </Dialog>
@@ -37,6 +42,7 @@ InfoDialog.defaultProps = {
     fullWidth: false,
     open: false,
     dialogTitle: "Dialog",
-    handleClose: () => { }
+    handleClose: () => { },
+    dialogInfoText: null
 }
 export default InfoDialog;

@@ -17,15 +17,23 @@ const UserEditDialog = (props) => {
             },
             roles: []
         }
-
-        userObj.user.new_user = !state.userEnabled;
+        console.log(state);
+        if (state.userEnabled != null) {
+            userObj.user.new_user = !state.userEnabled
+        }
 
         let roleArr = Object.keys(state).filter(key => key.includes("role"))
-        roleArr.forEach(r => {
-            if (r) {
-                userObj.roles.push(parseInt(r.split("_")[1]));
-            }
-        })
+        if (roleArr.length == 0) {
+            userObj.roles = obj.roles.map(r => r.id)
+        } else {
+            roleArr.forEach(r => {
+                if (state[r]) {
+                    userObj.roles.push(parseInt(r.split("_")[1]));
+                }
+            })
+        }
+
+
 
         await modifyUser(userObj)
         await fetchData()

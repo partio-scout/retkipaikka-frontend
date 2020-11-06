@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { getUser, changePassword, useUserData } from "../../helpers/UserHelper"
+import { getUser, changePassword, superRoleIds } from "../../helpers/UserHelper"
 import AutoCompleteInput from "../inputform/AutoCompleteInput"
 import TextInput from "../shared/TextInput"
 import RadioButton from "../shared/RadioButton"
@@ -55,9 +55,12 @@ const AdminSettings = ({ t }) => {
                 <h4>{t("settings.username")}:</h4>
                 <span> {user.user.username}</span>
                 <br />
-                <h4>{t("settings.role")}:</h4>
-                <span> {user.user?.roles[0]?.name}</span>
-                <br />
+                {user.user.roles &&
+                    <>
+                        <h4>{t("settings.role")}:</h4>
+                        <span> {user.user.roles[0]?.name}</span>
+                        <br />
+                    </>}
             </div>
 
         </div>)
@@ -105,6 +108,7 @@ const AdminSettings = ({ t }) => {
 
     // settings for super admin
     const listAllUsers = () => {
+
         return (<div className="user-table-container">
             <h3>
                 {t("settings.current_users")}
@@ -125,16 +129,29 @@ const AdminSettings = ({ t }) => {
     const closeDialog = () => {
         setClickedObj(null);
     }
+    const listUsers = () => {
+        const roles = user?.user?.roles;
+        if (roles) {
+            if (roles.find(r => superRoleIds.find(sRole => sRole === r.id))) {
+                return (
+                    <>
+                        {listAllUsers()}
+                        {newUserNotifications()}
+                    </>
+                )
+            }
 
+        }
+
+    }
     return (
         <div className="admin-settings-container">
             {regionNotifications()}
             {userInfo()}
             {passwordChange()}
-            {listAllUsers()}
-            {newUserNotifications()}
+            {listUsers()}
             {clickedObj !== null &&
-                <InfoDialog open={clickedObj !== null} dialogTitle={t("settings.user_edit")} handleClose={closeDialog} maxWidth={"sm"}>
+                <InfoDialog open={clickedObj !== null} dialogTitle={t("settings.user_edit")} handleClose={closeDialog} maxWidth={"sm"} dialogInfoText={t("settings.userdialog_info")}>
                     <UserEditDialog
                         t={t}
                         data={clickedObj}

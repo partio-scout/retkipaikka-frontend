@@ -7,6 +7,7 @@ import { withTranslation } from "react-i18next"
 import PrivateRoute from "./PrivateRoute"
 import { AdminContextProvider } from "../context/AdminContext"
 import Header from "../components/header/Header"
+import SingleLocation from "../components/admin/SingleLocation"
 const Main = React.lazy(() => import("../containers/Main"));
 const Admin = React.lazy(() => import("../containers/Admin"));
 const Login = React.lazy(() => import("../containers/Login"));
@@ -28,6 +29,7 @@ class Routes extends Component {
                     <AdminContextProvider>
                         <Header t={t} location={this.props.location} />
                         <PrivateRoute exact path="/hallinta" t={t} component={Admin} />
+                        <PrivateRoute exact path="/retkipaikka/:id/" t={t} component={SingleLocation} />
                         <Route exact path="/kirjaudu" render={(props) => (<Login {...props} t={t} />)} />
                     </AdminContextProvider>
                     {/* <Route exact path="/hallinta" render={(props) => (<Admin {...props} t={t} />)} /> */}

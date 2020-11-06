@@ -101,6 +101,7 @@
         "password_title": "Salasanan vaihto",
         "new_users": "Rekisteröityneet käyttäjät ilman käyttöoikeutta",
         "current_users": "Nykyiset käyttäjät",
-        "user_edit": "Käyttäjän muokkaus"
+        "user_edit": "Käyttäjän muokkaus",
+        "userdialog_info": "Jos kirjautuminen on sallittu, käyttäjä pääsee kirjautumaan mutta ei pysty muokkaamaan mitään. Käyttäjällä pitää siis olla aina rooli, jotta pystyy muokkaamaan. HUOM. superadmin saa kaikki mahdolliset oikeudet, admin saa muokkaamisoikeudet retkipaikkoihin ja suodattimiin."
     }
 }
