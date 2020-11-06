@@ -5,10 +5,6 @@ const DraggableDialog = (props) => {
     const { customClassName, handleClose, clickHeight, t, children } = props;
     let className = "admin-info-dialog ";
 
-    // useEffect(() => {
-    //     console.log(children)
-    //     setTest(null)
-    // }, [children])
     return (
         <div className="test">
             <Draggable

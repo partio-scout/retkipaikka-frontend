@@ -34,14 +34,7 @@ const UserEditDialog = (props) => {
     }
 
 
-
-
-    useEffect(() => {
-        console.log(data, " IN USEEFFECK")
-    }, [data])
-
     const handleDelete = async (obj) => {
-        console.log(obj);
         if (obj.object_type === "filter") {
             await dispatch(deleteFilter(obj));
         } else {
@@ -59,11 +52,9 @@ const UserEditDialog = (props) => {
     };
 
     const getCheckBoxes = () => {
-        console.log(data, "IN GETCHECKBOXES")
         return (
             <>
                 {allRoles.map(role => {
-                    console.log(role, "")
                     return <CheckBox key={data.username + role.id} handleChange={handleChange} text={role.name} id={"role_" + role.id} defaultChecked={data?.roles.find(r => r.id === role.id)} />
                 })}
             </>

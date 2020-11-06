@@ -17,7 +17,6 @@ export const selectLocation = (payload) => {
 
 }
 export const resetLocation = () => {
-    console.log("reset");
     return {
         type: RESET_LOCATION
 
@@ -27,7 +26,6 @@ export const resetLocation = () => {
 export const setCoordinates = (payload) => {
     // saves the map click coordinates 
     // coordinate value is used in location form
-    console.log(payload);
     return {
         type: SET_COORDINATES,
         coords: payload

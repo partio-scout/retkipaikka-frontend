@@ -10,7 +10,6 @@ import { removeFilter } from "../../actions/FilterActions"
 class TagBar extends React.Component {
     handleTagRemove = (tag) => {
         const { removeFilter } = this.props;
-        console.log("tag remove", tag)
         removeFilter(tag);
     }
     createTags = () => {
@@ -19,7 +18,6 @@ class TagBar extends React.Component {
         if (useGlobalState) {
             tagArr = tagArr.concat(tagList.commonFilters, tagList.locationFilters, tagList.locationTypeFilters);
         }
-        console.log(tagArr)
 
         //tag types are
         //filter

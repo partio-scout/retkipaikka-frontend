@@ -35,7 +35,6 @@ class MapHeader extends React.Component {
         //types contain all locationtypes, first one is blank so start at 1
         for (let i = 1; i < types.length; ++i) {
             // filter locations of the current
-            console.log(types[i])
             let id = types[i].category_id
             //first check selected lang, then english, then finnish
             let type = types[i][langEnd] ? types[i][langEnd] : types[i]["object_name_en"] ? types[i]["object_name_en"] : types[i]["object_name"]
@@ -49,12 +48,6 @@ class MapHeader extends React.Component {
 
                 }
             }
-            // let shelterData = data.filter(d => d.propertyType === "Laavu");
-            // let houseData = data.filter(d => d.propertyType === "Kämppä");
-            // let regionData = data.filter(d => d.propertyType === "Alue")
-            // let arr = [shelterData, houseData, regionData];
-
-
         }
         return totalDataArr;
     }

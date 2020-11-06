@@ -113,10 +113,8 @@ class SideSlider extends React.Component {
     }
     render() {
         const { showGallery } = this.state;
-        console.log("render slider")
         let className = "map-side-slider component"
         let imgs = this.getImages();
-        console.log(imgs)
         return (
             <div>
                 <div className={this.props.class ? className + this.props.class : className}>

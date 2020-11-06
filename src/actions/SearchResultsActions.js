@@ -42,7 +42,6 @@ export const fetchLocations = (accepted) => async (dispatch) => {
 export const postFormData = (data, images, t) => (dispatch) => {
     return new Promise(function (resolve, reject) {
         let stringifiedData = JSON.stringify(data);
-        console.log(stringifiedData);
         const formData = new FormData();
         if (images.length > 0) {
             for (let i = 0; i < images.length; ++i) {
@@ -61,9 +60,7 @@ export const postFormData = (data, images, t) => (dispatch) => {
             }
 
         ).then(async response => {
-            console.log(response.data, "in post data");
             let resData = response.data;
-            console.log(response);
             if (response.status === 200 && images.length !== 0) {
 
                 // for (let i = 0; i < images.length; ++i) {
@@ -95,40 +92,31 @@ export const postFormData = (data, images, t) => (dispatch) => {
 export const postEditData = (data, images) => (dispatch, getState) => {
     let accessToken = getUser().id;
     accessToken = "access_token=" + accessToken;
-
-    console.log("in edit")
-    let stringifiedData = JSON.stringify(data);
-    //console.log(stringifiedData);
-    //console.log(JSON.parse(stringifiedData), "in edit post")
-    //console.log(_API_PATH_ + "/Triplocations/editLocation?locationData=" + stringifiedData + accessToken)
-    console.log(_API_PATH_ + "/Triplocations/editLocation?" + accessToken, data);
     axios.patch(
         _API_PATH_ + "/Triplocations/editLocation?" + accessToken, data
 
     ).then(async response => {
-        console.log(response, "edit res");
         if (images.length > 0) {
             for (let i = 0; i < images.length; ++i) {
                 const formData = new FormData();
                 formData.append('image', images[i]);
-                try {
-                    await axios.post(_API_PATH_ + "/Images/" + data.location_id + "/upload?" + accessToken, formData, {
-                        headers: {
-                            'content-type': 'multipart/form-data'
-                        }
-                    })
-                } catch (error) {
-                    console.error(error)
-                }
+
+                await axios.post(_API_PATH_ + "/Images/" + data.location_id + "/upload?" + accessToken, formData, {
+                    headers: {
+                        'content-type': 'multipart/form-data'
+                    }
+                })
+
             }
 
-
         }
+        window.alert("Retkipaikan muokkaus onnistui")
         dispatch(fetchLocations(true));
         dispatch(fetchLocations(false));
 
     }).catch(error => {
-        console.log("error in editing data", error);
+        window.alert("Retkipaikan muokkaus epäonnistui")
+        console.error(error);
     });
 }
 
@@ -148,15 +136,15 @@ export const removeEditImages = (id, imgArr) => async (dispatch, getState) => {
 export const deleteLocation = (data) => (dispatch, getState) => {
     let accessToken = getUser().id;
     let stringifiedData = JSON.stringify(data);
-    console.log(stringifiedData);
     axios.delete(
         _API_PATH_ + "/Triplocations/deleteLocation?locationData=" + stringifiedData + "&access_token=" + accessToken
     ).then(async response => {
         await axios.delete(_API_PATH_ + "/Images/" + data.location_id + "?access_token=" + accessToken);
+        window.alert("Retkipaikan poisto onnistui");
         dispatch(fetchLocations(true));
         dispatch(fetchLocations(false));
     }).catch(error => {
-        console.log("error in editing data", error);
+        console.error(error);
     });
 }
 
@@ -185,9 +173,7 @@ export const filterFromResults = (searchResults, filters) => {
     console.log(municipalitiesPass.length, " passed municipalities");
     // then filter locations that passed the previous filtering (city filters) if types has items
     let typeFiltersPass = municipalitiesPass;
-    console.log(municipalitiesPass, "OBJECT")
     if (types.length !== 0) {
-
         typeFiltersPass = municipalitiesPass.filter(loc => types.find(({ category_id }) => loc.location_category === category_id))
     }
 

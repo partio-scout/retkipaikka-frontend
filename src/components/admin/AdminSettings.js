@@ -18,7 +18,6 @@ const AdminSettings = ({ t }) => {
     const { currentUsers, newUsers } = useAdminContext();
 
 
-
     const regionNotifications = () => {
 
         // three options: none, all, selected regions
@@ -44,7 +43,6 @@ const AdminSettings = ({ t }) => {
     const userInfo = () => {
         // email
         // amount of locations accepted, deleted
-        console.log(user, "IN USER")
         return (<div className="user_info_container">
             <h3>{t("settings.user_settings_title")}</h3>
             <div>

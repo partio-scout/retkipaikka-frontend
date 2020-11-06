@@ -2,27 +2,15 @@ import React, { useState, useEffect } from "react";
 import { Redirect, Route } from "react-router-dom"
 import { checkLoginStatus } from "../helpers/UserHelper";
 import Spinner from "../components/shared/Spinner"
+import { useAdminContext } from "../context/AdminContext";
 
 const PrivateRoutes = ({ component: Component, ...rest }) => {
-    const [loginStatus, setLoginStatus] = useState({ loading: true, loggedIn: false })
-
-    useEffect(() => {
-        async function handleLogin() {
-            const loggedIn = await checkLoginStatus();
-            console.log(loggedIn, "LOGINSTATUS")
-
-            let obj = { loading: false, loggedIn: loggedIn }
-            setLoginStatus(obj)
-        }
-        handleLogin()
-
-    }, [])
-
-
+    // const [userLoginStatus, setUserLoginStatus] = useState({ loading: true, loggedIn: false })
+    const { loggedIn, loading } = useAdminContext()
     return (<Route
         {...rest}
         render={props =>
-            loginStatus.loading ? <Spinner loading={loginStatus.loading} /> : loginStatus.loggedIn ?
+            loading ? <Spinner loading={loading} /> : loggedIn ?
                 <Component {...rest} /> :
                 <Redirect
                     to={{

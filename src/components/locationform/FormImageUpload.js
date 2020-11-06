@@ -111,7 +111,6 @@ class FormImageUpload extends React.Component {
         if (pictures.length + previousPictures.length >= 10) {
             className += " upload-btn-disabled"
         }
-        console.log(uploaderKey, "key");
         return (
             <div >
                 <ImageUploader

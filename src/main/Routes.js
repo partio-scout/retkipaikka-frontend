@@ -19,9 +19,6 @@ import Spinner from "../components/shared/Spinner"
 class Routes extends Component {
     render() {
         const { i18n, language, t } = this.props
-        //console.log(t, "in routes")
-        //console.log(this.props)
-        //console.log(i18n)
         if (i18n.language != language) {
             i18n.changeLanguage(language);
         }

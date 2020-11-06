@@ -1,21 +1,22 @@
 import React, { createContext, useState, useContext } from 'react';
 import Admin from '../containers/Admin';
-import { useUserData } from "../helpers/UserHelper"
-
+import { useUserData, useLoginData } from "../helpers/UserHelper"
+import { getUser } from "../helpers/UserHelper"
 
 const AdminContext = createContext();
 
 const AdminContextProvider = ({ children }) => {
+    const { loading, loggedIn, changeLoginStatus } = useLoginData()
     const { currentUsers, newUsers, allRoles, fetchData } = useUserData();
-
-    console.log(currentUsers, newUsers, allRoles)
     const store = {
         currentUsers,
         newUsers,
         allRoles,
-        fetchData
+        fetchData,
+        loading,
+        loggedIn,
+        changeLoginStatus
     };
-
 
     return <AdminContext.Provider value={store}>{children}</AdminContext.Provider>
 }

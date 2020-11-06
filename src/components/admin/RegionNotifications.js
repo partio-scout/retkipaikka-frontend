@@ -21,17 +21,14 @@ const RegionNotifications = (props) => {
 
 
     const allRegions = useSelector(state => state.filters.regions)
-    console.log(state)
 
     const handleSelection = (data) => {
         if (!tags.tags.find((t) => t.region_id === data.region_id)) {
             let tempTags = [...tags.tags]
             tempTags.push(data);
             tagsModified = true;
-            console.log(tagsModified, "TAG")
             setTags({ tags: tempTags, tagsModified: true });
         }
-        console.log(data);
     }
 
     const deleteTag = (data) => {
@@ -44,14 +41,11 @@ const RegionNotifications = (props) => {
         let regionArr = tags.tags.map(t => t.region_id);
         let val = modifyUserNotifications(state.notifications, regionArr);
         if (val) {
-            fetchSingleUser().then(res => {
-                console.log(res, "FETCHSING");
-            })
+            fetchSingleUser()
         }
 
 
     }
-    console.log(tags.tagsModified)
     return (
         <div>
             <h3>

@@ -43,7 +43,7 @@ export default function (state = initialState, action) {
                 locationFilters: handleDelete(state.locationFilters, action.payload)
             }
         case ADD_LOCATIONTYPE_FILTER:
-            console.log(state)
+
             return {
                 ...state,
                 locationTypeFilters: [...state.locationTypeFilters, action.payload]

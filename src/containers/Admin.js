@@ -56,7 +56,7 @@ const Admin = (props) => {
                 renderElement = <FilterHandler t={t} />
                 break;
             case "settings":
-                renderElement = <AdminSettings t={t} currentUsers={currentUsers} newUsers={newUsers} allRoles={allRoles} />
+                renderElement = <AdminSettings t={t} />
                 break;
             default:
                 renderElement = <h3>Testi</h3>

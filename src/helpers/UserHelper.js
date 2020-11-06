@@ -6,7 +6,6 @@ export const login = async (dataObj) => {
     let status = false;
 
     await axios.post(_API_PATH_ + "/Users/login?include=user", dataObj).then(res => {
-        console.log(res);
         if (res.data.id) {
             localStorage.setItem('user', JSON.stringify(res.data))
             status = true;
@@ -19,7 +18,7 @@ export const login = async (dataObj) => {
 
         }
     }).catch((error) => {
-        console.dir(error)
+        console.error(error)
         let msg = error?.response?.data?.error?.message;
         msg ? msg : "Kirjautuminen epäonnistui";
         msg = msg.charAt(0).toUpperCase() + msg.slice(1)
@@ -51,7 +50,6 @@ export const changePassword = async (object) => {
     let status = false;
     if (id) {
         await axios.post(_API_PATH_ + "/Users/change-password?access_token=" + id, object).then(res => {
-            console.log(res)
             if (res.status === 204) {
                 status = true;
                 window.alert("Salasana vaihdettu")
@@ -88,7 +86,6 @@ export const logOut = async () => {
             } else {
                 window.alert("Uloskirjautuminen epäonnistui!")
             }
-            //console.log(res, "RSEPONSE")
         })
     }
 
@@ -105,7 +102,6 @@ export const modifyUserNotifications = async (notificationType, regions) => {
         userCopy.notifications = notificationType;
         let dataObj = { regions: regions, user: userCopy }
         await axios.patch(_API_PATH_ + "/Users/modifyUserNotifications?access_token=" + user.id, dataObj).then(res => {
-            console.log(res, "RESPONSE")
             window.alert("Tallennus onnistui")
             status = true
         }).catch(err => {
@@ -123,7 +119,6 @@ export const modifyUser = async (data) => {
     let status = false;
     if (id) {
         await axios.patch(_API_PATH_ + "/Users/editUser?access_token=" + id, data).then(res => {
-            console.log(res);
             status = true;
             window.alert("Käyttäjän muokkaus onnistui")
         }).catch((e) => {
@@ -165,6 +160,33 @@ export const fetchSingleUser = async () => {
     }
 }
 
+export const useLoginData = () => {
+    const [loginStatus, setLoginStatus] = useState({ loading: true, loggedIn: false });
+    const { id } = getUser();
+    useEffect(() => {
+        async function handleLogin() {
+            console.log("handleLogin in useLoginData")
+            const loggedIn = await checkLoginStatus();
+            let obj = { loading: false, loggedIn: loggedIn }
+            if (!loggedIn) {
+                localStorage.removeItem("user")
+            }
+            setLoginStatus(obj)
+
+        }
+        handleLogin()
+
+    }, [id])
+
+    const changeLoginStatus = (bool) => {
+        setLoginStatus({ loading: false, loggedIn: bool })
+    }
+    return {
+        loading: loginStatus.loading,
+        loggedIn: loginStatus.loggedIn,
+        changeLoginStatus
+    };
+}
 
 export const useUserData = () => {
     const { id, userId } = getUser();
@@ -176,6 +198,7 @@ export const useUserData = () => {
     });
 
     const fetchData = async () => {
+        console.log("fetchData in USEUSERDATA")
         if (id) {
             let filter = {
                 include: [{ "relation": "roles" }]
@@ -195,7 +218,7 @@ export const useUserData = () => {
 
     useEffect(() => {
         fetchData();
-    }, [])
+    }, [id])
 
 
 

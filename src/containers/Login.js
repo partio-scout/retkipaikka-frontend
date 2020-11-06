@@ -6,6 +6,8 @@ import TextArea from "../components/shared/TextArea";
 import { login, register } from "../helpers/UserHelper";
 import { connect } from "react-redux";
 import { useDynamicState } from "../helpers/Helpers";
+import { useAdminContext } from "../context/AdminContext";
+
 
 
 
@@ -15,7 +17,7 @@ const Login = (props) => {
     // const [state, setState] = useState({})
     const { state, handleChange } = useDynamicState({})
     const [registerForm, setRegisterForm] = useState(false);
-
+    const { changeLoginStatus } = useAdminContext();
     const validate = (e) => {
         e.preventDefault();
         let emptyFound = false;
@@ -50,6 +52,7 @@ const Login = (props) => {
 
             let loginStatus = await login(dataObj);
             if (loginStatus) {
+                changeLoginStatus(true);
                 redirect()
             }
         } else {
@@ -70,24 +73,16 @@ const Login = (props) => {
     }
 
     const redirect = () => {
-        console.log(location.state)
         if (location.state) {
             if (location.state.from) {
-                console.log("in here ", location.state.from.pathname)
                 history.push(location.state.from.pathname)
 
             }
         } else {
             history.push("/");
         }
-        console.log(props);
     }
 
-    // const handleChange = (e) => {
-    //     let value = e.target.type === "checkbox" ? e.target.checked : e.target.value;
-    //     setState({ ...state, [e.target.id]: value });
-    //     console.log(state)
-    // }
 
     const getRegisterForm = () => {
         return (

@@ -35,7 +35,6 @@ const FilterEditDialog = (props) => {
 
     }
     const handleDelete = async (obj) => {
-        console.log(obj);
         if (obj.object_type === "filter") {
             await dispatch(deleteFilter(obj));
         } else {

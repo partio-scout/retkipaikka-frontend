@@ -28,8 +28,6 @@ class AutoCompleteInput extends React.Component {
     }
     handleFiltering = (e) => {
         const { data } = this.props;
-        console.log(e);
-        console.log(this.state)
         let temp = e[0];
         if (temp !== "") {
             let value = data.filter(d => d.object_name === temp);

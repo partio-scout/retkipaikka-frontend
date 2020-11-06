@@ -51,7 +51,6 @@ export const removeFilter = (obj) => {
             break;
         case "locationtype":
             actionType = REMOVE_LOCATIONTYPE_FILTER;
-            console.log(obj);
             break;
         case "filter":
             actionType = REMOVE_COMMON_FILTER;
@@ -87,7 +86,6 @@ export const fetchRegionsAndMunicipalities = () => async (dispatch) => {
     // { filter_id: 12, object_type: "filter", object_name: "Yli 20 majoituspaikkaa" }]
 
     // const locations = { locations: locationTypeFilters, common: commonFilters }
-    console.log(locations);
     dispatch({
         type: UPDATE_FETCHED_AREAS,
         payload: locations
@@ -100,7 +98,7 @@ export const postFilter = (data) => (dispatch, getState) => {
     axios.post(
         _API_PATH_ + "/Filters" + accessToken, data
     ).then(response => {
-        console.log("succes")
+        window.alert("Suodattimen lisäys onnistui")
         dispatch(fetchFilters())
     }).catch(error => {
         window.alert("Virhe suodattimen lisäämisessä")
@@ -113,7 +111,7 @@ export const editFilter = (data) => (dispatch, getState) => {
     axios.patch(
         _API_PATH_ + "/Filters/" + data.filter_id + accessToken, data
     ).then(response => {
-        console.log("succes")
+        window.alert("Suodattimen muokkaus onnistui")
         dispatch(fetchFilters())
     }).catch(error => {
         window.alert("Virhe suodattimen muokkaamisessa")
@@ -127,6 +125,7 @@ export const editCategory = (data) => (dispatch, getState) => {
     axios.patch(
         _API_PATH_ + "/Categories/" + data.category_id + accessToken, data
     ).then(response => {
+        window.alert("Kategorian muokkaus onnistui")
         dispatch(fetchFilters())
     }).catch(error => {
         window.alert("Virhe kategorian muokkaamisessa")
@@ -139,6 +138,7 @@ export const postCategory = (data) => (dispatch, getState) => {
     axios.post(
         _API_PATH_ + "/Categories" + accessToken, data
     ).then(response => {
+        window.alert("Kategorian lisäys onnistui")
         dispatch(fetchFilters())
     }).catch(error => {
         window.alert("Virhe suodattimen lisäämisessä")
@@ -148,23 +148,21 @@ export const postCategory = (data) => (dispatch, getState) => {
 export const deleteCategory = (data) => (dispatch, getState) => {
     let accessToken = getUser().id;
     accessToken = "?access_token=" + accessToken;
-    console.log(data)
     axios.get(
         _API_PATH_ + "/Categories/" + data.category_id + "/triplocations/count"
     ).then(response => {
         if (response.data.count === 0) {
             axios.delete(_API_PATH_ + "/Categories/" + data.category_id + accessToken).then(res => {
+                window.alert("Kategorian poisto onnistui")
                 dispatch(fetchFilters())
-                console.log("deleted");
             })
-
         } else {
             window.alert("et voi poistaa kategoriaa joka on käytössä")
         }
 
     }).catch(error => {
         window.alert("Virhe poistamisessa")
-        console.log("error in deleting", error);
+        console.error(error)
     });
 }
 export const deleteFilter = (data) => (dispatch, getState) => {
@@ -175,17 +173,17 @@ export const deleteFilter = (data) => (dispatch, getState) => {
     ).then(response => {
         if (response.data.count === 0) {
             axios.delete(_API_PATH_ + "/Filters/" + data.filter_id + accessToken).then(res => {
-                console.log("deleted");
+                window.alert("Suodattimen poisto onnistui")
                 dispatch(fetchFilters())
             });
 
         } else {
-            window.alert("et voi poistaa suodatinta joka on käytössä")
+            window.alert("Et voi poistaa suodatinta joka on käytössä")
         }
 
     }).catch(error => {
         window.alert("Virhe poistamisessa")
-        console.log("error in deleting", error);
+        console.error(error);
     });
 }
 
@@ -206,12 +204,11 @@ export const fetchFilters = () => async (dispatch) => {
     } catch (error) {
         console.error(error);
     }
-    console.log(JSON.parse(JSON.stringify(locations)));
     // let locationTypeFilters = [{ category_id: 0, object_type: "nolocationtype", object_name: "Kaikki" }, { category_id: 1, object_type: "locationtype", object_name: "Laavu" }, { category_id: 2, object_type: "locationtype", object_name: "Kämppä" }, { category_id: 3, object_type: "locationtype", object_name: "Alue" }, { category_id: 4, object_type: "locationtype", object_name: "Venelaituri" }]
     // let commonFilters = [{ filter_id: 0, object_type: "nofilter", object_name: "Ei suodattimia" }, { filter_id: 1, object_type: "filter", object_name: "Sauna" }, { filter_id: 2, object_type: "filter", object_name: "Järvi lähellä" }, { filter_id: 3, object_type: "filter", object_name: "Laituri" }, { filter_id: 4, object_type: "filter", object_name: "Sisämajoitus" }, { filter_id: 5, object_type: "filter", object_name: "Sisävessa" },
     // { filter_id: 6, object_type: "filter", object_name: "Juomavesi" }, { filter_id: 7, object_type: "filter", object_name: "Sähkö" }, { filter_id: 8, object_type: "filter", object_name: "Ei majoitusta" }, { filter_id: 9, object_type: "filter", object_name: "Alle 5 majoituspaikkaa" }, { filter_id: 10, object_type: "filter", object_name: "Yli 5 majoituspaikkaa" }, { filter_id: 11, object_type: "filter", object_name: "Yli 10 majoituspaikkaa" },
     // { filter_id: 12, object_type: "filter", object_name: "Yli 20 majoituspaikkaa" }]
-    console.log("meni")
+
     // const locations = { locations: locationTypeFilters, common: commonFilters }
     dispatch({
         type: UPDATE_FETCHED_FILTERS,

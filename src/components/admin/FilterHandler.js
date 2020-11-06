@@ -96,7 +96,6 @@ class FilterHandler extends React.Component {
     }
     handlePost = (obj) => {
         const { postFilter, postCategory } = this.props;
-        console.log(obj);
         if (obj.object_type === "filter") {
             postFilter(obj);
         } else {

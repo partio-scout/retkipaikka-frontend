@@ -87,7 +87,6 @@ class Admin extends React.Component {
 
     render() {
         const { t } = this.props;
-        console.log("ADMIN RENDER")
         let renderElement = this.getAdminPanel()
         return (
             <div className="frontpage-container">
