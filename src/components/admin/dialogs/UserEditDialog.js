@@ -3,38 +3,38 @@ import { useDynamicState, askForConfirmation } from "../../../helpers/Helpers";
 import TextInput from "../../shared/TextInput"
 import CheckBox from "../../shared/CheckBox"
 import { useDispatch } from "react-redux"
-import { editCategory, editFilter, deleteFilter, deleteCategory } from "../../../actions/FilterActions"
+import { modifyUser } from "../../../helpers/UserHelper"
+import { useAdminContext } from "../../../context/AdminContext"
 const UserEditDialog = (props) => {
-    const { t, allRoles, data } = props;
+    const { t, data, handleClose } = props;
     const { state, handleChange } = useDynamicState({})
-    const dispatch = useDispatch();
-    const submitFilterEdit = async (obj) => {
-        let langArr = ["en", "sv", "sa"]
-        let newObj = {}
-        let type = obj.object_type;
-        let idField = type === "locationtype" ? "category_id" : "filter_id"
-        newObj[idField] = obj[idField];
-        if (state[type]) {
-            newObj.object_name = state[type];
+    const { allRoles, fetchData } = useAdminContext();
+
+    const submitUserEdit = async (obj) => {
+        let userObj = {
+            user: {
+                admin_id: obj.admin_id,
+            },
+            roles: []
         }
-        langArr.forEach(l => {
-            let stateVal = state[type + "_" + l]
-            if (stateVal) {
-                newObj["object_name_" + l] = stateVal
+
+        userObj.user.new_user = !state.userEnabled;
+
+        let roleArr = Object.keys(state).filter(key => key.includes("role"))
+        roleArr.forEach(r => {
+            if (r) {
+                userObj.roles.push(parseInt(r.split("_")[1]));
             }
         })
 
-        switch (type) {
-            case "locationtype":
-                await dispatch(editCategory(newObj))
-                break;
-            case "filter":
-                await dispatch(editFilter(newObj))
-                break;
-        }
+        await modifyUser(userObj)
+        await fetchData()
         handleClose();
 
     }
+
+
+
 
     useEffect(() => {
         console.log(data, " IN USEEFFECK")
@@ -55,7 +55,7 @@ const UserEditDialog = (props) => {
 
     };
     const askForEditConfirmation = (name, title, obj) => {
-        askForConfirmation("Haluatko tallentaa tekemäsi muokkaukset?", "Käyttäjän muokkaaminen", () => submitFilterEdit(obj), false)
+        askForConfirmation("Haluatko tallentaa tekemäsi muokkaukset?", "Käyttäjän muokkaaminen", () => submitUserEdit(obj), false)
     };
 
     const getCheckBoxes = () => {

@@ -11,6 +11,7 @@ import { fetchLocations } from "../actions/SearchResultsActions"
 import { useUserData, fetchSingleUser } from "../helpers/UserHelper";
 import { fetchFilters, fetchRegionsAndMunicipalities } from "../actions/FilterActions"
 import { useDispatch, batch } from "react-redux";
+import { useAdminContext } from "../context/AdminContext"
 
 
 
@@ -19,7 +20,7 @@ const Admin = (props) => {
     const { t } = props;
     const [element, setElement] = useState("locations")
     const dispatch = useDispatch()
-    const { currentUsers, newUsers, allRoles } = useUserData();
+    const { currentUsers, newUsers, allRoles } = useAdminContext();
 
 
     const handleInitialFetch = () => {

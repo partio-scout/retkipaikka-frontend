@@ -9,11 +9,13 @@ import RegionNotifications from "./RegionNotifications"
 import moment from "moment"
 import InfoDialog from "./dialogs/InfoDialog"
 import UserEditDialog from "./dialogs/UserEditDialog"
-const AdminSettings = ({ t, currentUsers, newUsers, allRoles }) => {
+import { useAdminContext } from "../../context/AdminContext"
+const AdminSettings = ({ t }) => {
     // regular admin settings
     const { state, handleChange } = useDynamicState();
     const user = getUser();
     const [clickedObj, setClickedObj] = useState(null)
+    const { currentUsers, newUsers } = useAdminContext();
 
 
 
@@ -138,7 +140,6 @@ const AdminSettings = ({ t, currentUsers, newUsers, allRoles }) => {
                     <UserEditDialog
                         t={t}
                         data={clickedObj}
-                        allRoles={allRoles}
                         handleClose={closeDialog}
                     />
                 </InfoDialog>
@@ -157,10 +158,7 @@ const AdminSettings = ({ t, currentUsers, newUsers, allRoles }) => {
 
 }
 AdminSettings.defaultProps = {
-    t: () => { },
-    currentUsers: [],
-    newUsers: [],
-    allRoles: []
+    t: () => { }
 }
 
 export default AdminSettings;

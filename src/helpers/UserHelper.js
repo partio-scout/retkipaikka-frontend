@@ -1,10 +1,8 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react"
 
+
 export const login = async (dataObj) => {
-    //localStorage.setItem('user', JSON.stringify(user));
-    // axios.post(
-    // _API_PATH_ + "/Filters", data
     let status = false;
 
     await axios.post(_API_PATH_ + "/Users/login?include=user", dataObj).then(res => {
@@ -124,13 +122,16 @@ export const modifyUser = async (data) => {
     const { id } = getUser();
     let status = false;
     if (id) {
-        await axios.patch(_API_PATH_ + "/Users/editUser/?access_token=" + id, data).then(res => {
+        await axios.patch(_API_PATH_ + "/Users/editUser?access_token=" + id, data).then(res => {
             console.log(res);
-        }).catch((e) => {
             status = true;
+            window.alert("Käyttäjän muokkaus onnistui")
+        }).catch((e) => {
             console.error(e);
+            window.alert("Käyttäjän muokkaus epäonnistui")
         })
     }
+    return status;
 
 
 }
@@ -155,7 +156,6 @@ export const fetchSingleUser = async () => {
         return await axios.get(_API_PATH_ + "/Users/fetchUserData/" + userId + "?access_token=" + id).then(res => {
             let tempUser = { ...user };
             tempUser.user = res.data;
-            console.log(res, "RESPONSE IN FETCHSINGE")
             localStorage.setItem('user', JSON.stringify(tempUser))
             return true
         }).catch(e => {
@@ -173,11 +173,10 @@ export const useUserData = () => {
         currentUsers: [],
         newUsers: [],
         allRoles: [],
-        fetched: false
     });
 
     const fetchData = async () => {
-        if (id && !data.fetched) {
+        if (id) {
             let filter = {
                 include: [{ "relation": "roles" }]
             }
@@ -200,7 +199,10 @@ export const useUserData = () => {
 
 
 
-    return data
+    return {
+        ...data,
+        fetchData
+    }
 
 }
 
