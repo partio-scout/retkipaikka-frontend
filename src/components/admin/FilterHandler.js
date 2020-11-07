@@ -5,11 +5,13 @@ import TextInput from "../shared/TextInput"
 import { postFilter, postCategory, deleteCategory, deleteFilter } from "../../actions/FilterActions"
 import InfoDialog from "./dialogs/InfoDialog"
 import { askForConfirmation, clearFormByClassName } from "../../helpers/Helpers"
+import { checkRoleValidity } from "../../helpers/UserHelper"
 import AdminTable from "../shared/AdminTable"
 import FilterEditDialog from "./dialogs/FilterEditDialog"
 class FilterHandler extends React.Component {
     state = {
-        clickedObj: null
+        clickedObj: null,
+        isSuper: true
     }
     getText = () => {
         return "<-";
@@ -58,7 +60,10 @@ class FilterHandler extends React.Component {
         }
     }
 
-
+    componentDidMount() {
+        const isSuper = checkRoleValidity();
+        this.setState({ isSuper })
+    }
     commonFilterRows = (obj) => {
         return (
             <tr key={obj["filter_id"]} onClick={(e) => this.handleObjectClick(obj, e)}>
@@ -86,8 +91,12 @@ class FilterHandler extends React.Component {
     }
 
     handleObjectClick = (obj, e) => {
+        const { isSuper } = this.state;
         //set clickedobject and move window down by 50px and right by 50px from clicked position
-        this.setState({ clickedObj: obj });
+        if (isSuper) {
+            this.setState({ clickedObj: obj });
+        }
+
 
     }
 
@@ -118,6 +127,42 @@ class FilterHandler extends React.Component {
             { id: "object_name_en", t: "EN" },
         ]
     }
+    getFilterForm() {
+        const { t } = this.props;
+        const { isSuper } = this.state;
+        if (isSuper) {
+            return (
+                <form onSubmit={(e) => this.handleSubmit(e, "filter")}>
+                    <div className="form-row">
+                        <TextInput maxLength={64} handleChange={this.handleChange} id="filter" placeholder="Suomeksi" helper="Kirjoita lisättävän suodattimen nimi*" text="Suodatin" size="col-md-3" required={true} />
+                        <TextInput maxLength={64} handleChange={this.handleChange} id="filter_sv" placeholder="Ruotsiksi" helper="Kirjoita lisättävän suodattimen nimi" text="-" size="col-md-3" required={false} />
+                        <TextInput maxLength={64} handleChange={this.handleChange} id="filter_sa" placeholder="Saameksi" helper="Kirjoita lisättävän suodattimen nimi" text="-" size="col-md-3" required={false} />
+                        <TextInput maxLength={64} handleChange={this.handleChange} id="filter_en" placeholder="Englanniksi" helper="Kirjoita lisättävän suodattimen nimi*" text="-" size="col-md-3" required={false} />
+                        <button className="btn btn-primary admin-filter-button">{t("admin.add")}</button>
+                    </div>
+                </form>
+            )
+        }
+
+
+    }
+    getCategoryForm() {
+        const { t } = this.props;
+        const { isSuper } = this.state;
+        if (isSuper) {
+            return (
+                <form onSubmit={(e) => this.handleSubmit(e, "locationtype")}>
+                    <div className="form-row">
+                        <TextInput maxLength={64} handleChange={this.handleChange} id="locationtype" placeholder="Suomeksi" helper="Kirjoita lisättävän kategorian nimi*" text="Kategoria" size="col-md-3" required={true} />
+                        <TextInput maxLength={64} handleChange={this.handleChange} id="locationtype_sv" placeholder="Ruotsiksi" helper="Kirjoita lisättävän kategorian nimi" text="-" size="col-md-3" required={false} />
+                        <TextInput maxLength={64} handleChange={this.handleChange} id="locationtype_sa" placeholder="Saameksi" helper="Kirjoita lisättävän kategorian nimi" text="-" size="col-md-3" required={false} />
+                        <TextInput maxLength={64} handleChange={this.handleChange} id="locationtype_en" placeholder="Englanniksi" helper="Kirjoita lisättävän kategorian nimi" text="-" size="col-md-3" required={false} />
+                        <button className="btn btn-primary admin-filter-button">{t("admin.add")}</button>
+                    </div>
+                </form>
+            )
+        }
+    }
 
     render() {
         //const items = this.generateListItems();
@@ -133,15 +178,7 @@ class FilterHandler extends React.Component {
                     objEntries={this.filterEntries("filter_id")}
                     t={t}
                 />
-                <form onSubmit={(e) => this.handleSubmit(e, "filter")}>
-                    <div className="form-row">
-                        <TextInput maxLength={64} handleChange={this.handleChange} id="filter" placeholder="Suomeksi" helper="Kirjoita lisättävän suodattimen nimi*" text="Suodatin" size="col-md-3" required={true} />
-                        <TextInput maxLength={64} handleChange={this.handleChange} id="filter_sv" placeholder="Ruotsiksi" helper="Kirjoita lisättävän suodattimen nimi" text="-" size="col-md-3" required={false} />
-                        <TextInput maxLength={64} handleChange={this.handleChange} id="filter_sa" placeholder="Saameksi" helper="Kirjoita lisättävän suodattimen nimi" text="-" size="col-md-3" required={false} />
-                        <TextInput maxLength={64} handleChange={this.handleChange} id="filter_en" placeholder="Englanniksi" helper="Kirjoita lisättävän suodattimen nimi*" text="-" size="col-md-3" required={false} />
-                        <button className="btn btn-primary admin-filter-button">{t("admin.add")}</button>
-                    </div>
-                </form>
+                {this.getFilterForm()}
                 <h5>{t("admin.categories")}</h5>
                 <AdminTable
                     getRowData={this.categoryRows}
@@ -149,17 +186,8 @@ class FilterHandler extends React.Component {
                     objEntries={this.filterEntries("category_id")}
                     t={t}
                 />
-                <form onSubmit={(e) => this.handleSubmit(e, "locationtype")}>
-                    <div className="form-row">
-                        <TextInput maxLength={64} handleChange={this.handleChange} id="locationtype" placeholder="Suomeksi" helper="Kirjoita lisättävän kategorian nimi*" text="Kategoria" size="col-md-3" required={true} />
-                        <TextInput maxLength={64} handleChange={this.handleChange} id="locationtype_sv" placeholder="Ruotsiksi" helper="Kirjoita lisättävän kategorian nimi" text="-" size="col-md-3" required={false} />
-                        <TextInput maxLength={64} handleChange={this.handleChange} id="locationtype_sa" placeholder="Saameksi" helper="Kirjoita lisättävän kategorian nimi" text="-" size="col-md-3" required={false} />
-                        <TextInput maxLength={64} handleChange={this.handleChange} id="locationtype_en" placeholder="Englanniksi" helper="Kirjoita lisättävän kategorian nimi" text="-" size="col-md-3" required={false} />
-                        <button className="btn btn-primary admin-filter-button">{t("admin.add")}</button>
-                    </div>
-                </form>
+                {this.getCategoryForm()}
                 {clickedObj !== null &&
-
                     <InfoDialog open={clickedObj !== null} dialogTitle={t("admin.filter_category_edit")} handleClose={this.handleClose}>
                         <FilterEditDialog
                             t={t}

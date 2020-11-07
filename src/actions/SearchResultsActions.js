@@ -124,7 +124,7 @@ export const postEditData = (data, images) => (dispatch, getState) => {
 
 export const removeEditImages = (id, imgArr) => async (dispatch, getState) => {
     let accessToken = getUser().id;
-    accessToken = "&access_token=" + accessToken;
+    accessToken = "?access_token=" + accessToken;
     for (let i = 0; i < imgArr.length; ++i) {
         try {
             await axios.delete(_API_PATH_ + "/Images/" + id + "/files/" + imgArr[i] + accessToken)

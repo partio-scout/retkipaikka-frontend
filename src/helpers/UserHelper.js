@@ -2,6 +2,17 @@ import axios from "axios";
 import React, { useEffect, useState } from "react"
 
 export const superRoleIds = [2];
+
+export const checkRoleValidity = () => {
+    const user = getUser();
+    const roles = user?.user?.roles;
+    if (roles) {
+        if (roles.find(r => superRoleIds.find(sRole => sRole === r.id))) {
+            return true;
+        }
+    }
+    return false;
+}
 export const login = async (dataObj) => {
     let status = false;
 
@@ -127,7 +138,20 @@ export const modifyUser = async (data) => {
         })
     }
     return status;
-
+}
+export const modifyOwnSettings = async (data) => {
+    const { id } = getUser();
+    let status = false;
+    if (id) {
+        await axios.patch(_API_PATH_ + "/Users/updateSettings?access_token=" + id, data).then(res => {
+            status = true;
+            window.alert("Tietojen tallennus onnistui")
+        }).catch((e) => {
+            console.error(e);
+            window.alert("Tietojen tallennus epäonnistui")
+        })
+    }
+    return status;
 
 }
 
@@ -152,6 +176,7 @@ export const fetchSingleUser = async () => {
             let tempUser = { ...user };
             tempUser.user = res.data;
             localStorage.setItem('user', JSON.stringify(tempUser))
+            console.log(res, "RESPNSE IN FETCHSINGLEUSER")
             return true
         }).catch(e => {
             console.error(e);
@@ -198,8 +223,7 @@ export const useUserData = () => {
     });
 
     const fetchData = async () => {
-        console.log("fetchData in USEUSERDATA")
-        if (id) {
+        if (id && checkRoleValidity()) {
             let filter = {
                 include: [{ "relation": "roles" }]
             }

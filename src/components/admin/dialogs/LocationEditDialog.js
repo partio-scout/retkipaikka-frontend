@@ -110,6 +110,9 @@ const LocationEditDialog = (props) => {
 
 }
 
-
-
+LocationEditDialog.defaultProps = {
+    handleClose: () => { },
+    data: {},
+    t: () => { }
+}
 export default LocationEditDialog;

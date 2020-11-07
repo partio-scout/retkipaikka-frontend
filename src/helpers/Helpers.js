@@ -21,8 +21,12 @@ const askForConfirmation = (message, title, onYesClick, onNoClick, childrenEleme
     });
 };
 
-const clearFormByClassName = (cn) => {
-    let fields = document.getElementsByClassName(cn);
+const clearFormByClassName = (cn, formId = null) => {
+    let doc = document;
+    if (formId) {
+        doc = document.getElementById(formId);
+    }
+    let fields = doc.getElementsByClassName(cn);
     for (let f of fields) {
         f.value = ""
     }

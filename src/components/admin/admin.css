@@ -11,9 +11,8 @@
 }
 .admin-content-container{
     width:100%;
-    margin-left: 2%;
-    margin-top: 2%;
-    
+    margin-left: 1rem;
+    margin-top: 1rem;
 }
 .info-close-button{
     background-color: #28aae1;
@@ -25,12 +24,20 @@
 .react-confirm-alert-overlay{
     z-index: 1400;
 }
+.single-location-container{
+    padding: 5rem;
+    padding-top: 5rem;
+
+}
 .react-confirm-alert-button-group button{
     background-color: #28aae1 !important;
 }
 .admin-filter-button{
     margin-top: 2rem;
     margin-left: 1rem
+}
+.admin-settings-container{
+    padding-left:1rem;
 }
 .info-close-button:hover{
     background-color:#f04150;
