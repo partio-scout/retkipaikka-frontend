@@ -7,7 +7,7 @@ import L from "leaflet"
 import MarkerClusterGroup from 'react-leaflet-markercluster/dist/react-leaflet-markercluster';
 
 import { connect } from "react-redux";
-import { setCoordinates } from "../../actions/MapActions"
+import { setCoordinates, selectMapHeaderLocation } from "../../actions/MapActions"
 
 
 
@@ -36,13 +36,13 @@ class Map extends React.Component {
         iconSize: [40, 50], // size of the icon
     });
     generateMarkers = () => {
-        const { results } = this.props;
+        const { results, selectMapHeaderLocation } = this.props;
         const { userMarker } = this.state;
         let markers = results.map((reg, i) => {
             return <Marker
                 key={reg.location_region + i}
                 position={reg.location_geo}
-                onClick={() => this.setState({ selected: reg })}
+                onClick={() => selectMapHeaderLocation(reg)}
                 icon={this.scoutIcon}
             />
         });
@@ -111,7 +111,7 @@ class Map extends React.Component {
                         </MarkerClusterGroup>
 
                     </LeafletMap>
-                    {selected !== null && <SideSlider t={t} class={" map-slider"} handleClose={this.handleMarkerClose} data={selected} />}
+                    {/* {selected !== null && <SideSlider t={t} class={" map-slider"} handleClose={this.handleMarkerClose} data={selected} />} */}
                 </div>
 
             </div>
@@ -128,4 +128,4 @@ const mapStateToProps = state => {
         language: state.general.language
     }
 }
-export default connect(mapStateToProps, { setCoordinates })(Map);
+export default connect(mapStateToProps, { selectMapHeaderLocation, setCoordinates })(Map);

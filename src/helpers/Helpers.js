@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
-
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 const askForConfirmation = (message, title, onYesClick, onNoClick, childrenElement = () => { }) => {
     confirmAlert({
         title: title,
@@ -50,4 +50,12 @@ const useDynamicState = (initialState) => {
 
 }
 
-export { useDynamicState, askForConfirmation, clearFormByClassName }
+
+const useScreenSize = () => {
+    const isMobile = useMediaQuery('(min-width:768px');
+
+    return {
+        isMobile
+    }
+}
+export { useDynamicState, askForConfirmation, clearFormByClassName, useScreenSize }

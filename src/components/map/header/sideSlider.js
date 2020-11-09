@@ -2,7 +2,7 @@ import React from "react";
 import "./mapHeader.css";
 import moment from "moment"
 import { connect } from "react-redux";
-import { selectLocation } from "../../../actions/MapActions"
+import { selectLocation, resetLocation, resetMapHeaderLocation } from "../../../actions/MapActions"
 import { getCorrectFilter } from "../../../actions/FilterActions"
 import { CustomImgSlider } from "./CustomImgSlider"
 // import ImageGallery from 'react-image-gallery';
@@ -92,10 +92,10 @@ class SideSlider extends React.Component {
                 <br />
                 <br />
                 {obj.images.length > 0 &&
-                    <h4 onClick={() => this.setState({ showGallery: obj })}><u>{t("form.photos")}</u></h4>
+                    <h4 className="pointer" onClick={() => this.setState({ showGallery: obj })}><u>{t("form.photos")}</u></h4>
 
                 }
-                <h4 onClick={() => selectLocation(obj)} ><u>{t("form.show_on_map")}</u></h4>
+                <h4 className="pointer" onClick={() => selectLocation(obj)} ><u>{t("form.show_on_map")}</u></h4>
 
             </div>
         )
@@ -104,46 +104,52 @@ class SideSlider extends React.Component {
         return "<-";
     }
     getImages = () => {
-        const { data } = this.props;
-        let imgArr = data.images.map(img => {
-            return { src: _API_PATH_ + "/Images/" + data.location_id + "/download/" + img }
+        const { mapHeaderLocation } = this.props;
+        let imgArr = mapHeaderLocation.images.map(img => {
+            return { src: _API_PATH_ + "/Images/" + mapHeaderLocation.location_id + "/download/" + img }
 
         })
         return imgArr;
     }
     render() {
         const { showGallery } = this.state;
+        const { mapHeaderLocation, resetMapHeaderLocation } = this.props;
         let className = "map-side-slider component"
-        let imgs = this.getImages();
-        return (
-            <div>
-                <div className={this.props.class ? className + this.props.class : className}>
-                    <img onClick={this.props.handleClose} className={"side-slider-icon-black-open"} src={_ICON_PATH_ + "arrow.svg"}></img>
-                    {/* <button onClick={this.props.handleClose}>{this.getText()}</button> */}
-                    <div className="side-slider-data">
-                        {this.generateFromSingleData(this.props.data)}
+        if (mapHeaderLocation != null) {
+            let imgs = this.getImages();
+            return (
+                <div>
+                    <div className={this.props.class ? className + this.props.class : className}>
+                        <img onClick={resetMapHeaderLocation} className={"pointer side-slider-icon-black-open"} src={_ICON_PATH_ + "arrow.svg"}></img>
+                        {/* <button onClick={this.props.handleClose}>{this.getText()}</button> */}
+                        <div className="side-slider-data">
+                            {this.generateFromSingleData(mapHeaderLocation)}
+                        </div>
+
                     </div>
-
-                </div>
-                {showGallery &&
-                    <div>
-                        <CustomImgSlider handleClose={() => this.setState({ showGallery: null })} photos={imgs} />
+                    {showGallery &&
+                        <div>
+                            <CustomImgSlider handleClose={() => this.setState({ showGallery: null })} photos={imgs} />
 
 
-                        {/* <div className="image-gallery-blur"></div>
+                            {/* <div className="image-gallery-blur"></div>
                         <div className="image-gallery-container">
                             <span onClick={() => this.setState({ showGallery: null })} className="slider-close-button">x</span>
                             <ImageGallery showIndex={true} showPlayButton={false} showThumbnails={false} items={imgs} />
 
                         </div> */}
-                    </div>}
+                        </div>}
 
 
 
 
-            </div>
+                </div>
 
-        )
+            )
+        } else {
+            return <></>
+        }
+
     }
 }
 
@@ -153,7 +159,9 @@ const mapStateToProps = state => {
         coords: state.map.coords,
         filterTypes: state.filters.locationTypeFilterList,
         commonFilters: state.filters.commonFilterList,
-        language: state.general.language
+        language: state.general.language,
+        selectedLoc: state.map.selectedLocation,
+        mapHeaderLocation: state.map.mapHeaderLocation
     }
 }
-export default connect(mapStateToProps, { selectLocation })(SideSlider);
+export default connect(mapStateToProps, { selectLocation, resetLocation, resetMapHeaderLocation })(SideSlider);

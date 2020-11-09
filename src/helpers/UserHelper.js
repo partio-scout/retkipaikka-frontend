@@ -223,6 +223,7 @@ export const useUserData = () => {
     });
 
     const fetchData = async () => {
+        console.log("IN FETCHDATA", id, checkRoleValidity())
         if (id && checkRoleValidity()) {
             let filter = {
                 include: [{ "relation": "roles" }]

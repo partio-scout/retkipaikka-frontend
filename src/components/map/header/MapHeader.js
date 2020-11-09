@@ -1,8 +1,8 @@
 import React from "react";
 import "./mapHeader.css";
 import SideSlider from "./sideSlider";
-
-
+import { connect } from "react-redux";
+import { selectMapHeaderLocation } from "../../../actions/MapActions"
 class MapHeader extends React.Component {
     state = {
         showSideSlider: false,
@@ -14,11 +14,11 @@ class MapHeader extends React.Component {
         return showSideSlider ? "<-" : "->";
     }
     generateLocationInfo = (obj, i) => {
-
+        const { selectLocation, selectMapHeaderLocation } = this.props;
         //[{ type: "city", name: "Testilaavu", text: "Tampere", geo: { lat: 61.29, lng: 23.45 }, propertyType: "Laavu", has: ["Järvi lähellä"],data:{name:"hehu",website:"www.hehu.fi",contact:"oy@partio.com"} },
         return (
             <div key={obj.location_name + i}>
-                <span onClick={() => this.setState({ clickedObj: obj })}>{obj.location_name}</span>
+                <span className="pointer" onClick={() => selectMapHeaderLocation(obj)}>{obj.location_name}</span>
             </div>
         )
     }
@@ -52,31 +52,33 @@ class MapHeader extends React.Component {
         return totalDataArr;
     }
     render() {
-        const { showSideSlider, clickedObj } = this.state;
-        const { resultAmount, data, t } = this.props;
+        const { showSideSlider } = this.state;
+        const { resultAmount, data, t, mapHeaderLocation } = this.props;
         //let tripPlace = clickedObj === null ? this.generateAllData(data) : clickedObj;
-        let tripPlace = clickedObj === null ? this.generateAllData(data) : clickedObj;
+        //let tripPlace = clickedObj === null ? this.generateAllData(data) : clickedObj;
         return (
             <div className="mapheader-container">
 
                 <div className="mapheader-helpers">
-                    <span onClick={() => this.setState({ showSideSlider: !showSideSlider, clickedObj: null })} className="mapheader-left">
-                        <img className={showSideSlider ? "side-slider-icon-open" : "side-slider-icon-closed"} src={_ICON_PATH_ + "arrow_white.svg"}></img>
+                    <span className="mapheader-left">
+                        <img onClick={() => this.setState({ showSideSlider: !showSideSlider })} className={"pointer " + (showSideSlider ? "side-slider-icon-open" : "side-slider-icon-closed")} src={_ICON_PATH_ + "arrow_white.svg"}></img>
                         <span className="mapheader-text">Partion retkipaikat</span>
                         <span className="mapheader-results"> {resultAmount}</span>
                     </span>
                 </div>
-                {clickedObj !== null &&
-                    <SideSlider t={t} handleClose={this.handleSideSliderClose} data={tripPlace} />
-                }
-                {(showSideSlider && clickedObj === null) &&
+                <SideSlider t={t} />
+                {(showSideSlider && !mapHeaderLocation) &&
                     <div className="map-side-slider">
-                        {tripPlace}
+                        {this.generateAllData(data)}
                     </div>}
 
             </div>
         )
     }
 }
-
-export default MapHeader;
+const mapStateToProps = state => {
+    return {
+        mapHeaderLocation: state.map.mapHeaderLocation,
+    }
+}
+export default connect(mapStateToProps, { selectMapHeaderLocation })(MapHeader);

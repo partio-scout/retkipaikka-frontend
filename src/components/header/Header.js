@@ -5,25 +5,8 @@ import LanguageMenu from "./LanguageMenu"
 import { getUser, logOut } from "../../helpers/UserHelper"
 import { askForConfirmation } from "../../helpers/Helpers"
 import { useHistory } from "react-router-dom"
-
+import AdminLogout from "./AdminLogout"
 const Header = ({ location, t }) => {
-    let history = useHistory();
-    const { user } = getUser();
-    const closeFunc = () => {
-        return false
-    }
-    const acceptFunc = async () => {
-        let res = await logOut()
-        if (res) {
-            history.push("/")
-        }
-    }
-    const confirmationDialog = () => {
-        askForConfirmation(t("main.logout_confirm_text"), t("main.logout_confirm"), acceptFunc, closeFunc)
-    }
-    const redirectToControl = () => {
-        history.push("/hallinta")
-    }
     return (
         <div className="header-container">
             <Link to="/" ><h4 className="header-container-text">{t("main.title")}</h4></Link>
@@ -31,11 +14,7 @@ const Header = ({ location, t }) => {
                 <div className="language-menu-container">
                     <LanguageMenu t={t} />
                 </div>
-                {user &&
-                    <div className="header-user-container">
-                        <u onClick={redirectToControl}>{user ? user.email : ""}</u>
-                        <button onClick={confirmationDialog} className="btn btn-primary">{t("main.logout")}</button>
-                    </div>}
+                <AdminLogout t={t} />
             </div>
 
 

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Admin from "../../containers/Admin";
-
+import { useScreenSize } from "../../helpers/Helpers"
 
 const AdminTable = (props) => {
     //objEntries=[{id:"location_test",t:"admin.test"}]
@@ -8,8 +8,7 @@ const AdminTable = (props) => {
     const [currentSort, setCurrentSort] = useState("");
     // 1 asc, -1 desc
     const [sortType, setSortType] = useState(1);
-
-
+    const { isMobile } = useScreenSize();
     const handleListClick = (e) => {
         let id = e.target.id;
         // get the id and compare it to current sort type
@@ -48,14 +47,23 @@ const AdminTable = (props) => {
     const generateListItems = () => {
         let results = handleSort();
         const values = results.map((location) => {
-            return getRowData(location)
+            let val = getRowData(location)
+            if (!isMobile) {
+                let sliced = val.props.children.slice(0, 2);
+                val = React.cloneElement(val, { children: sliced })
+
+            }
+            return val;
 
         })
-
+        let tempEntries = objEntries
+        if (!isMobile) {
+            tempEntries = objEntries.slice(0, 2)
+        }
         let image = <img className={sortType === 1 ? "sort-icon" : "sort-icon inverse-icon"} alt="imgarrow" src={_ICON_PATH_ + "arrow.svg"} />
         let head = (<thead>
             <tr onClick={handleListClick}>
-                {objEntries.map(entry => {
+                {tempEntries.map(entry => {
                     return <th key={entry.id} id={entry.id} scope="col">{t(entry.t)}{currentSort === entry.id && image}</th>
                 })}
             </tr>
