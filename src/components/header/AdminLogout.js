@@ -39,7 +39,7 @@ const AdminLogout = (props) => {
     <> {user ?
       !isMobile ?
         <div className="header-user-container">
-          <button className="btn btn-primary" c aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
+          <button className="btn btn-primary" aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
             Menu
       </button>
           <Menu

@@ -74,6 +74,8 @@ const LocationEditDialog = (props) => {
                 <br />
                 <span>{t("form.edited")}: </span>
                 <span>{moment(obj.updatedAt).format("DD.MM.YYYY")}</span>
+                {obj.location_editor &&
+                    <span>, {obj.location_editor} </span>}
                 <br />
                 <br />
                 <button onClick={() => handleDelete(obj)} className="btn btn-primary info-button">{t("admin.delete")}</button>

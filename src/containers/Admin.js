@@ -20,7 +20,7 @@ const Admin = (props) => {
     const { t } = props;
     const [element, setElement] = useState("locations")
     const dispatch = useDispatch()
-    const { currentUsers, newUsers, allRoles } = useAdminContext();
+    useAdminContext();
 
 
     const handleInitialFetch = () => {
@@ -35,7 +35,6 @@ const Admin = (props) => {
 
     useEffect(() => {
         handleInitialFetch();
-        fetchSingleUser();
     }, [])
 
     const handleMenuClick = (e) => {

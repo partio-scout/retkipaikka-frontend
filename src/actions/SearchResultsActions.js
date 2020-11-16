@@ -92,8 +92,11 @@ export const postFormData = (data, images, t) => (dispatch) => {
     })
 }
 export const postEditData = (data, images) => (dispatch, getState) => {
-    let accessToken = getUser().id;
+    let user = getUser();
+    let accessToken = user.id;
+    let userName = user.user.username
     accessToken = "access_token=" + accessToken;
+    data.location_editor = userName
     axios.patch(
         _API_PATH_ + "/Triplocations/editLocation?" + accessToken, data
 

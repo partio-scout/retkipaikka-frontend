@@ -103,6 +103,7 @@
         "current_users": "Nykyiset käyttäjät",
         "user_edit": "Käyttäjän muokkaus",
         "userdialog_info": "Jos kirjautuminen on sallittu, käyttäjä pääsee kirjautumaan mutta ei pysty muokkaamaan mitään. Käyttäjällä pitää siis olla aina rooli, jotta pystyy muokkaamaan. HUOM. superadmin saa kaikki mahdolliset oikeudet, admin saa muokkaamisoikeudet retkipaikkoihin ja suodattimiin.",
-        "username_email": "Käyttäjänimi ja sähköposti"
+        "username_email": "Käyttäjänimi ja sähköposti",
+        "new_user_notification": "Sähköposti-ilmoitukset uusista käyttäjistä"
     }
 }

@@ -43,7 +43,7 @@ class InputContainer extends React.Component {
         let textInput_ph = t("main.location_placeholder")
 
         return (
-            <div>
+            <div style={{ "backgroundColor": "white" }}>
                 <div className="inputform-container" style={adminPage ? { backgroundColor: 'white' } : {}}>
                     {/* <div className="inputform-inputs form-row form-group"> */}
                     <form className="inputform-inputs" onSubmit={(e) => e.preventDefault()}>

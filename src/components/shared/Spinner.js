@@ -1,25 +1,24 @@
 import React from "react";
-import ClipLoader from "react-spinners/ClipLoader";
+import CircularProgress from "@material-ui/core/CircularProgress"
 import "./shared.css"
 
 const Spinner = (props) => {
     const { loading, size, color } = props;
+
     return (
         <div className="spinner-container">
-            <div className="sweet-loading">
-                <ClipLoader
+            {loading &&
+                <CircularProgress
                     size={size}
-                    color={color}
-                    loading={loading}
-                />
-            </div>
+                    style={{ color: color }}
+                />}
         </div>
     )
 }
 Spinner.defaultProps = {
     loading: false,
-    size: 150,
-    color: "#123abc"
+    size: 100,
+    color: "#253764"
 }
 
 export default Spinner;

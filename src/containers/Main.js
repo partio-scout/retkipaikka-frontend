@@ -52,6 +52,7 @@ class Main extends React.Component {
                     <img alt="frontpage_image" src={_IMAGES_PATH_ + "frontpage_img.jpg"} />
                     <h2 className="main-header">Partion retkipaikat</h2>
                 </div>
+
                 <InputContainer t={t} adminPage={false} />
                 <Map t={t} />
                 <h4 onClick={this.handleFormOpen} className="main-input-form" >{t("main.inform")} <img className={formOpen ? "input-form-icon-open" : "input-form-icon"} src={_ICON_PATH_ + "arrow.svg"}></img></h4>

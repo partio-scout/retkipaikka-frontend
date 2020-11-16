@@ -12,6 +12,7 @@ const PrivateRoutes = ({ component: Component, ...rest }) => {
         render={props =>
             loading ? <Spinner loading={loading} /> : loggedIn ?
                 <Component {...rest} match={props.match} /> :
+
                 <Redirect
                     to={{
                         pathname: "/kirjaudu",

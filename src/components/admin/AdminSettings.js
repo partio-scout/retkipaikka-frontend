@@ -6,17 +6,19 @@ import RadioButton from "../shared/RadioButton"
 import AdminTable from "../shared/AdminTable"
 import { askForConfirmation, clearFormByClassName, useDynamicState } from "../../helpers/Helpers"
 import RegionNotifications from "./RegionNotifications"
+import UserNotifications from "./UserNotifications"
 import moment from "moment"
 import InfoDialog from "./dialogs/InfoDialog"
 import UserEditDialog from "./dialogs/UserEditDialog"
 import { useAdminContext } from "../../context/AdminContext"
+import SettingsChangeHelper from "./SettingsChangeHelper";
 const AdminSettings = ({ t }) => {
     // regular admin settings
-    const { state, handleChange } = useDynamicState();
     const user = getUser();
+    const isAdmin = checkRoleValidity();
     const [clickedObj, setClickedObj] = useState(null)
     const { currentUsers, newUsers } = useAdminContext();
-
+    console.log(currentUsers, newUsers, "SETTINGSIT")
 
     const regionNotifications = () => {
 
@@ -29,70 +31,21 @@ const AdminSettings = ({ t }) => {
             <RegionNotifications t={t} userNotification={userNoti} regions={userRegions} />
         </div>)
     }
-    const handlePost = (e, type) => {
-        e.preventDefault();
-        switch (type) {
-            case "password":
-                let dataObject = { newPassword: state.newPassword, oldPassword: state.oldPassword }
-                askForConfirmation("Haluatko vaihtaa salasanan?", "Salasanan vaihto", () => changePassword(dataObject), false)
-                clearFormByClassName("form-control", "password-form")
-                break;
-            case "username_email":
-                let userDataObject = { admin_id: user.userId }
-                if (state.email) userDataObject.email = state.email;
-                if (state.username) userDataObject.username = state.username;
-                askForConfirmation("Haluatko tallentaa muuttuneet tiedot?", "Tietojen muutto", () => modifyOwnSettings(userDataObject), false)
-                break;
+    const userNotifications = () => {
+
+        // three options: none, all, selected regions
+        // accept button 
+        if (isAdmin) {
+            let userNoti = user?.user?.user_notifications;
+
+            return (<div className="notification_container">
+                <UserNotifications t={t} newUserNotifications={userNoti} userId={user?.userId} />
+            </div>)
+
         }
 
     }
-    const userInfo = () => {
-        // email
-        // amount of locations accepted, deleted
-        return (<div className="user_info_container">
-            <h3>{t("settings.user_settings_title")}</h3>
-            <div>
-                <h4>{t("settings.created")}:</h4>
-                <span>{user.created}</span>
-                <br />
-                {user.user.roles &&
-                    <>
-                        <h4>{t("settings.role")}:</h4>
-                        <span> {user.user.roles[0]?.name}</span>
-                        <br />
-                    </>}
-                <h4>{t("settings.username_email")}:</h4>
-                <form id="user-data-form" onSubmit={(e) => handlePost(e, "username_email")} >
-                    <div className="form-row">
-                        <TextInput maxLength={64} defaultValue={user.user.email} handleChange={handleChange} id="email" placeholder="" helper="" text="Sähköposti" size="col-md-6" required={true} />
-                        <TextInput maxLength={64} defaultValue={user.user.username} handleChange={handleChange} id="username" placeholder="" helper="" text="Käyttäjänimi" size="col-md-6" required={true} />
-                        <button disabled={!state.email && !state.username} className="btn btn-primary">{t("admin.save")}</button>
-                    </div>
-                </form>
 
-
-
-            </div>
-
-        </div>)
-    }
-
-
-
-    const passwordChange = () => {
-        //  two forms and a button, current pw, new pw, accept
-        return (<div className="password_change_container">
-            <h3>{t("settings.password_title")}</h3>
-            <form id="password-form" onSubmit={(e) => handlePost(e, "password")} >
-                <div className="form-row">
-                    <TextInput maxLength={64} handleChange={handleChange} id="oldPassword" placeholder="" helper="Kirjoita tämänhetkinen salanasi*" text="Vanha salasana" size="col-md-6" required={true} customType="password" />
-                    <TextInput maxLength={64} handleChange={handleChange} id="newPassword" placeholder="" helper="Kirjoita uusi salasana*" text="Uusi salasanaa" size="col-md-6" required={true} customType="password" />
-                    <button disabled={!state.email && !state.username} className="btn btn-primary">{t("admin.save")}</button>
-                </div>
-            </form>
-
-        </div>)
-    }
 
 
     const userRows = (obj) => {
@@ -141,7 +94,7 @@ const AdminSettings = ({ t }) => {
         setClickedObj(null);
     }
     const listUsers = () => {
-        if (checkRoleValidity(user)) {
+        if (isAdmin) {
             return (
                 <>
                     {listAllUsers()}
@@ -153,8 +106,8 @@ const AdminSettings = ({ t }) => {
     return (
         <div className="admin-content-container">
             {regionNotifications()}
-            {userInfo()}
-            {passwordChange()}
+            {userNotifications()}
+            <SettingsChangeHelper t={t} />
             {listUsers()}
             {clickedObj !== null &&
                 <InfoDialog open={clickedObj !== null} dialogTitle={t("settings.user_edit")} handleClose={closeDialog} maxWidth={"sm"} dialogInfoText={t("settings.userdialog_info")}>
@@ -165,12 +118,6 @@ const AdminSettings = ({ t }) => {
                     />
                 </InfoDialog>
             }
-
-
-
-
-
-
 
         </div >
 
