@@ -48,7 +48,7 @@ const AdminTable = (props) => {
         let results = handleSort();
         const values = results.map((location) => {
             let val = getRowData(location)
-            if (!isMobile) {
+            if (isMobile) {
                 let sliced = val.props.children.slice(0, 2);
                 val = React.cloneElement(val, { children: sliced })
 
@@ -57,7 +57,7 @@ const AdminTable = (props) => {
 
         })
         let tempEntries = objEntries
-        if (!isMobile) {
+        if (isMobile) {
             tempEntries = objEntries.slice(0, 2)
         }
         let image = <img className={sortType === 1 ? "sort-icon" : "sort-icon inverse-icon"} alt="imgarrow" src={_ICON_PATH_ + "arrow.svg"} />

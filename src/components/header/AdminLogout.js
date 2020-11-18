@@ -4,12 +4,12 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { getUser, logOut } from "../../helpers/UserHelper"
-import { askForConfirmation } from "../../helpers/Helpers"
+import { askForConfirmation, useScreenSize } from "../../helpers/Helpers"
 import { useHistory } from "react-router-dom"
 
 const AdminLogout = (props) => {
   const [anchorEl, setAnchorEl] = useState(null);
-  const isMobile = useMediaQuery('(min-width:768px');
+  const { isMobile } = useScreenSize()
   const { user } = getUser()
   const { t } = props;
   let history = useHistory();
@@ -37,7 +37,7 @@ const AdminLogout = (props) => {
 
   return (
     <> {user ?
-      !isMobile ?
+      isMobile ?
         <div className="header-user-container">
           <button className="btn btn-primary" aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
             Menu

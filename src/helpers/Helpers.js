@@ -32,7 +32,9 @@ const clearFormByClassName = (cn, formId = null) => {
     }
 
 }
-
+const fetchNotification = () => {
+    return []
+}
 
 const useDynamicState = (initialState) => {
     initialState = initialState ? initialState : {}
@@ -55,7 +57,7 @@ const useScreenSize = () => {
     const isMobile = useMediaQuery('(min-width:768px');
 
     return {
-        isMobile
+        isMobile: !isMobile
     }
 }
-export { useDynamicState, askForConfirmation, clearFormByClassName, useScreenSize }
+export { useDynamicState, askForConfirmation, clearFormByClassName, useScreenSize, fetchNotification }

@@ -11,6 +11,7 @@ import SingleLocation from "../components/admin/SingleLocation"
 const Main = React.lazy(() => import("../containers/Main"));
 const Admin = React.lazy(() => import("../containers/Admin"));
 const Login = React.lazy(() => import("../containers/Login"));
+const Notifications = React.lazy(() => import("../containers/Notifications"))
 import Spinner from "../components/shared/Spinner"
 // import Main from "../containers/Main";
 // import Admin from "../containers/Admin";
@@ -34,6 +35,7 @@ class Routes extends Component {
                     </AdminContextProvider>
                     {/* <Route exact path="/hallinta" render={(props) => (<Admin {...props} t={t} />)} /> */}
                     <Route exact path="/" render={(props) => (<Main {...props} t={t} />)} />
+                    <Route exact path="/ilmoitukset" render={(props) => (<Notifications {...props} t={t} />)} />
 
                 </Suspense>
             </Switch>

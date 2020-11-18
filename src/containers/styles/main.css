@@ -15,19 +15,16 @@
     top: -32vw;
     z-index:-1;
 }
-@media only screen and (max-width: 768px) {
-    .frontpage-image-container img{
-        width: 100%;
-        position: relative;
-        top: -3vw;
-        z-index:-1;
-    }
-}
 
 .main-input-form{
     width:75%;
     margin:0 auto;
     margin-bottom:2rem;
+    margin-top:2rem;
+}
+.main-notification-container{
+    width:75%;
+    margin:0 auto;
 }
 .input-form-icon{
     margin-left:20px;
@@ -64,5 +61,19 @@ body h1, h2, h3, h4, h5, h6{
     font-family: 'Source Sans Pro', sans-serif;
 }
 
+@media only screen and (max-width: 576px){
+    .main-notification-container{
+        width:95%;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .frontpage-image-container img{
+        width: 100%;
+        position: relative;
+        top: -3vw;
+        z-index:-1;
+    }
+}
 
 
