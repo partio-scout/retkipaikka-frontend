@@ -12,6 +12,7 @@ import { useUserData, fetchSingleUser } from "../helpers/UserHelper";
 import { fetchFilters, fetchRegionsAndMunicipalities } from "../actions/FilterActions"
 import { useDispatch, batch } from "react-redux";
 import { useAdminContext } from "../context/AdminContext"
+import NotificationEditor from "../components/admin/NotificationEditor"
 
 
 
@@ -46,6 +47,7 @@ const Admin = (props) => {
 
     const getAdminPanel = () => {
         let renderElement = "";
+        console.log(element)
         switch (element) {
             case "locations":
             case "notifications":
@@ -56,6 +58,9 @@ const Admin = (props) => {
                 break;
             case "settings":
                 renderElement = <AdminSettings t={t} />
+                break;
+            case "notificationEditor":
+                renderElement = <NotificationEditor t={t} />
                 break;
             default:
                 renderElement = <h3>Testi</h3>

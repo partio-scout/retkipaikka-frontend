@@ -14,10 +14,10 @@ const useStyles = makeStyles({
 
 });
 const Notifications = (props) => {
-    const { t } = props;
+    const { t, fullWidth, maxWidth } = props;
     const [data, setData] = useState([])
     const classes = useStyles()
-    return (<Container className={classes.container} maxWidth="lg">
+    return (<Container className={classes.container} style={fullWidth && { paddingTop: 0, paddingBottom: 0 }} maxWidth={maxWidth} disableGutters={fullWidth}>
         <h3 style={{ paddingBottom: "1rem" }}>{t("main.notification_title")}</h3>
         {data.map(d => {
             return (
@@ -58,5 +58,9 @@ const Notifications = (props) => {
 
     </Container>)
 }
+Notifications.defaultProps = {
+    maxWidth: "lg",
+    fullWidth: false
 
+}
 export default Notifications;

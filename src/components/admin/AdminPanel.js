@@ -2,7 +2,7 @@ import React from "react";
 import "./admin.css"
 const AdminPanel = ({ handleClick, selectedTab, t }) => {
 
-    const tabs = ["notifications", "locations", "filters", "settings"]
+    const tabs = ["notifications", "locations", "filters", "notificationEditor", "settings"]
     return (
         <div className="admin-panel">
             <div className="list-group admin-list" >

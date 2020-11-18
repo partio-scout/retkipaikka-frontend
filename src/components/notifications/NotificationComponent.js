@@ -21,12 +21,14 @@ const useStyles = makeStyles({
     pos: {
         marginBottom: 12,
     },
+    text: {
+        wordBreak: "break-all"
+    }
 });
 
 const NotificationComponent = (props) => {
     const { topTitle, title, bottomTitle, text, linkText, linkUrl } = props;
     const classes = useStyles();
-    const bull = <span className={classes.bullet}>•</span>;
 
     return (
         <Card className={classes.root} variant="outlined">
@@ -40,7 +42,7 @@ const NotificationComponent = (props) => {
                 {bottomTitle && <Typography className={classes.pos} color="textSecondary">
                     {bottomTitle}
                 </Typography>}
-                <Typography variant="body2" component="p">
+                <Typography className={classes.text} variant="body2" component="p">
                     {text}
                 </Typography>
             </CardContent>

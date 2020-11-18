@@ -45,8 +45,12 @@ const useDynamicState = (initialState) => {
         setState({ ...state, [e.target.id]: value });
 
     }
+    const setByKey = (key, data) => {
+        setState({ ...state, [key]: data })
+    }
     return {
         handleChange,
+        setByKey,
         state
     }
 
