@@ -26,15 +26,15 @@ const useStyles = makeStyles({
     },
     disabledCard: {
         backgroundColor: "lightgray"
-    }
+    },
+
 });
 
 const NotificationComponent = (props) => {
-    const { topTitle, title, bottomTitle, text, linkText, linkUrl, isEnabled } = props;
+    const { topTitle, title, bottomTitle, text, linkText, linkUrl, isEnabled, handleCardClick, showHover } = props;
     const classes = useStyles();
-
     return (
-        <Card className={isEnabled ? classes.root : classes.root + " " + classes.disabledCard} variant="outlined">
+        <Card style={showHover ? { cursor: "pointer" } : {}} onClick={handleCardClick} className={isEnabled ? classes.root : classes.root + " " + classes.disabledCard} variant="outlined">
             <CardContent>
                 {topTitle && <Typography className={classes.title} color="textSecondary" gutterBottom>
                     {topTitle}
@@ -62,6 +62,8 @@ NotificationComponent.defaultProps = {
     text: "",
     linkText: "Lisätietoa",
     linkUrl: null,
-    isEnabled: true
+    isEnabled: true,
+    handleCardClick: () => { },
+    showHover: false
 }
 export default NotificationComponent;

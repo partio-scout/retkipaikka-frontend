@@ -1,13 +1,14 @@
 import React from "react";
 
 import NotificationComponent from "../notifications/NotificationComponent";
-import { useDynamicState, postNotification, clearFormByClassName } from "../../helpers/Helpers"
+import { useDynamicState, askForConfirmation, postNotification, clearFormByClassName, editNotification, deleteNotification } from "../../helpers/Helpers"
 import TextInput from "../shared/TextInput"
 import LanguageMenu from "../header/LanguageMenu"
 import CheckBox from "../shared/CheckBox"
 const NotificationCreator = (props) => {
-    const { t, data } = props;
+    const { t, data, editing, handleClose } = props;
     let obj = data;
+    const formClassName = editing ? "needs-validation-edit" : "needs-validation"
     if (!data) {
         obj = {
             top_title: "Yläotsikko",
@@ -26,7 +27,7 @@ const NotificationCreator = (props) => {
 
         e.preventDefault();
         let emptyFound = false;
-        var forms = document.getElementsByClassName('needs-validation');
+        var forms = document.getElementsByClassName(formClassName);
 
         Array.prototype.filter.call(forms, function (form) {
             if (form.checkValidity() === false) {
@@ -114,27 +115,59 @@ const NotificationCreator = (props) => {
         )
 
     }
-    const handleSave = async () => {
-        let newObj = { ...state };
-        Object.keys(newObj).forEach(k => {
-            if (typeof newObj[k] !== 'boolean' && newObj[k] != null) {
-                if (newObj[k].length == 0) {
-                    delete newObj[k]
-                }
-            }
-        })
+    const postEdit = async (newObj) => {
+        let res = await editNotification(data.notification_id, newObj)
+        if (res) {
+            handleClose()
+        }
+    }
+    const postSave = async (newObj) => {
         let res = await postNotification(newObj);
         if (res) {
             clearFormByClassName("form-control");
             setState({})
         }
+    }
+    const handleSave = () => {
+        let newObj = { ...state };
+        console.log(state, "STATE")
+        Object.keys(newObj).forEach(k => {
+            if (typeof newObj[k] !== 'boolean' && newObj[k] != null) {
+                if (newObj[k].length == 0) {
+                    if (editing) {
+                        newObj[k] = null;
+                    } else {
+                        delete newObj[k]
+                    }
+
+
+                }
+            }
+        })
+
+        if (editing) {
+            askForConfirmation("Haluatko tallentaa muutokset?", "Ilmoituksen muokkaaminen", () => postEdit(newObj), false)
+
+        } else {
+            askForConfirmation("Haluatko luoda ilmoituksen?", "Ilmoituksen luominen", () => postSave(newObj), false)
+        }
+
 
     }
     const saveClick = (e) => {
         if (validate(e)) {
-            handleSave()
+            handleSave();
+
+
         }
     }
+    const handleDelete = async () => {
+        let res = await deleteNotification(data.notification_id)
+        if (res) {
+            handleClose()
+        }
+    }
+
     const prefix = state.language == null || state.language == "fi" ? "" : "_" + state.language;
     return (<div className="notificationCreator">
         <LanguageMenu handleChange={(value) => setByKey("language", value)} value={state.language} />
@@ -146,7 +179,7 @@ const NotificationCreator = (props) => {
             linkText={state["link_text" + prefix]}
             linkUrl={state["link_url"]}
         />
-        <form className="needs-validation" noValidate>
+        <form className={formClassName} noValidate>
             {topTitleForm()}
             {titleForm()}
             {bottomTitleForm()}
@@ -157,15 +190,13 @@ const NotificationCreator = (props) => {
         </form>
 
         <button onClick={saveClick} className="btn btn-primary">{t("admin.save")}</button>
+        {editing && <button onClick={() => askForConfirmation("Haluatko poistaa ilmoituksen?", "Ilmoituksen poistaminen", handleDelete, false)} className="btn btn-primary">{t("admin.delete")}</button>}
     </div>)
-    // "enabled": {
-    //     "type": "boolean",
-    //     "default": true
-    //   },
-    //   "display_frontpage": {
-    //     "type": "boolean",
-    //     "default": false
-    //   },
+}
+
+NotificationCreator.defaultProps = {
+    editing: false,
+    handleClose: () => { }
 }
 
 export default NotificationCreator;

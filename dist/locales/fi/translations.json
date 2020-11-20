@@ -86,7 +86,8 @@
         "settings": "Asetukset",
         "filter_category_edit": "Suodattimien ja kategorioiden muokkaus",
         "triplocation_info": "Retkipaikan tiedot",
-        "notificationEditor": "Luo ilmoituksia"
+        "notificationEditor": "Luo ilmoituksia",
+        "notification_edit": "Ilmoituksen muokkaus"
     },
     "settings": {
         "user_settings_title": "Tietoa käyttäjästä",

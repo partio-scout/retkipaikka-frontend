@@ -68,6 +68,40 @@ const postNotification = async (object) => {
     return status;
 }
 
+const editNotification = async (notification_id, object) => {
+    const { id } = getUser();
+    let status = false;
+    if (id) {
+        await axios.patch(_API_PATH_ + "/Notifications/" + notification_id + "?access_token=" + id, object).then(res => {
+            console.log(res)
+            if (res.status === 200) {
+                status = true;
+                window.alert("Ilmoituksen muokkaus onnistui")
+            }
+        }).catch(e => {
+            window.alert("Ilmoituksen muokkaus epäonnistui")
+        })
+    }
+
+    return status;
+}
+const deleteNotification = async (notification_id) => {
+    const { id } = getUser();
+    let status = false;
+    if (id) {
+        await axios.delete(_API_PATH_ + "/Notifications/" + notification_id + "?access_token=" + id).then(res => {
+            if (res.status === 200) {
+                status = true;
+                window.alert("Ilmoituksen poisto onnistui")
+            }
+        }).catch(e => {
+            window.alert("Ilmoituksen poisto epäonnistui")
+        })
+    }
+
+    return status;
+}
+
 const useDynamicState = (initialState) => {
     initialState = initialState ? initialState : {}
     const [state, setState] = useState(initialState);
@@ -108,4 +142,4 @@ const useScreenSize = () => {
         isMobile: !isMobile
     }
 }
-export { useDynamicState, askForConfirmation, clearFormByClassName, useScreenSize, fetchNotification, postNotification, fetchAllNotifications, useLoading }
+export { useDynamicState, askForConfirmation, clearFormByClassName, useScreenSize, fetchNotification, postNotification, fetchAllNotifications, useLoading, editNotification, deleteNotification }
