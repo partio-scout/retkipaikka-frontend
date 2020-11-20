@@ -12,55 +12,33 @@ const useStyles = makeStyles({
         paddingBottom: "1rem"
     }
 
+
 });
 const Notifications = (props) => {
-    const { t, fullWidth, maxWidth } = props;
-    const [data, setData] = useState([])
+    const { t, fullWidth, maxWidth, notifications } = props;
     const classes = useStyles()
-    return (<Container className={classes.container} style={fullWidth && { paddingTop: 0, paddingBottom: 0 }} maxWidth={maxWidth} disableGutters={fullWidth}>
+    return (<Container className={classes.container} style={fullWidth ? { paddingTop: 0, paddingBottom: 0 } : {}} maxWidth={maxWidth} disableGutters={fullWidth}>
         <h3 style={{ paddingBottom: "1rem" }}>{t("main.notification_title")}</h3>
-        {data.map(d => {
+        {notifications.map(d => {
             return (
-                <div className={classes.card} >
+                <div key={d.notification_id} className={classes.card} >
                     <NotificationComponent
-                        title="testi-ilmoitus"
-                        text="testi-ilmoitus testi-ilmoitus testi-ilmoitus testi-ilmoitustesti-ilmoitus testi-ilmoitustesti-ilmoitus testi-ilmoitus"
-                        linkUrl="www.google.com"
-                        topTitle="ilmoitus"
+                        title={d.title}
+                        text={d.text}
+                        linkUrl={d.link_url}
+                        topTitle={d.top_title}
+                        bottomTitle={d.bottom_title}
+                        linkText={d.link_text}
+                        isEnabled={d.display_frontpage}
                     />
                 </div>)
         })}
-        <div className={classes.card} >
-            <NotificationComponent
-                title="testi-ilmoitus"
-                text="testi-ilmoitus testi-ilmoitus testi-ilmoitus testi-ilmoitustesti-ilmoitus testi-ilmoitustesti-ilmoitus testi-ilmoitus"
-                linkUrl="www.google.com"
-                topTitle="ilmoitus"
-            />
-        </div>
-        <div className={classes.card}>
-            <NotificationComponent
-                title="testi-ilmoitus"
-                text="testi-ilmoitus testi-ilmoitus testi-ilmoitus testi-ilmoitustesti-ilmoitus testi-ilmoitustesti-ilmoitus testi-ilmoitus"
-                linkUrl="www.google.com"
-                topTitle="ilmoitus"
-            />
-        </div>
-        <div className={classes.card}>
-            <NotificationComponent
-                title="testi-ilmoitus"
-                text="testi-ilmoitus testi-ilmoitus testi-ilmoitus testi-ilmoitustesti-ilmoitus testi-ilmoitustesti-ilmoitus testi-ilmoitus"
-                linkUrl="www.google.com"
-                topTitle="ilmoitus"
-            />
-        </div>
-
-
     </Container>)
 }
 Notifications.defaultProps = {
     maxWidth: "lg",
-    fullWidth: false
+    fullWidth: false,
+    notifications: []
 
 }
 export default Notifications;

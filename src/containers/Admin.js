@@ -13,6 +13,7 @@ import { fetchFilters, fetchRegionsAndMunicipalities } from "../actions/FilterAc
 import { useDispatch, batch } from "react-redux";
 import { useAdminContext } from "../context/AdminContext"
 import NotificationEditor from "../components/admin/NotificationEditor"
+import { render } from "react-dom";
 
 
 
@@ -22,7 +23,7 @@ const Admin = (props) => {
     const [element, setElement] = useState("locations")
     const dispatch = useDispatch()
     useAdminContext();
-
+    const tabs = ["notifications", "locations", "filters", "notificationEditor", "settings"]
 
     const handleInitialFetch = () => {
         batch(() => {
@@ -69,14 +70,26 @@ const Admin = (props) => {
 
 
         return (
-            <div>
-                <AdminPanel t={t} selectedTab={element} handleClick={handleMenuClick} />
+
+            <div className="admin-container">
+                <div className="admin-panel">
+                    <div className="list-group admin-list" >
+                        {tabs.map((tab, i) => {
+                            return (
+                                <span key={i} onClick={handleMenuClick} id={tab} className={"list-group-item list-group-item-action " + (element === tab ? "tab-selected" : "")} >
+                                    {t("admin." + tab)}
+                                </span>
+                            )
+                        })}
+                    </div>
+                </div>
                 <div className="admin-data-container">
                     {renderElement}
                 </div>
 
-                {/* <iframe width="100%" height="800" src="http://localhost:3000/" frameborder="0" allowfullscreen></iframe> */}
             </div>
+
+
         )
     }
 

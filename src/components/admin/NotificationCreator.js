@@ -1,9 +1,10 @@
 import React from "react";
 
 import NotificationComponent from "../notifications/NotificationComponent";
-import { useDynamicState } from "../../helpers/Helpers"
+import { useDynamicState, postNotification, clearFormByClassName } from "../../helpers/Helpers"
 import TextInput from "../shared/TextInput"
 import LanguageMenu from "../header/LanguageMenu"
+import CheckBox from "../shared/CheckBox"
 const NotificationCreator = (props) => {
     const { t, data } = props;
     let obj = data;
@@ -14,11 +15,32 @@ const NotificationCreator = (props) => {
             bottom_title: "Alaotsikko",
             text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
             link_text: "nappi",
-            link_url: "www.google.com"
+            link_url: "https://www.google.com",
+            display_frontpage: false,
+            enabled: false
 
         }
     }
-    const { state, handleChange, setByKey } = useDynamicState(obj);
+    const { state, handleChange, setByKey, setState } = useDynamicState(obj);
+    const validate = (e) => {
+
+        e.preventDefault();
+        let emptyFound = false;
+        var forms = document.getElementsByClassName('needs-validation');
+
+        Array.prototype.filter.call(forms, function (form) {
+            if (form.checkValidity() === false) {
+                e.stopPropagation();
+                emptyFound = true;
+            }
+            form.classList.add('was-validated');
+        })
+        if (emptyFound) {
+            return false;
+        }
+        return true;
+    }
+
     const titleForm = () => {
         return (
             <div className="form-row">
@@ -83,10 +105,37 @@ const NotificationCreator = (props) => {
         )
 
     }
-    console.log(state.language)
+    const createCheckboxes = () => {
+        return (
+            <div>
+                <CheckBox handleChange={handleChange} text={"Näytä listassa"} id={"enabled"} defaultChecked={obj.enabled} />
+                <CheckBox handleChange={handleChange} text={"Näytä etusivun bannerissa"} id={"display_frontpage"} defaultChecked={obj.display_frontpage} />
+            </div>
+        )
+
+    }
+    const handleSave = async () => {
+        let newObj = { ...state };
+        Object.keys(newObj).forEach(k => {
+            if (typeof newObj[k] !== 'boolean' && newObj[k] != null) {
+                if (newObj[k].length == 0) {
+                    delete newObj[k]
+                }
+            }
+        })
+        let res = await postNotification(newObj);
+        if (res) {
+            clearFormByClassName("form-control");
+            setState({})
+        }
+
+    }
+    const saveClick = (e) => {
+        if (validate(e)) {
+            handleSave()
+        }
+    }
     const prefix = state.language == null || state.language == "fi" ? "" : "_" + state.language;
-    console.log(state)
-    console.log(prefix)
     return (<div className="notificationCreator">
         <LanguageMenu handleChange={(value) => setByKey("language", value)} value={state.language} />
         <NotificationComponent
@@ -97,14 +146,26 @@ const NotificationCreator = (props) => {
             linkText={state["link_text" + prefix]}
             linkUrl={state["link_url"]}
         />
-        {topTitleForm()}
-        {titleForm()}
-        {bottomTitleForm()}
-        {textForm()}
-        {linkTextForm()}
-        {linkForm()}
-    </div>)
+        <form className="needs-validation" noValidate>
+            {topTitleForm()}
+            {titleForm()}
+            {bottomTitleForm()}
+            {textForm()}
+            {linkTextForm()}
+            {linkForm()}
+            {createCheckboxes()}
+        </form>
 
+        <button onClick={saveClick} className="btn btn-primary">{t("admin.save")}</button>
+    </div>)
+    // "enabled": {
+    //     "type": "boolean",
+    //     "default": true
+    //   },
+    //   "display_frontpage": {
+    //     "type": "boolean",
+    //     "default": false
+    //   },
 }
 
 export default NotificationCreator;

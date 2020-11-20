@@ -23,15 +23,18 @@ const useStyles = makeStyles({
     },
     text: {
         wordBreak: "break-all"
+    },
+    disabledCard: {
+        backgroundColor: "lightgray"
     }
 });
 
 const NotificationComponent = (props) => {
-    const { topTitle, title, bottomTitle, text, linkText, linkUrl } = props;
+    const { topTitle, title, bottomTitle, text, linkText, linkUrl, isEnabled } = props;
     const classes = useStyles();
 
     return (
-        <Card className={classes.root} variant="outlined">
+        <Card className={isEnabled ? classes.root : classes.root + " " + classes.disabledCard} variant="outlined">
             <CardContent>
                 {topTitle && <Typography className={classes.title} color="textSecondary" gutterBottom>
                     {topTitle}
@@ -47,7 +50,7 @@ const NotificationComponent = (props) => {
                 </Typography>
             </CardContent>
             {linkUrl && <CardActions>
-                <Button size="small">{linkText}</Button>
+                <Button onClick={() => window.location = linkUrl} size="small">{linkText}</Button>
             </CardActions>}
         </Card>
     );
@@ -58,6 +61,7 @@ NotificationComponent.defaultProps = {
     bottomTitle: null,
     text: "",
     linkText: "Lisätietoa",
-    linkUrl: null
+    linkUrl: null,
+    isEnabled: true
 }
 export default NotificationComponent;
