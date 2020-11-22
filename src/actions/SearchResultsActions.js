@@ -2,13 +2,15 @@
 import {
     FETCH_LOCATIONS,
     UPDATE_RESULTS,
-    FETCH_NON_ACCEPTED
+    FETCH_NON_ACCEPTED,
+    LOADING
 } from "./ActionTypes"
 
 
 
 import axios from "axios";
 import { getUser } from "../helpers/UserHelper"
+import { setLoading } from "./GeneralActions";
 
 export const locationFetch = async (query) => {
     let locations = [];
@@ -20,13 +22,15 @@ export const locationFetch = async (query) => {
     }
     return locations
 }
-export const fetchLocations = (accepted) => async (dispatch) => {
+export const fetchLocations = (accepted, limitedFields = false) => async (dispatch) => {
     // fetch locations from database
     let query = {
         where: {
             location_accepted: accepted
-        }
+        },
+        limitedFields: limitedFields
     }
+
     let locations = await locationFetch(query);
     let type;
     if (accepted) {
@@ -34,10 +38,13 @@ export const fetchLocations = (accepted) => async (dispatch) => {
     } else {
         type = FETCH_NON_ACCEPTED;
     }
+
     dispatch({
         type: type,
         payload: locations
     })
+
+
 
 }
 
@@ -153,7 +160,31 @@ export const deleteLocation = (data) => (dispatch, getState) => {
     });
 }
 
-
+export const createFilter = (filters) => async (dispatch) => {
+    let locations = filters.locationFilters;
+    let regionFilters = locations.filter(loc => !loc.municipality_id);
+    let municipalityFilters = locations.filter(loc => loc.municipality_id);
+    let types = filters.locationTypeFilters;
+    let regulars = filters.commonFilters;
+    const filter = {
+        filters: regulars.map(r => r.filter_id),
+        categories: types.map(t => t.category_id),
+        municipalities: municipalityFilters.map(m => m.municipality_id),
+        regions: regionFilters.map(r => r.region_id)
+    }
+    dispatch(setLoading(true));
+    let res = await axios.get(_API_PATH_ + "/Triplocations/handleFiltering?data=" + JSON.stringify(filter));
+    if (res.data) {
+        res = res.data;
+    } else {
+        res = []
+    }
+    dispatch({
+        type: UPDATE_RESULTS,
+        payload: res
+    })
+    dispatch(setLoading(false));
+}
 
 export const filterFromResults = (searchResults, filters) => {
     // filter the searchresults if user added filters
@@ -162,7 +193,7 @@ export const filterFromResults = (searchResults, filters) => {
     let municipalityFilters = locations.filter(loc => loc.municipality_id);
     let types = filters.locationTypeFilters;
     let regulars = filters.commonFilters;
-
+    console.log(regionFilters, municipalityFilters, types, regulars)
     //first check regions if arr has items
     console.log(regionFilters, municipalityFilters)
     let regionsPass = searchResults;

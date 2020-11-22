@@ -3,6 +3,7 @@ import "./mapHeader.css";
 import SideSlider from "./sideSlider";
 import { connect } from "react-redux";
 import { selectMapHeaderLocation } from "../../../actions/MapActions"
+import Spinner from "../../shared/Spinner"
 class MapHeader extends React.Component {
     state = {
         showSideSlider: false,
@@ -14,7 +15,7 @@ class MapHeader extends React.Component {
         return showSideSlider ? "<-" : "->";
     }
     generateLocationInfo = (obj, i) => {
-        const { selectLocation, selectMapHeaderLocation } = this.props;
+        const { selectMapHeaderLocation } = this.props;
         //[{ type: "city", name: "Testilaavu", text: "Tampere", geo: { lat: 61.29, lng: 23.45 }, propertyType: "Laavu", has: ["Järvi lähellä"],data:{name:"hehu",website:"www.hehu.fi",contact:"oy@partio.com"} },
         return (
             <div key={obj.location_name + i}>
@@ -53,12 +54,13 @@ class MapHeader extends React.Component {
     }
     render() {
         const { showSideSlider } = this.state;
-        const { resultAmount, data, t, mapHeaderLocation } = this.props;
+        const { resultAmount, data, t, mapHeaderLocation, loading } = this.props;
+        console.log(loading, "IN MAPHERED")
         //let tripPlace = clickedObj === null ? this.generateAllData(data) : clickedObj;
         //let tripPlace = clickedObj === null ? this.generateAllData(data) : clickedObj;
         return (
             <div className="mapheader-container">
-
+                <Spinner loading={loading} />
                 <div className="mapheader-helpers">
                     <span className="mapheader-left">
                         <img onClick={() => this.setState({ showSideSlider: !showSideSlider })} className={"pointer " + (showSideSlider ? "side-slider-icon-open" : "side-slider-icon-closed")} src={_ICON_PATH_ + "arrow_white.svg"}></img>
@@ -79,6 +81,7 @@ class MapHeader extends React.Component {
 const mapStateToProps = state => {
     return {
         mapHeaderLocation: state.map.mapHeaderLocation,
+        loading: state.general.loading
     }
 }
 export default connect(mapStateToProps, { selectMapHeaderLocation })(MapHeader);

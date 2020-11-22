@@ -4,10 +4,12 @@ import Map from "../components/map/Map"
 import Header from "../components/header/Header"
 import InputContainer from "../components/inputform/InputContainer"
 import LocationForm from "../components/locationform/LocationForm"
-import { connect } from "react-redux";
+import { connect, batch } from "react-redux";
 import { fetchLocations } from "../actions/SearchResultsActions"
 import { fetchFilters, fetchRegionsAndMunicipalities } from "../actions/FilterActions"
-import NotificationComponent from "../components/notifications/NotificationComponent"
+import { setLoading } from "../actions/GeneralActions"
+import Spinner from "../components/shared/Spinner";
+
 
 class Main extends React.Component {
 
@@ -19,12 +21,15 @@ class Main extends React.Component {
         }
         this.handleInitialFetch();
 
-
     }
+
+
     handleInitialFetch = () => {
-        const { fetchLocations, fetchFilters, results, filtersLoc, filtersCom, regions, municipalities, fetchRegionsAndMunicipalities } = this.props;
+        const { fetchLocations, setLoading, fetchFilters, results, filtersLoc, filtersCom, regions, municipalities, fetchRegionsAndMunicipalities } = this.props;
+
+        setLoading(true);
         if (results.searchResults.length === 0) {
-            fetchLocations(true);
+            fetchLocations(true, true);
         }
         if (filtersLoc.length === 0 || filtersCom.length === 0) {
             fetchFilters();
@@ -32,6 +37,12 @@ class Main extends React.Component {
         if (regions.length === 0 || municipalities.length === 0) {
             fetchRegionsAndMunicipalities();
         }
+        setLoading(false)
+
+
+
+
+
 
     }
     handleFormOpen = () => {
@@ -43,17 +54,18 @@ class Main extends React.Component {
         })
     }
     render() {
-        const { location, t } = this.props;
+        const { location, t, loading } = this.props;
         const { formOpen } = this.state;
-
+        console.log("render")
         return (
             <div className="frontpage-container">
                 <div className="frontpage-image-container">
                     <img alt="frontpage_image" src={_IMAGES_PATH_ + "frontpage_img.jpg"} />
                     <h2 className="main-header">Partion retkipaikat</h2>
-                </div>
 
+                </div>
                 <InputContainer t={t} adminPage={false} />
+
                 <Map t={t} />
                 <h4 onClick={this.handleFormOpen} className="main-input-form" >{t("main.inform")} <img className={formOpen ? "input-form-icon-open" : "input-form-icon"} src={_ICON_PATH_ + "arrow.svg"}></img></h4>
                 {formOpen && <LocationForm t={t} handleClose={this.handleReOpen} />}
@@ -69,8 +81,9 @@ const mapStateToProps = state => {
         filtersLoc: state.filters.locationTypeFilterList,
         filtersCom: state.filters.commonFilterList,
         regions: state.filters.regions,
-        municipalities: state.filters.municipalities
+        municipalities: state.filters.municipalities,
+        loading: state.general.loading
 
     }
 }
-export default connect(mapStateToProps, { fetchLocations, fetchFilters, fetchRegionsAndMunicipalities })(Main);
+export default connect(mapStateToProps, { fetchLocations, fetchFilters, setLoading, fetchRegionsAndMunicipalities })(Main);

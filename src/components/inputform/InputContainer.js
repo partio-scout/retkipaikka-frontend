@@ -5,7 +5,7 @@ import SelectInput from "./SelectInput";
 import TagBar from "../tagbar/TagBar";
 import { connect } from "react-redux";
 import { addFilter } from "../../actions/FilterActions";
-import { filterFromResults } from "../../actions/SearchResultsActions";
+import { filterFromResults, createFilter } from "../../actions/SearchResultsActions";
 import { resetLocation } from "../../actions/MapActions"
 
 class InputContainer extends React.Component {
@@ -18,9 +18,10 @@ class InputContainer extends React.Component {
     }
 
     filterResults = () => {
-        const { filterFromResults, results, tags, resetLocation } = this.props;
+        const { filterFromResults, results, tags, resetLocation, createFilter } = this.props;
         resetLocation();
-        filterFromResults(results.searchResults, tags);
+        createFilter(tags);
+        //filterFromResults(results.searchResults, tags);
     }
     checkTags = (tag) => {
         const { tags } = this.props;
@@ -76,4 +77,4 @@ const mapStateToProps = state => {
         language: state.general.language
     }
 }
-export default connect(mapStateToProps, { addFilter, filterFromResults, resetLocation })(InputContainer);
+export default connect(mapStateToProps, { addFilter, filterFromResults, createFilter, resetLocation })(InputContainer);

@@ -5,7 +5,7 @@ import SideSlider from "./header/sideSlider"
 import { Map as LeafletMap, Marker, TileLayer } from 'react-leaflet'
 import L from "leaflet"
 import MarkerClusterGroup from 'react-leaflet-markercluster/dist/react-leaflet-markercluster';
-
+import Spinner from "../shared/Spinner"
 import { connect } from "react-redux";
 import { setCoordinates, selectMapHeaderLocation } from "../../actions/MapActions"
 
@@ -40,7 +40,7 @@ class Map extends React.Component {
         const { userMarker } = this.state;
         let markers = results.map((reg, i) => {
             return <Marker
-                key={reg.location_region + i}
+                key={reg.location_id + i}
                 position={reg.location_geo}
                 onClick={() => selectMapHeaderLocation(reg)}
                 icon={this.scoutIcon}
@@ -126,6 +126,7 @@ const mapStateToProps = state => {
         selectedLoc: state.map.selectedLocation,
         filterTypes: state.filters.locationTypeFilterList,
         language: state.general.language
+
     }
 }
 export default connect(mapStateToProps, { selectMapHeaderLocation, setCoordinates })(Map);

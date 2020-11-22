@@ -22,7 +22,7 @@ export const LOG_OUT = "LOG_OUT";
 
 //general
 export const SET_LANGUAGE = "SET_LANGUAGE";
-
+export const LOADING = "LOADING"
 
 //map
 export const SET_COORDINATES = "SET_COORDINATES";

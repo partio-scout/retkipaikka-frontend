@@ -6,6 +6,7 @@ import {
     RESET_MHEADER_LOCATION
 } from "./ActionTypes"
 
+import axios from "axios";
 export const selectLocation = (payload) => {
     // handles the map side slider show on map clicks
     // so if user clicks show on map, save coordinates 
@@ -18,12 +19,26 @@ export const selectLocation = (payload) => {
     }
 
 }
-export const selectMapHeaderLocation = (payload) => {
+const fetchSingleLocation = async (payload) => {
+    let filter = {
+        where: { location_id: payload.location_id }
+    }
+    return await axios.get(_API_PATH_ + "/Triplocations/fetchLocations?filter=" + JSON.stringify(filter));
+
+}
+export const selectMapHeaderLocation = (payload) => async (dispatch) => {
+
     if (payload != null) {
-        return {
-            type: SELECT_MHEADER_LOCATION,
-            obj: payload
-        }
+        fetchSingleLocation(payload).then(res => {
+            console.log(res, "RESPONSE")
+            if (res.data.length > 0) {
+                dispatch({
+                    type: SELECT_MHEADER_LOCATION,
+                    obj: res.data[0]
+                })
+            }
+        })
+
     }
 }
 export const resetMapHeaderLocation = () => {

@@ -1,5 +1,6 @@
 
 import {
+    LOADING,
     SET_LANGUAGE
 } from "./ActionTypes"
 
@@ -14,7 +15,12 @@ export const setLanguage = (language) => {
     }
 
 }
-
+export const setLoading = (loading) => (dispatch) => {
+    dispatch({
+        type: LOADING,
+        loading: loading
+    })
+}
 
 
 
