@@ -7,18 +7,22 @@ import { askForConfirmation, fetchNotification, useScreenSize } from "../../help
 import { useHistory } from "react-router-dom"
 import AdminLogout from "./AdminLogout"
 import InfoIcon from '@material-ui/icons/Info';
+import { useTranslation } from 'react-i18next';
 import AlertComponent from "../shared/AlertComponent"
 
-const Header = ({ location, t }) => {
+
+
+const Header = (props) => {
+    const { location, t } = props;
     const [notification, setNotification] = useState({ title: "Testi-ilmoitus" })
-
     useEffect(() => {
-        // fetchNotification().then(res => {
-        //     if (res.length > 0) {
-        //         setNotification(res.data[0]);
-        //     }
 
-        // })
+        fetchNotification().then(res => {
+            if (res.length > 0) {
+                setNotification(res.data[0]);
+            }
+
+        })
     }, [])
 
     return (

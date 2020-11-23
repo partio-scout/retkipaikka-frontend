@@ -25,26 +25,18 @@ class Main extends React.Component {
 
 
     handleInitialFetch = () => {
-        const { fetchLocations, setLoading, fetchFilters, results, filtersLoc, filtersCom, regions, municipalities, fetchRegionsAndMunicipalities } = this.props;
+        const { fetchLocations, setLoading, fetchFilters, regions, fetchRegionsAndMunicipalities } = this.props;
 
-        setLoading(true);
-        if (results.searchResults.length === 0) {
+        if (regions.length == 0) {
+            setLoading(true);
             fetchLocations(true, true);
-        }
-        if (filtersLoc.length === 0 || filtersCom.length === 0) {
             fetchFilters();
-        }
-        if (regions.length === 0 || municipalities.length === 0) {
             fetchRegionsAndMunicipalities();
+            setLoading(false)
         }
-        setLoading(false)
-
-
-
-
-
-
     }
+
+
     handleFormOpen = () => {
         this.setState({ formOpen: !this.state.formOpen })
     }
@@ -54,9 +46,8 @@ class Main extends React.Component {
         })
     }
     render() {
-        const { location, t, loading } = this.props;
+        const { t } = this.props;
         const { formOpen } = this.state;
-        console.log("render")
         return (
             <div className="frontpage-container">
                 <div className="frontpage-image-container">
@@ -77,11 +68,7 @@ class Main extends React.Component {
 }
 const mapStateToProps = state => {
     return {
-        results: state.searchResults,
-        filtersLoc: state.filters.locationTypeFilterList,
-        filtersCom: state.filters.commonFilterList,
         regions: state.filters.regions,
-        municipalities: state.filters.municipalities,
         loading: state.general.loading
 
     }

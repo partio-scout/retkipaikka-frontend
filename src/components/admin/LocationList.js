@@ -24,7 +24,11 @@ class LocationList extends React.Component {
 
     handleObjectClick = (obj, e) => {
         //set clickedobject and move window down by 50px and right by 50px from clicked position
-        this.setState({ clickedObj: obj });
+        if (obj.filters == null || obj.location_accepted == null) {
+            window.alert("Kokeile ladata sivu uudelleen, virhe retkipaikkojen tietojen latauksessa")
+        } else {
+            this.setState({ clickedObj: obj });
+        }
 
     }
     handleClose = () => {
@@ -82,7 +86,7 @@ class LocationList extends React.Component {
         return (
             <div className="admin-content-container">
                 <h3>{title}</h3>
-                {isLocation && <InputContainer t={t} adminPage={true} />}
+                {isLocation && <InputContainer limitedFields={false} t={t} adminPage={true} />}
                 <div className="location-list-container">
                     <AdminTable
                         getRowData={this.getRowData}

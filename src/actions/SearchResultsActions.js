@@ -3,7 +3,8 @@ import {
     FETCH_LOCATIONS,
     UPDATE_RESULTS,
     FETCH_NON_ACCEPTED,
-    LOADING
+    LOADING,
+    PREVIOUS_FILTER
 } from "./ActionTypes"
 
 
@@ -160,17 +161,27 @@ export const deleteLocation = (data) => (dispatch, getState) => {
     });
 }
 
-export const createFilter = (filters) => async (dispatch) => {
+export const createFilter = (filters, limitedFields = true) => async (dispatch) => {
     let locations = filters.locationFilters;
     let regionFilters = locations.filter(loc => !loc.municipality_id);
     let municipalityFilters = locations.filter(loc => loc.municipality_id);
     let types = filters.locationTypeFilters;
     let regulars = filters.commonFilters;
+    let temp = {
+        commonFilters: filters.commonFilters,
+        locationFilters: filters.locationFilters,
+        locationTypeFilters: filters.locationTypeFilters
+    }
+    dispatch({
+        type: PREVIOUS_FILTER,
+        payload: temp
+    })
     const filter = {
         filters: regulars.map(r => r.filter_id),
         categories: types.map(t => t.category_id),
         municipalities: municipalityFilters.map(m => m.municipality_id),
-        regions: regionFilters.map(r => r.region_id)
+        regions: regionFilters.map(r => r.region_id),
+        limitedFields: limitedFields
     }
     dispatch(setLoading(true));
     let res = await axios.get(_API_PATH_ + "/Triplocations/handleFiltering?data=" + JSON.stringify(filter));

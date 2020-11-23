@@ -55,7 +55,6 @@ class MapHeader extends React.Component {
     render() {
         const { showSideSlider } = this.state;
         const { resultAmount, data, t, mapHeaderLocation, loading } = this.props;
-        console.log(loading, "IN MAPHERED")
         //let tripPlace = clickedObj === null ? this.generateAllData(data) : clickedObj;
         //let tripPlace = clickedObj === null ? this.generateAllData(data) : clickedObj;
         return (

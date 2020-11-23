@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import useMediaQuery from "@material-ui/core/useMediaQuery";
@@ -142,4 +142,19 @@ const useScreenSize = () => {
         isMobile: !isMobile
     }
 }
-export { useDynamicState, askForConfirmation, clearFormByClassName, useScreenSize, fetchNotification, postNotification, fetchAllNotifications, useLoading, editNotification, deleteNotification }
+function useTraceUpdate(props, name) {
+    const prev = useRef(props);
+    useEffect(() => {
+        const changedProps = Object.entries(props).reduce((ps, [k, v]) => {
+            if (prev.current[k] !== v) {
+                ps[k] = [prev.current[k], v];
+            }
+            return ps;
+        }, {});
+        if (Object.keys(changedProps).length > 0) {
+            console.log(name, ' Changed props:', changedProps);
+        }
+        prev.current = props;
+    });
+}
+export { useTraceUpdate, useDynamicState, askForConfirmation, clearFormByClassName, useScreenSize, fetchNotification, postNotification, fetchAllNotifications, useLoading, editNotification, deleteNotification }

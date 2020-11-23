@@ -18,9 +18,9 @@ class InputContainer extends React.Component {
     }
 
     filterResults = () => {
-        const { filterFromResults, results, tags, resetLocation, createFilter } = this.props;
+        const { tags, resetLocation, createFilter, limitedFields } = this.props;
         resetLocation();
-        createFilter(tags);
+        createFilter(tags, limitedFields);
         //filterFromResults(results.searchResults, tags);
     }
     checkTags = (tag) => {
@@ -38,8 +38,17 @@ class InputContainer extends React.Component {
         //filter_name
         return true;
     }
+    checkButtonDisabled = () => {
+        const { tags, previousFilter } = this.props;
+        let temp = {
+            commonFilters: tags.commonFilters,
+            locationFilters: tags.locationFilters,
+            locationTypeFilters: tags.locationTypeFilters
+        }
+        return JSON.stringify(temp) == JSON.stringify(previousFilter)
+    }
     render() {
-        const { results, filtersLoc, filtersCom, adminPage, regions, municipalities, t, language } = this.props;
+        const { filtersLoc, filtersCom, adminPage, regions, municipalities, t, language } = this.props;
         let allArr = regions.concat(municipalities);
         let textInput_ph = t("main.location_placeholder")
 
@@ -53,7 +62,7 @@ class InputContainer extends React.Component {
                             <SelectInput language={language} id={"-cat"} data={filtersLoc} applyFilter={this.addFilter} title={t("main.type")} useFiltering={true} customClassName="form-group col-md-3 col-sm-11 " />
                             <SelectInput language={language} id={"filt"} data={filtersCom} applyFilter={this.addFilter} title={t("main.filters")} useFiltering={true} customClassName="form-group col-md-3 col-sm-11 " />
                             <div className="inputform-inputs-button form-group col-md-1 col-sm-11 ">
-                                <button className="btn btn-primary" onClick={this.filterResults}>{t("main.filter")}</button>
+                                <button className="btn btn-primary" disabled={this.checkButtonDisabled()} onClick={this.filterResults}>{t("main.filter")}</button>
                             </div>
                         </div>
 
@@ -66,6 +75,9 @@ class InputContainer extends React.Component {
         )
     }
 }
+InputContainer.defaultProps = {
+    limitedFields: true
+}
 const mapStateToProps = state => {
     return {
         tags: state.filters,
@@ -74,7 +86,8 @@ const mapStateToProps = state => {
         filtersCom: state.filters.commonFilterList,
         regions: state.filters.regions,
         municipalities: state.filters.municipalities,
-        language: state.general.language
+        language: state.general.language,
+        previousFilter: state.searchResults.previousFilter
     }
 }
 export default connect(mapStateToProps, { addFilter, filterFromResults, createFilter, resetLocation })(InputContainer);

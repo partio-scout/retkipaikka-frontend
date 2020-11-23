@@ -1,13 +1,19 @@
 import {
     FETCH_LOCATIONS,
     UPDATE_RESULTS,
-    FETCH_NON_ACCEPTED
+    FETCH_NON_ACCEPTED,
+    PREVIOUS_FILTER
 } from "../actions/ActionTypes"
 
 const initialState = {
     searchResults: [],
     filteredResults: [],
-    notificationResults: []
+    notificationResults: [],
+    previousFilter: {
+        commonFilters: [],
+        locationFilters: [],
+        locationTypeFilters: []
+    }
 }
 
 
@@ -30,6 +36,11 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 notificationResults: action.payload
+            }
+        case PREVIOUS_FILTER:
+            return {
+                ...state,
+                previousFilter: action.payload
             }
         default:
             return state;

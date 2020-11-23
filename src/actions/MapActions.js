@@ -30,7 +30,6 @@ export const selectMapHeaderLocation = (payload) => async (dispatch) => {
 
     if (payload != null) {
         fetchSingleLocation(payload).then(res => {
-            console.log(res, "RESPONSE")
             if (res.data.length > 0) {
                 dispatch({
                     type: SELECT_MHEADER_LOCATION,

@@ -34,7 +34,7 @@ class Routes extends Component {
                         <Route exact path="/kirjaudu" render={(props) => (<Login {...props} t={t} />)} />
                     </AdminContextProvider>
                     {/* <Route exact path="/hallinta" render={(props) => (<Admin {...props} t={t} />)} /> */}
-                    <Route exact path="/" render={(props) => (<Main {...props} t={t} />)} />
+                    <Route exact path="/" render={(props) => (<Main t={t} />)} />
 
                     <Route exact path="/ilmoitukset" render={(props) => (<NotificationContainer {...props} t={t} />)} />
 
