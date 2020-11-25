@@ -18,10 +18,10 @@ class InputContainer extends React.Component {
     }
 
     filterResults = () => {
-        const { tags, resetLocation, createFilter, limitedFields } = this.props;
+        const { tags, resetLocation, results, createFilter, limitedFields, filterFromResults } = this.props;
         resetLocation();
-        createFilter(tags, limitedFields);
-        //filterFromResults(results.searchResults, tags);
+        //createFilter(tags, limitedFields);
+        filterFromResults(results.searchResults, tags);
     }
     checkTags = (tag) => {
         const { tags } = this.props;

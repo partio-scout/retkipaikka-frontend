@@ -28,7 +28,7 @@ const NotificationEditor = (props) => {
     return (<div className="admin-content-container">
         <NotificationCreator t={t} />
         {spinner}
-        <Notifications showHover={true} t={t} fullWidth={true} maxWidth={false} notifications={notifications} handleCardClick={(obj) => setClickedObj(obj)} />
+        <Notifications showInfoText={true} showHover={true} t={t} fullWidth={true} maxWidth={false} notifications={notifications} handleCardClick={(obj) => setClickedObj(obj)} />
         {clickedObj !== null &&
             <InfoDialog open={clickedObj !== null} dialogTitle={t("admin.notification_edit")} handleClose={() => setClickedObj(null)}>
                 <NotificationCreator

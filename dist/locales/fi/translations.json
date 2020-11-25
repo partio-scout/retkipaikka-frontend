@@ -19,7 +19,8 @@
         "login": "Kirjaudu",
         "register_button": "Rekisteröidy",
         "register_text": "Rekisteröitymisen jälkeen järjestelmään tulee ilmoitus käyttäjän luonnista, jonka jälkeen ylläpitäjä käy hyväksymässä käyttäjähakemuksen. Saat ilmoituksen sähköpostiisi kun luotua käyttäjää voidaan käyttää kirjautumiseen",
-        "notification_title": "Yleiset ilmoitukset"
+        "notification_title": "Yleiset ilmoitukset",
+        "all": "Kaikki"
     },
     "form": {
         "triplocation_name": "Retkipaikka",
@@ -87,7 +88,8 @@
         "filter_category_edit": "Suodattimien ja kategorioiden muokkaus",
         "triplocation_info": "Retkipaikan tiedot",
         "notificationEditor": "Luo ilmoituksia",
-        "notification_edit": "Ilmoituksen muokkaus"
+        "notification_edit": "Ilmoituksen muokkaus",
+        "notification_info": "Jos ilmoitus reunat korostettu, sitä näytetään etusivulla käyttäjille (ylin ilmoitus eli viimeksi muokattu näytetään jos on useampi). Jos ilmoitus on harmaa, se ei näy muualla kuin hallintasivulla"
     },
     "settings": {
         "user_settings_title": "Tietoa käyttäjästä",

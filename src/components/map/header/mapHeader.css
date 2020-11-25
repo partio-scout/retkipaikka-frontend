@@ -13,6 +13,15 @@
     top:10px;
     position:relative;
 }
+.header-location-select{
+   width:90px;
+   margin-right:10px;
+}
+.header-location-select select{
+    background-color: rgb(28, 66, 87);
+   border: 0px;
+   color: white;
+}
 
 .pointer{
     cursor:pointer;
@@ -96,6 +105,8 @@
     float: right;
     margin-right: 20px;
     color: white;
+    display:inline-flex;
+    margin-top:-5px;
 }
 .mapheader-container{
     position:relative;
@@ -133,4 +144,26 @@
 }
 .map-side-slider span{
     word-wrap: break-word;
+}
+.mapheader-count{
+    margin-top:5px;
+}
+
+@media only screen and (max-width: 576px) {
+    .mapheader-results {
+     display:inline-block;
+     margin-top:-10px;
+     margin-right:0;
+    }
+    .mapheader-count{
+        margin-top: -5px;
+        margin-right: 47px;
+        float: right;
+    }
+    .map-side-slider{
+        top: 34px;
+    }
+    .mapheader-container{
+        height:60px;
+    }
 }

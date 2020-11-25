@@ -197,34 +197,42 @@ export const createFilter = (filters, limitedFields = true) => async (dispatch) 
     dispatch(setLoading(false));
 }
 
-export const filterFromResults = (searchResults, filters) => {
+export const filterFromResults = (searchResults, filters) => async (dispatch) => {
     // filter the searchresults if user added filters
     let locations = filters.locationFilters;
     let regionFilters = locations.filter(loc => !loc.municipality_id);
     let municipalityFilters = locations.filter(loc => loc.municipality_id);
     let types = filters.locationTypeFilters;
     let regulars = filters.commonFilters;
-    console.log(regionFilters, municipalityFilters, types, regulars)
+    let temp = {
+        commonFilters: filters.commonFilters,
+        locationFilters: filters.locationFilters,
+        locationTypeFilters: filters.locationTypeFilters
+    }
+    dispatch({
+        type: PREVIOUS_FILTER,
+        payload: temp
+    })
     //first check regions if arr has items
-    console.log(regionFilters, municipalityFilters)
+
     let regionsPass = searchResults;
     if (regionFilters.length !== 0) {
         regionsPass = searchResults.filter(loc => regionFilters.find(tag => loc.location_region === tag.object_name));
     }
-    console.log(regionsPass.length, " passed regionfilters");
+
     //then check municipalities if arr has items
     let municipalitiesPass = regionsPass;
     if (municipalityFilters.length !== 0) {
         municipalitiesPass = regionsPass.filter(loc => municipalityFilters.find(tag => loc.location_municipality === tag.object_name));
     }
-    console.log(municipalitiesPass.length, " passed municipalities");
+
     // then filter locations that passed the previous filtering (city filters) if types has items
     let typeFiltersPass = municipalitiesPass;
     if (types.length !== 0) {
         typeFiltersPass = municipalitiesPass.filter(loc => types.find(({ category_id }) => loc.location_category === category_id))
     }
 
-    console.log(typeFiltersPass.length, " passed typefilters");
+
     // then filter the filter array of location object if regulars has items
     let regularFiltersPass = typeFiltersPass
     if (regulars.length !== 0) {
@@ -235,13 +243,13 @@ export const filterFromResults = (searchResults, filters) => {
             }
         });
     }
-    console.log(regularFiltersPass.length, " passed regularfilters");
 
 
-    return {
+    dispatch({
         type: UPDATE_RESULTS,
         payload: regularFiltersPass
-    }
+    })
+
 
 }
 

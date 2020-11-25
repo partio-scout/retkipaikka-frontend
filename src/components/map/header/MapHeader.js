@@ -4,16 +4,19 @@ import SideSlider from "./sideSlider";
 import { connect } from "react-redux";
 import { selectMapHeaderLocation } from "../../../actions/MapActions"
 import Spinner from "../../shared/Spinner"
+import AmountSelect from "../AmountSelect";
 class MapHeader extends React.Component {
     state = {
         showSideSlider: false,
         showInfoSideSlider: false,
         clickedObj: null
     }
+
     getText = () => {
         const { showSideSlider } = this.state;
         return showSideSlider ? "<-" : "->";
     }
+
     generateLocationInfo = (obj, i) => {
         const { selectMapHeaderLocation } = this.props;
         //[{ type: "city", name: "Testilaavu", text: "Tampere", geo: { lat: 61.29, lng: 23.45 }, propertyType: "Laavu", has: ["Järvi lähellä"],data:{name:"hehu",website:"www.hehu.fi",contact:"oy@partio.com"} },
@@ -52,9 +55,11 @@ class MapHeader extends React.Component {
         }
         return totalDataArr;
     }
+
+
     render() {
         const { showSideSlider } = this.state;
-        const { resultAmount, data, t, mapHeaderLocation, loading } = this.props;
+        const { resultAmount, data, t, mapHeaderLocation, loading, changeLocationCount } = this.props;
         //let tripPlace = clickedObj === null ? this.generateAllData(data) : clickedObj;
         //let tripPlace = clickedObj === null ? this.generateAllData(data) : clickedObj;
         return (
@@ -62,9 +67,17 @@ class MapHeader extends React.Component {
                 <Spinner loading={loading} />
                 <div className="mapheader-helpers">
                     <span className="mapheader-left">
-                        <img onClick={() => this.setState({ showSideSlider: !showSideSlider })} className={"pointer " + (showSideSlider ? "side-slider-icon-open" : "side-slider-icon-closed")} src={_ICON_PATH_ + "arrow_white.svg"}></img>
-                        <span className="mapheader-text">Partion retkipaikat</span>
-                        <span className="mapheader-results"> {resultAmount}</span>
+                        <span className="mapheader-actions">
+                            <img onClick={() => this.setState({ showSideSlider: !showSideSlider })} className={"pointer " + (showSideSlider ? "side-slider-icon-open" : "side-slider-icon-closed")} src={_ICON_PATH_ + "arrow_white.svg"}></img>
+                            <span className="mapheader-text">Partion retkipaikat</span>
+                        </span>
+                        <span className="mapheader-results">
+                            <AmountSelect changeLocationCount={changeLocationCount} t={t} />
+                            <span className="mapheader-count">
+                                {resultAmount}
+                            </span>
+
+                        </span>
                     </span>
                 </div>
                 <SideSlider t={t} />

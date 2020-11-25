@@ -15,6 +15,7 @@ class Map extends React.Component {
     state = {
         selected: null,
         userMarker: null,
+        markerRenderCount: 500
     }
 
 
@@ -35,9 +36,10 @@ class Map extends React.Component {
         iconUrl: _ICON_PATH_ + "map-marker.svg",
         iconSize: [40, 50], // size of the icon
     });
-    generateMarkers = () => {
-        const { results, selectMapHeaderLocation } = this.props;
+    generateMarkers = (results) => {
+        const { selectMapHeaderLocation } = this.props;
         const { userMarker } = this.state;
+
         let markers = results.map((reg, i) => {
             return <Marker
                 key={reg.location_id + i}
@@ -71,10 +73,15 @@ class Map extends React.Component {
 
 
     }
+    changeLocationCount = (val) => {
+        console.log(val)
+        this.setState({ markerRenderCount: val })
+    }
+
 
     render() {
         const { results, filterTypes, selectedLoc, t, language } = this.props;
-        const { selected } = this.state;
+        const { selected, markerRenderCount } = this.state;
         let center = { lat: 61.29, lng: 23.45 };
         let zoom = 8;
         let windowWidth = window.screen.width;
@@ -82,14 +89,18 @@ class Map extends React.Component {
             center = selectedLoc.location_geo;
             zoom = 11;
         }
-
+        let splittedRes = results;
+        if (markerRenderCount !== "all") {
+            splittedRes = results.slice(0, parseInt(markerRenderCount))
+        }
         return (
             <div className="map-container">
                 <div className="map">
-                    <MapHeader t={t} language={language} types={filterTypes} results={results} renderMenu resultAmount={results.length} data={results} />
+                    <MapHeader t={t} language={language} changeLocationCount={this.changeLocationCount} types={filterTypes} renderMenu resultAmount={splittedRes.length} data={splittedRes} />
                     <LeafletMap
                         center={center}
                         zoom={zoom}
+                        preferCanvas={true}
                         maxZoom={15}
                         attributionControl={true}
                         zoomControl={true}
@@ -107,7 +118,7 @@ class Map extends React.Component {
                         <MarkerClusterGroup
                             showCoverageOnHover
                             iconCreateFunction={this.createClusterCustomIcon}>
-                            {this.generateMarkers()}
+                            {this.generateMarkers(splittedRes)}
                         </MarkerClusterGroup>
 
                     </LeafletMap>

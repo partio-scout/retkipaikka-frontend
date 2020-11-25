@@ -31,10 +31,17 @@ const useStyles = makeStyles({
 });
 
 const NotificationComponent = (props) => {
-    const { topTitle, title, bottomTitle, text, linkText, linkUrl, isEnabled, handleCardClick, showHover } = props;
+    const { topTitle, title, bottomTitle, text, linkText, linkUrl, isEnabled, handleCardClick, showHover, displayFrontpage } = props;
     const classes = useStyles();
+    let style = {};
+    if (showHover) {
+        style.cursor = "pointer"
+    }
+    if (displayFrontpage) {
+        style.border = "2px solid"
+    }
     return (
-        <Card style={showHover ? { cursor: "pointer" } : {}} onClick={handleCardClick} className={isEnabled ? classes.root : classes.root + " " + classes.disabledCard} variant="outlined">
+        <Card style={style} onClick={handleCardClick} className={isEnabled ? classes.root : classes.root + " " + classes.disabledCard} variant="outlined">
             <CardContent>
                 {topTitle && <Typography className={classes.title} color="textSecondary" gutterBottom>
                     {topTitle}
@@ -64,6 +71,7 @@ NotificationComponent.defaultProps = {
     linkUrl: null,
     isEnabled: true,
     handleCardClick: () => { },
+    displayFrontpage: false,
     showHover: false
 }
 export default NotificationComponent;

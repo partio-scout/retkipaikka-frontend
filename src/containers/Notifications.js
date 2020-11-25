@@ -15,10 +15,11 @@ const useStyles = makeStyles({
 
 });
 const Notifications = (props) => {
-    const { t, fullWidth, maxWidth, notifications, handleCardClick, showHover } = props;
+    const { t, fullWidth, maxWidth, notifications, handleCardClick, showHover, showInfoText } = props;
     const classes = useStyles()
     return (<Container className={classes.container} style={fullWidth ? { paddingTop: 0, paddingBottom: 0 } : {}} maxWidth={maxWidth} disableGutters={fullWidth}>
         <h3 style={{ paddingBottom: "1rem" }}>{t("main.notification_title")}</h3>
+        {showInfoText && <strong style={{ paddingBottom: "1rem", display: "inline-block" }}> {t("admin.notification_info")}</strong>}
         {notifications.map(d => {
             return (
                 <div key={d.notification_id} className={classes.card} >
@@ -31,6 +32,7 @@ const Notifications = (props) => {
                         bottomTitle={d.bottom_title}
                         linkText={d.link_text}
                         isEnabled={d.enabled}
+                        displayFrontpage={d.display_frontpage}
                         handleCardClick={() => handleCardClick(d)}
                     />
                 </div>)
@@ -42,7 +44,8 @@ Notifications.defaultProps = {
     fullWidth: false,
     notifications: [],
     handleCardClick: () => { },
-    showHover: false
+    showHover: false,
+    showInfoText: false
 
 }
 export default Notifications;

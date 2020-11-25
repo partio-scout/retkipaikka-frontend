@@ -131,6 +131,14 @@
     display:inline-flex;
     width:100%;
 }
+.admin-location-count{
+    width:90px;
+    margin-right:10px;
+    margin-left:30px;
+}
+.location-title-select{
+    display:flex;
+}
 @media only screen and (max-width: 768px) {
     .admin-filter-button {
         margin-top: 0rem;

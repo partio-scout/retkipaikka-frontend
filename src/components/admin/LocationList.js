@@ -7,10 +7,12 @@ import InputContainer from "../inputform/InputContainer"
 import AdminTable from "../shared/AdminTable"
 import LocationEditDialog from "./dialogs/LocationEditDialog"
 import InfoDialog from "./dialogs/InfoDialog"
+import AmountSelect from "../map/AmountSelect"
 class LocationList extends React.Component {
     state = {
         clickedObj: null,
-        clickPos: null
+        clickPos: null,
+        locationCount: 100
     }
     getText = () => {
         return "<-";
@@ -78,19 +80,34 @@ class LocationList extends React.Component {
     }
 
     render() {
-        const { clickedObj, clickPos } = this.state;
+        const { clickedObj, clickPos, locationCount } = this.state;
         const { type, t, results, notifications } = this.props;
         // this same component is used in admin notification and admin location list page
         let isLocation = this.checkType(type);
         let title = isLocation ? t("admin.current") : t("admin.unaccepted")
+        let splittedRes = isLocation ? results : notifications;
+        if (locationCount !== "all") {
+            splittedRes = results.slice(0, parseInt(locationCount))
+            if (isLocation) {
+                splittedRes = results.slice(0, parseInt(locationCount))
+            } else {
+                splittedRes = notifications.slice(0, parseInt(locationCount))
+            }
+
+        }
         return (
             <div className="admin-content-container">
-                <h3>{title}</h3>
+                <div className={"location-title-select"}>
+                    <h3>{title}</h3>
+                    <AmountSelect defaultVal={100} customClassName={"admin-location-count"} changeLocationCount={(val) => this.setState({ locationCount: val })} t={t} />
+                </div>
+
                 {isLocation && <InputContainer limitedFields={false} t={t} adminPage={true} />}
+
                 <div className="location-list-container">
                     <AdminTable
                         getRowData={this.getRowData}
-                        data={isLocation ? results : notifications}
+                        data={splittedRes}
                         objEntries={this.getObjEntries()}
                         t={t}
                     />
