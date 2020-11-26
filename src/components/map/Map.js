@@ -74,7 +74,6 @@ class Map extends React.Component {
 
     }
     changeLocationCount = (val) => {
-        console.log(val)
         this.setState({ markerRenderCount: val })
     }
 

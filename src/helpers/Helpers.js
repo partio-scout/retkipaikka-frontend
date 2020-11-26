@@ -43,19 +43,44 @@ const fetchAllNotifications = (fetchAll, enabled) => {
     }
     return axios.get(_API_PATH_ + "/Notifications?filter=" + JSON.stringify(query));
 }
-const fetchNotification = () => {
-    const query = {
+function IsJsonString(str) {
+    try {
+        JSON.parse(str);
+    } catch (e) {
+        return false;
+    }
+    return true;
+}
 
+const getItemFromLocalStore = (key, defaultReturn) => {
+    const item = localStorage.getItem(key)
+    if (IsJsonString(item) && item !== null) {
+        return JSON.parse(item)
+    }
+    return defaultReturn;
+}
+
+const fetchNotification = () => {
+    let notifications = getItemFromLocalStore("notifications", [])
+    let query = {
+        fields: ["notification_id", "title", "title_en", "title_sv", "title_sa"]
+    }
+    if (notifications.length === 0) {
+        query.where = { display_frontpage: true }
+    } else {
+        query.where = { and: [{ display_frontpage: true }, { notification_id: { nin: notifications } }] };
     }
     return axios.get(_API_PATH_ + "/Notifications?filter=" + JSON.stringify(query));
+
 }
+
+
 
 const postNotification = async (object) => {
     const { id } = getUser();
     let status = false;
     if (id) {
         await axios.post(_API_PATH_ + "/Notifications?access_token=" + id, object).then(res => {
-            console.log(res)
             if (res.status === 200) {
                 status = true;
                 window.alert("Ilmoitus tallennettu")
@@ -157,4 +182,4 @@ function useTraceUpdate(props, name) {
         prev.current = props;
     });
 }
-export { useTraceUpdate, useDynamicState, askForConfirmation, clearFormByClassName, useScreenSize, fetchNotification, postNotification, fetchAllNotifications, useLoading, editNotification, deleteNotification }
+export { getItemFromLocalStore, useTraceUpdate, useDynamicState, askForConfirmation, clearFormByClassName, useScreenSize, fetchNotification, postNotification, fetchAllNotifications, useLoading, editNotification, deleteNotification }

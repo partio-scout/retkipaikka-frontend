@@ -3,7 +3,7 @@ import "./header.css";
 import { Link } from "react-router-dom";
 import LanguageMenu from "./LanguageMenu"
 import { getUser, logOut } from "../../helpers/UserHelper"
-import { askForConfirmation, fetchNotification, useScreenSize } from "../../helpers/Helpers"
+import { askForConfirmation, fetchNotification, useScreenSize, getNotifications, getItemFromLocalStore } from "../../helpers/Helpers"
 import { useHistory } from "react-router-dom"
 import AdminLogout from "./AdminLogout"
 import InfoIcon from '@material-ui/icons/Info';
@@ -14,17 +14,24 @@ import AlertComponent from "../shared/AlertComponent"
 
 const Header = (props) => {
     const { location, t } = props;
-    const [notification, setNotification] = useState({ title: "Testi-ilmoitus" })
+    const [notifications, setNotifications] = useState([])
     useEffect(() => {
 
         fetchNotification().then(res => {
-            if (res.length > 0) {
-                setNotification(res.data[0]);
+            if (res.data.length > 0) {
+                setNotifications(res.data);
+                //{ title: "Testi-ilmoitus" }
             }
 
         })
     }, [])
-
+    const onNotificationClose = (data) => {
+        let localStorageNotifications = getItemFromLocalStore("notifications", []);
+        localStorageNotifications.push(data.notification_id);
+        localStorage.setItem("notifications", JSON.stringify(localStorageNotifications));
+        let newNotis = notifications.filter(n => n.notification_id !== data.notification_id);
+        setNotifications(newNotis);
+    }
     return (
         <div>
             <div className="header-container">
@@ -40,16 +47,25 @@ const Header = (props) => {
                     <AdminLogout t={t} />
                 </div>
             </div>
-            {location.pathname === "/" &&
-                <div className="header-alert">
-                    <AlertComponent title={
-                        <div className="header-notification">
-                            <Link to="/ilmoitukset" >
-                                {notification.title}
-                            </Link>
+            {location.pathname === "/" && notifications != null &&
+                notifications.map(n => {
+                    return (
+                        <div className="header-alert" key={n.notification_id}>
+                            <AlertComponent title={
+                                <div className="header-notification">
+                                    <Link to="/ilmoitukset" >
+                                        {n.title}
+                                    </Link>
+                                </div>
+                            }
+                                data={n}
+                                onClose={onNotificationClose}
+                            //onClose={onNotificationClose}
+                            />
                         </div>
-                    } />
-                </div>}
+                    )
+                })
+            }
 
         </div>
 

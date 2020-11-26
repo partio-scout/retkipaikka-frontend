@@ -8,7 +8,7 @@ import Button from '@material-ui/core/Button';
 import CloseIcon from '@material-ui/icons/Close';
 const AlertComponent = (props) => {
     const [open, setOpen] = useState(true)
-    const { title, text } = props;
+    const { title, text, onClose, data } = props;
 
     return (
         <div>
@@ -20,6 +20,7 @@ const AlertComponent = (props) => {
                             color="inherit"
                             size="small"
                             onClick={() => {
+                                onClose(data)
                                 setOpen(false);
                             }}
                         >
@@ -40,7 +41,9 @@ const AlertComponent = (props) => {
 }
 AlertComponent.defaultProps = {
     title: "Notification",
-    text: null
+    text: null,
+    onClose: () => { },
+    data: {}
 
 }
 

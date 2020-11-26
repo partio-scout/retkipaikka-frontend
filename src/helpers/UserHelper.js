@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react"
-
+import { getItemFromLocalStore } from "./Helpers"
 export const superRoleIds = [2];
 
 export const checkRoleValidity = () => {
@@ -38,22 +38,10 @@ export const login = async (dataObj) => {
     return status;
 }
 
-function IsJsonString(str) {
-    try {
-        JSON.parse(str);
-    } catch (e) {
-        return false;
-    }
-    return true;
-}
 
 
 export const getUser = () => {
-    const user = localStorage.getItem('user')
-    if (IsJsonString(user) && user !== null) {
-        return JSON.parse(user)
-    }
-    return {};
+    return getItemFromLocalStore("user", {});
 }
 
 export const changePassword = async (object) => {

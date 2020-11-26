@@ -12,6 +12,7 @@ import {
 import axios from "axios";
 import { getUser } from "../helpers/UserHelper"
 import { setLoading } from "./GeneralActions";
+import { getItemFromLocalStore } from "../helpers/Helpers"
 
 export const locationFetch = async (query) => {
     let locations = [];
@@ -23,7 +24,13 @@ export const locationFetch = async (query) => {
     }
     return locations
 }
-export const fetchLocations = (accepted, limitedFields = false) => async (dispatch) => {
+const handleSaveAfterFetch = async (query) => {
+    let locations = await locationFetch(query);
+    let newLocalStore = { locationData: locations, latestLocation: locations[0].location_id };
+    localStorage.setItem("locations", JSON.stringify(newLocalStore));
+    return locations;
+}
+export const fetchLocations = (accepted, limitedFields = false, useCache = false) => async (dispatch) => {
     // fetch locations from database
     let query = {
         where: {
@@ -31,8 +38,25 @@ export const fetchLocations = (accepted, limitedFields = false) => async (dispat
         },
         limitedFields: limitedFields
     }
+    let locations = [];
+    if (!useCache) {
+        locations = await locationFetch(query);
+    } else {
+        locations = getItemFromLocalStore("locations", {});
+        if (locations.latestLocation) {
+            let tempQuery = JSON.parse(JSON.stringify(query));
+            tempQuery.limit = 1;
+            let latest = await locationFetch(tempQuery);
+            if (latest[0].location_id !== locations.latestLocation) {
+                locations = await handleSaveAfterFetch(query);
+            } else {
+                locations = locations.locationData;
+            }
+        } else {
+            locations = await handleSaveAfterFetch(query);
+        }
+    }
 
-    let locations = await locationFetch(query);
     let type;
     if (accepted) {
         type = FETCH_LOCATIONS;
@@ -45,9 +69,8 @@ export const fetchLocations = (accepted, limitedFields = false) => async (dispat
         payload: locations
     })
 
-
-
 }
+
 
 export const postFormData = (data, images, t) => (dispatch) => {
     return new Promise(function (resolve, reject) {

@@ -29,7 +29,7 @@ class Main extends React.Component {
 
         if (regions.length == 0) {
             setLoading(true);
-            fetchLocations(true, true);
+            fetchLocations(true, true, true);
             fetchFilters();
             fetchRegionsAndMunicipalities();
             setLoading(false)

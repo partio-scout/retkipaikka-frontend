@@ -67,3 +67,12 @@
         display:block;
     }
   }
+
+@media only screen and (width:768px){
+    .fix-ipad{
+        -ms-flex: 0 0 91.666667%;
+        flex: 0 0 91.666667%;
+        max-width: 91.666667%;
+    }
+
+}
