@@ -126,6 +126,7 @@ const NotificationCreator = (props) => {
         if (res) {
             clearFormByClassName("form-control");
             setState({})
+            handleClose()
         }
     }
     const handleSave = () => {

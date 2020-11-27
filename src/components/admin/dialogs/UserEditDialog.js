@@ -3,7 +3,7 @@ import { useDynamicState, askForConfirmation } from "../../../helpers/Helpers";
 import TextInput from "../../shared/TextInput"
 import CheckBox from "../../shared/CheckBox"
 import { useDispatch } from "react-redux"
-import { modifyUser } from "../../../helpers/UserHelper"
+import { modifyUser, deleteUser } from "../../../helpers/UserHelper"
 import { useAdminContext } from "../../../context/AdminContext"
 const UserEditDialog = (props) => {
     const { t, data, handleClose } = props;
@@ -43,16 +43,13 @@ const UserEditDialog = (props) => {
 
 
     const handleDelete = async (obj) => {
-        if (obj.object_type === "filter") {
-            await dispatch(deleteFilter(obj));
-        } else {
-            await dispatch(deleteCategory(obj));
-        }
+        await deleteUser(obj);
+        await fetchData();
         handleClose()
 
     }
     const askForDelConfirmation = (title, message, obj) => {
-        askForConfirmation(message, title, () => handleDelete(obj), false)
+        askForConfirmation("Haluatko poistaa käyttäjän?", "Käyttäjän poistaminen", () => handleDelete(obj), false)
 
     };
     const askForEditConfirmation = (name, title, obj) => {
@@ -88,6 +85,7 @@ const UserEditDialog = (props) => {
             <br />
             {/* <button onClick={() => askForDelConfirmation(title + " poistaminen", "Haluatko poistaa " + name, data)} className="btn btn-primary info-button">{t("admin.delete")}</button> */}
             <button onClick={() => askForEditConfirmation(null, null, data)} className="btn btn-primary info-button">{t("admin.save")}</button>
+            <button onClick={() => askForDelConfirmation(null, null, data)} className="btn btn-primary info-button">{t("admin.delete")}</button>
         </div>
     )
 

@@ -37,7 +37,7 @@ const clearFormByClassName = (cn, formId = null) => {
 
 }
 const fetchAllNotifications = (fetchAll, enabled) => {
-    let query = {};
+    let query = { order: "updatedAt DESC" };
     if (!fetchAll) {
         query.where = { enabled: enabled }
     }

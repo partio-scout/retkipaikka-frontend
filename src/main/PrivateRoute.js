@@ -5,7 +5,6 @@ import Spinner from "../components/shared/Spinner"
 import { useAdminContext } from "../context/AdminContext";
 
 const PrivateRoutes = ({ component: Component, ...rest }) => {
-    // const [userLoginStatus, setUserLoginStatus] = useState({ loading: true, loggedIn: false })
     const { loggedIn, loading } = useAdminContext()
     return (<Route
         {...rest}

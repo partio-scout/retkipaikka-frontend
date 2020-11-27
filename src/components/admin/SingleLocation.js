@@ -6,7 +6,6 @@ import { useDispatch, batch } from "react-redux";
 
 const SingleLocation = (props) => {
     const { match, t } = props;
-    console.log(match.params.id)
     const [data, setData] = useState({})
     const dispatch = useDispatch();
     const handleInitialFetch = () => {
@@ -36,7 +35,7 @@ const SingleLocation = (props) => {
         }
 
     }, [])
-    return (<div className="single-location-container"><LocationEditDialog data={data} t={t} /></div>)
+    return (<div className="single-location-container">{data.location_id != null ? <LocationEditDialog data={data} t={t} /> : "Retkipaikkaa ei löydy"}</div>)
 
 }
 

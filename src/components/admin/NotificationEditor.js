@@ -26,7 +26,7 @@ const NotificationEditor = (props) => {
         handleFetch();
     }
     return (<div className="admin-content-container">
-        <NotificationCreator t={t} />
+        <NotificationCreator handleClose={handleFetch} t={t} />
         {spinner}
         <Notifications showInfoText={true} showHover={true} t={t} fullWidth={true} maxWidth={false} notifications={notifications} handleCardClick={(obj) => setClickedObj(obj)} />
         {clickedObj !== null &&

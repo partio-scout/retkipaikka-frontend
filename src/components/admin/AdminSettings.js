@@ -18,7 +18,6 @@ const AdminSettings = ({ t }) => {
     const isAdmin = checkRoleValidity();
     const [clickedObj, setClickedObj] = useState(null)
     const { currentUsers, newUsers } = useAdminContext();
-    console.log(currentUsers, newUsers, "SETTINGSIT")
 
     const regionNotifications = () => {
 
@@ -37,7 +36,7 @@ const AdminSettings = ({ t }) => {
         // accept button 
         if (isAdmin) {
             let userNoti = user?.user?.user_notifications;
-
+            userNoti = userNoti ? userNoti : undefined;
             return (<div className="notification_container">
                 <UserNotifications t={t} newUserNotifications={userNoti} userId={user?.userId} />
             </div>)

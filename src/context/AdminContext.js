@@ -1,13 +1,17 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useEffect, useContext } from 'react';
 import Admin from '../containers/Admin';
 import { useUserData, useLoginData } from "../helpers/UserHelper"
+import { fetchLocations } from "../actions/SearchResultsActions"
+import { fetchFilters, fetchRegionsAndMunicipalities } from "../actions/FilterActions"
 import { getUser } from "../helpers/UserHelper"
+import { useDispatch, batch } from "react-redux";
 
 const AdminContext = createContext();
 
 const AdminContextProvider = ({ children }) => {
     const { loading, loggedIn, changeLoginStatus } = useLoginData()
     const { currentUsers, newUsers, allRoles, fetchData } = useUserData();
+    const dispatch = useDispatch()
     const store = {
         currentUsers,
         newUsers,
@@ -17,6 +21,25 @@ const AdminContextProvider = ({ children }) => {
         loggedIn,
         changeLoginStatus
     };
+
+
+
+    const handleInitialFetch = () => {
+        batch(() => {
+            dispatch(fetchLocations(true));
+            dispatch(fetchLocations(false));
+            dispatch(fetchFilters());
+            dispatch(fetchRegionsAndMunicipalities());
+        })
+
+    }
+
+    useEffect(() => {
+        if (loggedIn && location.pathname !== "/") {
+            handleInitialFetch();
+        }
+    }, [loggedIn])
+
 
     return <AdminContext.Provider value={store}>{children}</AdminContext.Provider>
 }

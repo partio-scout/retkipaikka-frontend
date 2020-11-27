@@ -47,7 +47,8 @@ export const fetchLocations = (accepted, limitedFields = false, useCache = false
             let tempQuery = JSON.parse(JSON.stringify(query));
             tempQuery.limit = 1;
             let latest = await locationFetch(tempQuery);
-            if (latest[0].location_id !== locations.latestLocation) {
+            let id = latest.length > 0 ? latest[0].location_id : null;
+            if (id !== locations.latestLocation) {
                 locations = await handleSaveAfterFetch(query);
             } else {
                 locations = locations.locationData;

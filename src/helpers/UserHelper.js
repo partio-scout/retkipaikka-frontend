@@ -127,6 +127,22 @@ export const modifyUser = async (data) => {
     }
     return status;
 }
+
+export const deleteUser = async (data) => {
+    const { id } = getUser();
+    let status = false;
+    if (id) {
+        await axios.delete(_API_PATH_ + "/Users/" + data.admin_id + "?access_token=" + id).then(res => {
+            status = true;
+            window.alert("Käyttäjän poisto onnistui")
+        }).catch((e) => {
+            console.error(e);
+            window.alert("Käyttäjän poisto epäonnistui")
+        })
+    }
+    return status;
+
+}
 export const modifyOwnSettings = async (data) => {
     const { id } = getUser();
     let status = false;
@@ -164,7 +180,6 @@ export const fetchSingleUser = async () => {
             let tempUser = { ...user };
             tempUser.user = res.data;
             localStorage.setItem('user', JSON.stringify(tempUser))
-            console.log(res, "RESPNSE IN FETCHSINGLEUSER")
             return true
         }).catch(e => {
             console.error(e);
@@ -178,7 +193,6 @@ export const useLoginData = () => {
     const { id } = getUser();
     useEffect(() => {
         async function handleLogin() {
-            console.log("handleLogin in useLoginData")
             const loggedIn = await checkLoginStatus();
             let obj = { loading: false, loggedIn: loggedIn }
             if (!loggedIn) {

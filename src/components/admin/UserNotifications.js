@@ -15,7 +15,6 @@ const UserNotifications = (props) => {
 
 
     const handleSubmit = async () => {
-        console.log(state, "IN SUBMIT")
         let obj = { ...state };
         obj.admin_id = userId;
         let val = await modifyOwnSettings(obj)
@@ -25,6 +24,7 @@ const UserNotifications = (props) => {
 
 
     }
+    console.log(newUserNotifications)
     return (
         <div>
             <h3>

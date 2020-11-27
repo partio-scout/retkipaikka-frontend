@@ -14,77 +14,40 @@ import { useDispatch, batch } from "react-redux";
 import { useAdminContext } from "../context/AdminContext"
 import NotificationEditor from "../components/admin/NotificationEditor"
 import { render } from "react-dom";
+import { useHistory } from "react-router";
+import { useTranslation } from "react-i18next";
 
 
 
 
 const Admin = (props) => {
-    const { t } = props;
+    const { children } = props;
     const [element, setElement] = useState("locations")
     const dispatch = useDispatch()
+    const history = useHistory()
+    const { t } = useTranslation()
     useAdminContext();
-    const tabs = ["notifications", "locations", "filters", "notificationEditor", "settings"]
+    const tabs = [{ t: "notifications", path: "uudet" }, { t: "locations", path: "selaa" }, { t: "filters", path: "suodattimet" }, { t: "settings", path: "asetukset" }, { t: "notificationEditor", path: "ilmoitukset" }]
 
-    const handleInitialFetch = () => {
-        batch(() => {
-            dispatch(fetchLocations(true));
-            dispatch(fetchLocations(false));
-            dispatch(fetchFilters());
-            dispatch(fetchRegionsAndMunicipalities());
-        })
 
-    }
 
-    useEffect(() => {
-        handleInitialFetch();
-    }, [])
-
-    const handleMenuClick = (e) => {
-        let type = e.target.id;
-        if (type) {
-            setElement(type)
-        }
-    }
 
     const getAdminPanel = () => {
-        let renderElement = "";
-        console.log(element)
-        switch (element) {
-            case "locations":
-            case "notifications":
-                renderElement = <LocationList t={t} type={element} />
-                break;
-            case "filters":
-                renderElement = <FilterHandler t={t} />
-                break;
-            case "settings":
-                renderElement = <AdminSettings t={t} />
-                break;
-            case "notificationEditor":
-                renderElement = <NotificationEditor t={t} />
-                break;
-            default:
-                renderElement = <h3>Testi</h3>
-                break;
-        }
-
-
         return (
-
             <div className="admin-container">
                 <div className="admin-panel">
                     <div className="list-group admin-list" >
                         {tabs.map((tab, i) => {
                             return (
-                                <span key={i} onClick={handleMenuClick} id={tab} className={"list-group-item list-group-item-action " + (element === tab ? "tab-selected" : "")} >
-                                    {t("admin." + tab)}
+                                <span key={i} onClick={() => history.push("/hallinta/" + tab.path)} id={tab.t} className={"list-group-item list-group-item-action " + (location.pathname === "/hallinta/" + tab.path ? "tab-selected" : "")} >
+                                    {t("admin." + tab.t)}
                                 </span>
                             )
                         })}
                     </div>
                 </div>
                 <div className="admin-data-container">
-                    {renderElement}
+                    {children}
                 </div>
 
             </div>
@@ -93,7 +56,6 @@ const Admin = (props) => {
         )
     }
 
-    console.log("ADMIN RENDER")
     return (
         <div className="frontpage-container">
             {getAdminPanel()}
