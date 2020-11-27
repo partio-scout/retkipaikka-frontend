@@ -22,8 +22,6 @@ import { useTranslation } from "react-i18next";
 
 const Admin = (props) => {
     const { children } = props;
-    const [element, setElement] = useState("locations")
-    const dispatch = useDispatch()
     const history = useHistory()
     const { t } = useTranslation()
     useAdminContext();

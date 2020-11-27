@@ -2,6 +2,7 @@ import React from "react";
 import "./admin.css"
 import { connect } from "react-redux";
 import { getCorrectFilter } from "../../actions/FilterActions"
+import { fetchLocations } from "../../actions/SearchResultsActions"
 import DraggableDialog from "./dialogs/DraggableDialog";
 import InputContainer from "../inputform/InputContainer"
 import AdminTable from "../shared/AdminTable"
@@ -25,9 +26,12 @@ class LocationList extends React.Component {
     }
 
     handleObjectClick = (obj, e) => {
+        const { fetchLocations } = this.props;
         //set clickedobject and move window down by 50px and right by 50px from clicked position
         if (obj.filters == null || obj.location_accepted == null) {
-            window.alert("Kokeile ladata sivu uudelleen, virhe retkipaikkojen tietojen latauksessa")
+            fetchLocations(true);
+            fetchLocations(false);
+            //window.alert("Kokeile ladata sivu uudelleen, virhe retkipaikkojen tietojen latauksessa")
         } else {
             this.setState({ clickedObj: obj });
         }
@@ -140,5 +144,5 @@ const mapStateToProps = state => {
 
     }
 }
-export default connect(mapStateToProps)(LocationList);
+export default connect(mapStateToProps, { fetchLocations })(LocationList);
 

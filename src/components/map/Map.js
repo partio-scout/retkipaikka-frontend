@@ -65,11 +65,14 @@ class Map extends React.Component {
         this.setState({ selected: null })
     }
     handleMapClick = (e) => {
-        const { setCoordinates } = this.props;
+        const { setCoordinates, formOpen } = this.props;
+        if (formOpen) {
+            // window.scrollTo({ top: 250, behavior: 'smooth' })
+            let obj = { lat: e.latlng.lat, lng: e.latlng.lng }
+            this.setState({ userMarker: this.generateUserIcon(obj) })
+            setCoordinates(obj);
+        }
 
-        let obj = { lat: e.latlng.lat, lng: e.latlng.lng }
-        this.setState({ userMarker: this.generateUserIcon(obj) })
-        setCoordinates(obj);
 
 
     }
@@ -83,6 +86,7 @@ class Map extends React.Component {
         const { selected, markerRenderCount } = this.state;
         let center = { lat: 61.29, lng: 23.45 };
         let zoom = 8;
+        console.log("render")
         let windowWidth = window.screen.width;
         if (selectedLoc !== null) {
             center = selectedLoc.location_geo;
@@ -109,6 +113,7 @@ class Map extends React.Component {
                         animate={true}
                         easeLinearity={0.35}
                         onClick={this.handleMapClick}
+                        onmouseover={() => window.scrollTo({ top: 250, behavior: 'smooth' })}
                     >
                         <TileLayer
                             attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -132,7 +137,6 @@ class Map extends React.Component {
 const mapStateToProps = state => {
     return {
         results: state.searchResults.filteredResults,
-        coords: state.map.coords,
         selectedLoc: state.map.selectedLocation,
         filterTypes: state.filters.locationTypeFilterList,
         language: state.general.language

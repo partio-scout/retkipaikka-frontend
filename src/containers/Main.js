@@ -57,7 +57,7 @@ class Main extends React.Component {
                 </div>
                 <InputContainer t={t} adminPage={false} />
 
-                <Map t={t} />
+                <Map t={t} formOpen={formOpen} />
                 <h4 onClick={this.handleFormOpen} className="main-input-form" >{t("main.inform")} <img className={formOpen ? "input-form-icon-open" : "input-form-icon"} src={_ICON_PATH_ + "arrow.svg"}></img></h4>
                 {formOpen && <LocationForm t={t} handleClose={this.handleReOpen} />}
 
