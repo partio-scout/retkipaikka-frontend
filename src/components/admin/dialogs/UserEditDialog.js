@@ -17,7 +17,6 @@ const UserEditDialog = (props) => {
             },
             roles: []
         }
-        console.log(state);
         if (state.userEnabled != null) {
             userObj.user.new_user = !state.userEnabled
         }

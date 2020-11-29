@@ -11,16 +11,9 @@ const AdminContext = createContext();
 const AdminContextProvider = ({ children }) => {
     const { loading, loggedIn, changeLoginStatus } = useLoginData()
     const { currentUsers, newUsers, allRoles, fetchData } = useUserData();
+    const [fetched, setFetched] = useState(false)
     const dispatch = useDispatch()
-    const store = {
-        currentUsers,
-        newUsers,
-        allRoles,
-        fetchData,
-        loading,
-        loggedIn,
-        changeLoginStatus
-    };
+
 
 
 
@@ -31,14 +24,22 @@ const AdminContextProvider = ({ children }) => {
             dispatch(fetchFilters());
             dispatch(fetchRegionsAndMunicipalities());
         })
+        setFetched(true)
+
 
     }
 
-    useEffect(() => {
-        if (loggedIn && location.pathname !== "/") {
-            handleInitialFetch();
-        }
-    }, [loggedIn])
+    const store = {
+        currentUsers,
+        newUsers,
+        allRoles,
+        fetchData,
+        loading,
+        loggedIn,
+        changeLoginStatus,
+        handleInitialFetch,
+        fetched
+    };
 
 
     return <AdminContext.Provider value={store}>{children}</AdminContext.Provider>

@@ -39,7 +39,7 @@ const RegionNotifications = (props) => {
     }
     const handleSubmit = async () => {
         let regionArr = tags.tags.map(t => t.region_id);
-        let val = modifyUserNotifications(state.notifications, regionArr);
+        let val = await modifyUserNotifications(state.notifications, regionArr);
         if (val) {
             await fetchSingleUser()
         }

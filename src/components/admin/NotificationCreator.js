@@ -131,7 +131,6 @@ const NotificationCreator = (props) => {
     }
     const handleSave = () => {
         let newObj = { ...state };
-        console.log(state, "STATE")
         Object.keys(newObj).forEach(k => {
             if (typeof newObj[k] !== 'boolean' && newObj[k] != null) {
                 if (newObj[k].length == 0) {

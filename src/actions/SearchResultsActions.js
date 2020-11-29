@@ -26,8 +26,11 @@ export const locationFetch = async (query) => {
 }
 const handleSaveAfterFetch = async (query) => {
     let locations = await locationFetch(query);
-    let newLocalStore = { locationData: locations, latestLocation: locations[0].location_id };
-    localStorage.setItem("locations", JSON.stringify(newLocalStore));
+    if (locations.length > 0) {
+        let newLocalStore = { locationData: locations, latestLocation: locations[0].location_id };
+        localStorage.setItem("locations", JSON.stringify(newLocalStore));
+    }
+
     return locations;
 }
 export const fetchLocations = (accepted, limitedFields = false, useCache = false) => async (dispatch) => {

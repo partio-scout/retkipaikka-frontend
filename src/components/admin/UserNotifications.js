@@ -19,12 +19,11 @@ const UserNotifications = (props) => {
         obj.admin_id = userId;
         let val = await modifyOwnSettings(obj)
         if (val) {
-            fetchSingleUser()
+            await fetchSingleUser()
         }
 
 
     }
-    console.log(newUserNotifications)
     return (
         <div>
             <h3>

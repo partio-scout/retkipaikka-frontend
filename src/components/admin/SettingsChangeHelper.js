@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { getUser, changePassword, superRoleIds, modifyOwnSettings, checkRoleValidity } from "../../helpers/UserHelper"
+import { getUser, changePassword, superRoleIds, modifyOwnSettings, logOut, fetchSingleUser } from "../../helpers/UserHelper"
 import TextInput from "../shared/TextInput"
 import { askForConfirmation, clearFormByClassName, useDynamicState } from "../../helpers/Helpers"
 
@@ -8,19 +8,29 @@ const SettingsChangeHelper = (props) => {
     const { t } = props;
     const { state, handleChange } = useDynamicState();
     const user = getUser();
+
+    const passwordFunc = async (data) => {
+        await changePassword(data);
+        await fetchSingleUser();
+        logOut()
+    }
+    const modifyFunc = async (data) => {
+        await modifyOwnSettings(data);
+        await fetchSingleUser();
+    }
     const handlePost = (e, type) => {
         e.preventDefault();
         switch (type) {
             case "password":
                 let dataObject = { newPassword: state.newPassword, oldPassword: state.oldPassword }
-                askForConfirmation("Haluatko vaihtaa salasanan?", "Salasanan vaihto", () => changePassword(dataObject), false)
+                askForConfirmation("Haluatko vaihtaa salasanan?", "Salasanan vaihto", () => passwordFunc(dataObject), false)
                 clearFormByClassName("form-control", "password-form")
                 break;
             case "username_email":
                 let userDataObject = { admin_id: user.userId }
                 if (state.email) userDataObject.email = state.email;
                 if (state.username) userDataObject.username = state.username;
-                askForConfirmation("Haluatko tallentaa muuttuneet tiedot?", "Tietojen muutto", () => modifyOwnSettings(userDataObject), false)
+                askForConfirmation("Haluatko tallentaa muuttuneet tiedot?", "Tietojen muutto", () => modifyFunc(userDataObject), false)
                 break;
         }
 

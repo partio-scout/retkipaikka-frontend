@@ -86,7 +86,6 @@ class Map extends React.Component {
         const { selected, markerRenderCount } = this.state;
         let center = { lat: 61.29, lng: 23.45 };
         let zoom = 8;
-        console.log("render")
         let windowWidth = window.screen.width;
         if (selectedLoc !== null) {
             center = selectedLoc.location_geo;

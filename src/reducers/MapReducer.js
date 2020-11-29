@@ -17,7 +17,6 @@ const initialState = {
 export default function (state = initialState, action) {
     switch (action.type) {
         case SELECT_LOCATION:
-            console.log(action.obj, "DATA")
             return {
                 ...state,
                 selectedLocation: action.obj

@@ -24,12 +24,15 @@ const Admin = (props) => {
     const { children } = props;
     const history = useHistory()
     const { t } = useTranslation()
-    useAdminContext();
     const tabs = [{ t: "notifications", path: "uudet" }, { t: "locations", path: "selaa" }, { t: "filters", path: "suodattimet" }, { t: "settings", path: "asetukset" }, { t: "notificationEditor", path: "ilmoitukset" }]
+    const { handleInitialFetch, fetched } = useAdminContext();
 
 
-
-
+    useEffect(() => {
+        if (!fetched) {
+            handleInitialFetch();
+        }
+    }, [])
     const getAdminPanel = () => {
         return (
             <div className="admin-container">

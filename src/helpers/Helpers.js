@@ -31,7 +31,6 @@ const clearFormByClassName = (cn, formId = null) => {
     }
     let fields = doc.getElementsByClassName(cn);
     for (let f of fields) {
-        console.log("in loop")
         f.value = ""
     }
 
