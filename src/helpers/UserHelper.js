@@ -132,9 +132,14 @@ export const deleteUser = async (data) => {
     const { id } = getUser();
     let status = false;
     if (id) {
-        await axios.delete(_API_PATH_ + "/Users/" + data.admin_id + "?access_token=" + id).then(res => {
-            status = true;
-            window.alert("Käyttäjän poisto onnistui")
+        await axios.get(_API_PATH_ + "/Users/" + data.admin_id + "/regions/count?access_token=" + id).then(async res => {
+            if (res.data.count !== 0) {
+                await axios.delete(_API_PATH_ + "/Users/" + data.admin_id + "/regions?access_token=" + id)
+            }
+            await axios.delete(_API_PATH_ + "/Users/" + data.admin_id + "?access_token=" + id).then(res => {
+                status = true;
+                window.alert("Käyttäjän poisto onnistui")
+            })
         }).catch((e) => {
             console.error(e);
             window.alert("Käyttäjän poisto epäonnistui")

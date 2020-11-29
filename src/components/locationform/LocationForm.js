@@ -333,7 +333,6 @@ class LocationForm extends React.Component {
 }
 const mapStateToProps = state => {
     return {
-        tagList: state.filters,
         coords: state.map.coords,
         typeFilters: state.filters.locationTypeFilterList,
         commonFilters: state.filters.commonFilterList,
