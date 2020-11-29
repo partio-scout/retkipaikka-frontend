@@ -5,12 +5,14 @@ import { fetchLocations } from "../actions/SearchResultsActions"
 import { fetchFilters, fetchRegionsAndMunicipalities } from "../actions/FilterActions"
 import { getUser } from "../helpers/UserHelper"
 import { useDispatch, batch } from "react-redux";
-
+import { useLoading } from "../helpers/Helpers"
 const AdminContext = createContext();
 
 const AdminContextProvider = ({ children }) => {
     const { loading, loggedIn, changeLoginStatus } = useLoginData()
     const { currentUsers, newUsers, allRoles, fetchData } = useUserData();
+    const [notifications, setNotifications] = useState([])
+    const { spinner, setLoading } = useLoading(false);
     const [fetched, setFetched] = useState(false)
     const dispatch = useDispatch()
 
@@ -38,7 +40,11 @@ const AdminContextProvider = ({ children }) => {
         loggedIn,
         changeLoginStatus,
         handleInitialFetch,
-        fetched
+        fetched,
+        notifications,
+        setNotifications,
+        spinner,
+        setLoading
     };
 
 

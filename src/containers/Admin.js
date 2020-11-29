@@ -56,7 +56,6 @@ const Admin = (props) => {
 
         )
     }
-
     return (
         <div className="frontpage-container">
             {getAdminPanel()}

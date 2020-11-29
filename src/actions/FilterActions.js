@@ -13,6 +13,7 @@ import {
 
 import axios from "axios";
 import { getUser } from "../helpers/UserHelper"
+import { getCorrectTranslation } from "../helpers/Helpers"
 export const addFilter = (obj) => {
     let actionType = ""
     // handles the input form filters
@@ -218,10 +219,7 @@ export const fetchFilters = () => async (dispatch) => {
 }
 
 export const getCorrectFilter = (filter, lang) => {
-    let langEnd = "object_name_" + lang
-    return (lang === "fi" ? filter["object_name"] : filter[langEnd] ? filter[langEnd] : filter["object_name_en"] ? filter["object_name_en"] : filter["object_name"])
-
-
+    return getCorrectTranslation(filter, "object_name", lang)
+    // return (lang === "fi" ? filter["object_name"] : filter[langEnd] ? filter[langEnd] : filter["object_name_en"] ? filter["object_name_en"] : filter["object_name"])
 }
-
 

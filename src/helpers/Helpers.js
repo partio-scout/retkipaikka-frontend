@@ -97,7 +97,6 @@ const editNotification = async (notification_id, object) => {
     let status = false;
     if (id) {
         await axios.patch(_API_PATH_ + "/Notifications/" + notification_id + "?access_token=" + id, object).then(res => {
-            console.log(res)
             if (res.status === 200) {
                 status = true;
                 window.alert("Ilmoituksen muokkaus onnistui")
@@ -158,7 +157,10 @@ const useLoading = (initial = true) => {
     }
 }
 
-
+const getCorrectTranslation = (data, key, lang) => {
+    let langEnd = key + "_" + lang;
+    return (lang === "fi" ? data[key] : data[langEnd] ? data[langEnd] : data[key + "_en"] ? data[key + "_en"] : data[key]);
+}
 const useScreenSize = () => {
     const isMobile = useMediaQuery('(min-width:768px');
 
@@ -181,4 +183,4 @@ function useTraceUpdate(props, name) {
         prev.current = props;
     });
 }
-export { getItemFromLocalStore, useTraceUpdate, useDynamicState, askForConfirmation, clearFormByClassName, useScreenSize, fetchNotification, postNotification, fetchAllNotifications, useLoading, editNotification, deleteNotification }
+export { getCorrectTranslation, getItemFromLocalStore, useTraceUpdate, useDynamicState, askForConfirmation, clearFormByClassName, useScreenSize, fetchNotification, postNotification, fetchAllNotifications, useLoading, editNotification, deleteNotification }

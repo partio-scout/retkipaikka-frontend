@@ -2,19 +2,18 @@ import React, { useEffect, useState } from "react";
 import "./header.css";
 import { Link } from "react-router-dom";
 import LanguageMenu from "./LanguageMenu"
-import { getUser, logOut } from "../../helpers/UserHelper"
-import { askForConfirmation, fetchNotification, useScreenSize, getNotifications, getItemFromLocalStore } from "../../helpers/Helpers"
-import { useHistory } from "react-router-dom"
+import { fetchNotification, getCorrectTranslation, getItemFromLocalStore } from "../../helpers/Helpers"
 import AdminLogout from "./AdminLogout"
-import InfoIcon from '@material-ui/icons/Info';
-import { useTranslation } from 'react-i18next';
 import AlertComponent from "../shared/AlertComponent"
+import { useSelector } from "react-redux"
+
 
 
 
 const Header = (props) => {
     const { location, t } = props;
     const [notifications, setNotifications] = useState([])
+    const language = useSelector(state => state.general.language)
     useEffect(() => {
 
         fetchNotification().then(res => {
@@ -54,7 +53,7 @@ const Header = (props) => {
                             <AlertComponent title={
                                 <div className="header-notification">
                                     <Link to="/ilmoitukset" >
-                                        {n.title}
+                                        {getCorrectTranslation(n, "title", language)}
                                     </Link>
                                 </div>
                             }
