@@ -48,25 +48,27 @@ const FilterEditDialog = (props) => {
 
     };
     const askForEditConfirmation = (name, title, obj) => {
-        askForConfirmation("Haluatko tallentaa tekemäsi muokkaukset?", title + " muokkaaminen", () => submitFilterEdit(obj), false)
+        askForConfirmation(t("admin.edit_text"), title, () => submitFilterEdit(obj), false)
     };
 
     const getForms = (obj) => {
-        let textInfo = obj.object_type === "locationtype" ? "kategorian" : "suodattimen"
-        let helperInfo = obj.object_type === "locationtype" ? "Kategoria" : "Suodatin"
+        let textInfo = obj.object_type === "locationtype" ? t("admin.category_info_text") : t("admin.filter_info_text")
+        let helperInfo = obj.object_type === "locationtype" ? t("admin.category") : t("admin.filter")
         return (
             <div className="form-row">
-                <TextInput maxLength={64} defaultValue={obj.object_name} handleChange={handleChange} id={obj.object_type} placeholder="Suomeksi" helper={"Kirjoita lisättävän " + textInfo + " nimi*"} text={helperInfo} size="col-md-3" required={false} />
-                <TextInput maxLength={64} defaultValue={obj.object_name_sv} handleChange={handleChange} id={obj.object_type + "_sv"} placeholder="Ruotsiksi" helper={"Kirjoita lisättävän " + textInfo + " nimi"} text="-" size="col-md-3" required={false} />
-                <TextInput maxLength={64} defaultValue={obj.object_name_sa} handleChange={handleChange} id={obj.object_type + "_sa"} placeholder="Saameksi" helper={"Kirjoita lisättävän " + textInfo + " nimi"} text="-" size="col-md-3" required={false} />
-                <TextInput maxLength={64} defaultValue={obj.object_name_en} handleChange={handleChange} id={obj.object_type + "_en"} placeholder="Englanniksi" helper={"Kirjoita lisättävän " + textInfo + " nimi"} text="-" size="col-md-3" required={false} />
+                <TextInput maxLength={64} defaultValue={obj.object_name} handleChange={handleChange} id={obj.object_type} placeholder={t("admin.finnish")} helper={textInfo} text={helperInfo} size="col-md-3" required={false} />
+                <TextInput maxLength={64} defaultValue={obj.object_name_sv} handleChange={handleChange} id={obj.object_type + "_sv"} placeholder={t("admin.swedish")} helper={textInfo} text="-" size="col-md-3" required={false} />
+                <TextInput maxLength={64} defaultValue={obj.object_name_sa} handleChange={handleChange} id={obj.object_type + "_sa"} placeholder={t("admin.saame")} helper={textInfo} text="-" size="col-md-3" required={false} />
+                <TextInput maxLength={64} defaultValue={obj.object_name_en} handleChange={handleChange} id={obj.object_type + "_en"} placeholder={t("admin.english")} helper={textInfo} text="-" size="col-md-3" required={false} />
             </div>)
     }
 
 
     let id = data.filter_id ? data.filter_id : data.category_id;
     let name = data.object_name
-    let title = data.filter_id ? "Suodattimen " : "Kategorian ";
+    let editTitle = data.filter_id ? t("admin.filter_edit_save") : t("admin.category_edit_save")
+    let deleteTitle = data.filter_id ? t("admin.filter_delete_title") : t("admin.category_delete_title")
+    let deleteText = data.filter_id ? t("admin.filter_delete_text") : t("admin.category_delete_text")
     return (
         <div>
             <h4 className="move-handle">#{id}</h4>
@@ -75,8 +77,8 @@ const FilterEditDialog = (props) => {
             {getForms(data)}
             <br />
             <br />
-            <button onClick={() => askForDelConfirmation(title + " poistaminen", "Haluatko poistaa " + name, data)} className="btn btn-primary info-button">{t("admin.delete")}</button>
-            <button onClick={() => askForEditConfirmation(name, title, data)} className="btn btn-primary info-button">{t("admin.save")}</button>
+            <button onClick={() => askForDelConfirmation(deleteTitle, deleteText, data)} className="btn btn-primary info-button">{t("admin.delete")}</button>
+            <button onClick={() => askForEditConfirmation(name, editTitle, data)} className="btn btn-primary info-button">{t("admin.save")}</button>
         </div>
     )
 

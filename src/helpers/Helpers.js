@@ -5,6 +5,7 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import Spinner from "../components/shared/Spinner"
 import { getUser } from "./UserHelper"
 import axios from "axios"
+import i18n from "../main/i18n"
 const askForConfirmation = (message, title, onYesClick, onNoClick, childrenElement = () => { }) => {
     confirmAlert({
         title: title,
@@ -82,10 +83,10 @@ const postNotification = async (object) => {
         await axios.post(_API_PATH_ + "/Notifications?access_token=" + id, object).then(res => {
             if (res.status === 200) {
                 status = true;
-                window.alert("Ilmoitus tallennettu")
+                window.alert(i18n.t("admin.notification_save_success"))
             }
         }).catch(e => {
-            window.alert("Ilmoituksen tallennus epäonnistui")
+            window.alert(i18n.t("admin.notification_save_fail"))
         })
     }
 
@@ -99,10 +100,10 @@ const editNotification = async (notification_id, object) => {
         await axios.patch(_API_PATH_ + "/Notifications/" + notification_id + "?access_token=" + id, object).then(res => {
             if (res.status === 200) {
                 status = true;
-                window.alert("Ilmoituksen muokkaus onnistui")
+                window.alert(i18n.t("admin.notification_edit_success"))
             }
         }).catch(e => {
-            window.alert("Ilmoituksen muokkaus epäonnistui")
+            window.alert(i18n.t("admin.notification_edit_fail"))
         })
     }
 
@@ -115,10 +116,10 @@ const deleteNotification = async (notification_id) => {
         await axios.delete(_API_PATH_ + "/Notifications/" + notification_id + "?access_token=" + id).then(res => {
             if (res.status === 200) {
                 status = true;
-                window.alert("Ilmoituksen poisto onnistui")
+                window.alert(i18n.t("admin.notification_delete_success"))
             }
         }).catch(e => {
-            window.alert("Ilmoituksen poisto epäonnistui")
+            window.alert(i18n.t("admin.notification_delete_fail"))
         })
     }
 

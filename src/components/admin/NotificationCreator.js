@@ -45,10 +45,10 @@ const NotificationCreator = (props) => {
     const titleForm = () => {
         return (
             <div className="form-row">
-                <TextInput maxLength={64} defaultValue={obj.title} handleChange={handleChange} id={"title"} placeholder="Suomeksi" text={"Pääotsikko"} size="col-md-3" required={true} />
-                <TextInput maxLength={64} defaultValue={obj.title_sv} handleChange={handleChange} id={"title_sv"} placeholder="Ruotsiksi" text="-" size="col-md-3" required={false} />
-                <TextInput maxLength={64} defaultValue={obj.title_sa} handleChange={handleChange} id={"title_sa"} placeholder="Saameksi" text="-" size="col-md-3" required={false} />
-                <TextInput maxLength={64} defaultValue={obj.title_en} handleChange={handleChange} id={"title_en"} placeholder="Englanniksi" text="-" size="col-md-3" required={false} />
+                <TextInput maxLength={64} defaultValue={obj.title} handleChange={handleChange} id={"title"} placeholder={t("admin.finnish")} text={t("admin.main_title")} size="col-md-3" required={true} />
+                <TextInput maxLength={64} defaultValue={obj.title_sv} handleChange={handleChange} id={"title_sv"} placeholder={t("admin.swedish")} text="-" size="col-md-3" required={false} />
+                <TextInput maxLength={64} defaultValue={obj.title_sa} handleChange={handleChange} id={"title_sa"} placeholder={t("admin.saame")} text="-" size="col-md-3" required={false} />
+                <TextInput maxLength={64} defaultValue={obj.title_en} handleChange={handleChange} id={"title_en"} placeholder={t("admin.english")} text="-" size="col-md-3" required={false} />
             </div>
         )
     }
@@ -56,10 +56,10 @@ const NotificationCreator = (props) => {
 
         return (
             <div className="form-row">
-                <TextInput maxLength={64} defaultValue={obj.top_title} handleChange={handleChange} id={"top_title"} placeholder="Suomeksi" text={"Yläotsikko"} size="col-md-3" required={false} />
-                <TextInput maxLength={64} defaultValue={obj.top_title_sv} handleChange={handleChange} id={"top_title_sv"} placeholder="Ruotsiksi" text="-" size="col-md-3" required={false} />
-                <TextInput maxLength={64} defaultValue={obj.top_title_sa} handleChange={handleChange} id={"top_title_sa"} placeholder="Saameksi" text="-" size="col-md-3" required={false} />
-                <TextInput maxLength={64} defaultValue={obj.top_title_en} handleChange={handleChange} id={"top_title_en"} placeholder="Englanniksi" text="-" size="col-md-3" required={false} />
+                <TextInput maxLength={64} defaultValue={obj.top_title} handleChange={handleChange} id={"top_title"} placeholder={t("admin.finnish")} text={t("admin.upper_title")} size="col-md-3" required={false} />
+                <TextInput maxLength={64} defaultValue={obj.top_title_sv} handleChange={handleChange} id={"top_title_sv"} placeholder={t("admin.swedish")} text="-" size="col-md-3" required={false} />
+                <TextInput maxLength={64} defaultValue={obj.top_title_sa} handleChange={handleChange} id={"top_title_sa"} placeholder={t("admin.saame")} text="-" size="col-md-3" required={false} />
+                <TextInput maxLength={64} defaultValue={obj.top_title_en} handleChange={handleChange} id={"top_title_en"} placeholder={t("admin.english")} text="-" size="col-md-3" required={false} />
             </div>
         )
     }
@@ -67,10 +67,10 @@ const NotificationCreator = (props) => {
 
         return (
             <div className="form-row">
-                <TextInput maxLength={64} defaultValue={obj.bottom_title} handleChange={handleChange} id={"bottom_title"} placeholder="Suomeksi" text={"Alaotsikko"} size="col-md-3" required={false} />
-                <TextInput maxLength={64} defaultValue={obj.bottom_title_sv} handleChange={handleChange} id={"bottom_title_sv"} placeholder="Ruotsiksi" text="-" size="col-md-3" required={false} />
-                <TextInput maxLength={64} defaultValue={obj.bottom_title_sa} handleChange={handleChange} id={"bottom_title_sa"} placeholder="Saameksi" text="-" size="col-md-3" required={false} />
-                <TextInput maxLength={64} defaultValue={obj.bottom_title_en} handleChange={handleChange} id={"bottom_title_en"} placeholder="Englanniksi" text="-" size="col-md-3" required={false} />
+                <TextInput maxLength={64} defaultValue={obj.bottom_title} handleChange={handleChange} id={"bottom_title"} placeholder={t("admin.finnish")} text={t("admin.lower_title")} size="col-md-3" required={false} />
+                <TextInput maxLength={64} defaultValue={obj.bottom_title_sv} handleChange={handleChange} id={"bottom_title_sv"} placeholder={t("admin.swedish")} text="-" size="col-md-3" required={false} />
+                <TextInput maxLength={64} defaultValue={obj.bottom_title_sa} handleChange={handleChange} id={"bottom_title_sa"} placeholder={t("admin.saame")} text="-" size="col-md-3" required={false} />
+                <TextInput maxLength={64} defaultValue={obj.bottom_title_en} handleChange={handleChange} id={"bottom_title_en"} placeholder={t("admin.english")} text="-" size="col-md-3" required={false} />
             </div>
         )
     }
@@ -78,10 +78,10 @@ const NotificationCreator = (props) => {
 
         return (
             <div className="form-row">
-                <TextInput maxLength={512} defaultValue={obj.text} handleChange={handleChange} id={"text"} placeholder="Suomeksi" text={"Teksti"} size="col-md-3" required={true} />
-                <TextInput maxLength={512} defaultValue={obj.text_sv} handleChange={handleChange} id={"text_sv"} placeholder="Ruotsiksi" text="-" size="col-md-3" required={false} />
-                <TextInput maxLength={512} defaultValue={obj.text_sa} handleChange={handleChange} id={"text_sa"} placeholder="Saameksi" text="-" size="col-md-3" required={false} />
-                <TextInput maxLength={512} defaultValue={obj.text_en} handleChange={handleChange} id={"text_en"} placeholder="Englanniksi" text="-" size="col-md-3" required={false} />
+                <TextInput maxLength={512} defaultValue={obj.text} handleChange={handleChange} id={"text"} placeholder={t("admin.finnish")} text={t("admin.text")} size="col-md-3" required={true} />
+                <TextInput maxLength={512} defaultValue={obj.text_sv} handleChange={handleChange} id={"text_sv"} placeholder={t("admin.swedish")} text="-" size="col-md-3" required={false} />
+                <TextInput maxLength={512} defaultValue={obj.text_sa} handleChange={handleChange} id={"text_sa"} placeholder={t("admin.saame")} text="-" size="col-md-3" required={false} />
+                <TextInput maxLength={512} defaultValue={obj.text_en} handleChange={handleChange} id={"text_en"} placeholder={t("admin.english")} text="-" size="col-md-3" required={false} />
             </div>
         )
     }
@@ -89,10 +89,10 @@ const NotificationCreator = (props) => {
 
         return (
             <div className="form-row">
-                <TextInput maxLength={32} defaultValue={obj.link_text} handleChange={handleChange} id={"link_text"} placeholder="Suomeksi" text={"Linkin teksti"} size="col-md-3" required={false} />
-                <TextInput maxLength={32} defaultValue={obj.link_text_sv} handleChange={handleChange} id={"link_text_sv"} placeholder="Ruotsiksi" text="-" size="col-md-3" required={false} />
-                <TextInput maxLength={32} defaultValue={obj.link_text_sa} handleChange={handleChange} id={"link_text_sa"} placeholder="Saameksi" text="-" size="col-md-3" required={false} />
-                <TextInput maxLength={32} defaultValue={obj.link_text_en} handleChange={handleChange} id={"link_text_en"} placeholder="Englanniksi" text="-" size="col-md-3" required={false} />
+                <TextInput maxLength={32} defaultValue={obj.link_text} handleChange={handleChange} id={"link_text"} placeholder={t("admin.finnish")} text={t("admin.link_text")} size="col-md-3" required={false} />
+                <TextInput maxLength={32} defaultValue={obj.link_text_sv} handleChange={handleChange} id={"link_text_sv"} placeholder={t("admin.swedish")} text="-" size="col-md-3" required={false} />
+                <TextInput maxLength={32} defaultValue={obj.link_text_sa} handleChange={handleChange} id={"link_text_sa"} placeholder={t("admin.saame")} text="-" size="col-md-3" required={false} />
+                <TextInput maxLength={32} defaultValue={obj.link_text_en} handleChange={handleChange} id={"link_text_en"} placeholder={t("admin.english")} text="-" size="col-md-3" required={false} />
             </div>
         )
     }
@@ -101,7 +101,7 @@ const NotificationCreator = (props) => {
 
         return (
             <div className="form-row">
-                <TextInput maxLength={512} defaultValue={obj.link_url} handleChange={handleChange} id={"link_url"} placeholder="Suomeksi" text={"Linkin teksti"} size="col-md-3" required={false} />
+                <TextInput maxLength={512} defaultValue={obj.link_url} handleChange={handleChange} id={"link_url"} placeholder={t("admin.finnish")} text={t("admin.link_url")} size="col-md-3" required={false} />
             </div>
         )
 
@@ -109,8 +109,8 @@ const NotificationCreator = (props) => {
     const createCheckboxes = () => {
         return (
             <div>
-                <CheckBox handleChange={handleChange} text={"Näytä listassa"} id={"enabled"} defaultChecked={obj.enabled} />
-                <CheckBox handleChange={handleChange} text={"Näytä etusivun bannerissa"} id={"display_frontpage"} defaultChecked={obj.display_frontpage} />
+                <CheckBox handleChange={handleChange} text={t("admin.show_list_box")} id={"enabled"} defaultChecked={obj.enabled} />
+                <CheckBox handleChange={handleChange} text={t("admin.show_frontpage_box")} id={"display_frontpage"} defaultChecked={obj.display_frontpage} />
             </div>
         )
 
@@ -146,10 +146,10 @@ const NotificationCreator = (props) => {
         })
 
         if (editing) {
-            askForConfirmation("Haluatko tallentaa muutokset?", "Ilmoituksen muokkaaminen", () => postEdit(newObj), false)
+            askForConfirmation(t("admin.edit_text"), t("admin.notification_edit_title"), () => postEdit(newObj), false)
 
         } else {
-            askForConfirmation("Haluatko luoda ilmoituksen?", "Ilmoituksen luominen", () => postSave(newObj), false)
+            askForConfirmation(t("admin.notification_save_text"), t("admin.notification_save_title"), () => postSave(newObj), false)
         }
 
 
@@ -190,7 +190,7 @@ const NotificationCreator = (props) => {
         </form>
 
         <button onClick={saveClick} className="btn btn-primary">{t("admin.save")}</button>
-        {editing && <button onClick={() => askForConfirmation("Haluatko poistaa ilmoituksen?", "Ilmoituksen poistaminen", handleDelete, false)} className="btn btn-primary">{t("admin.delete")}</button>}
+        {editing && <button onClick={() => askForConfirmation(t("admin.notification_delete_title"), t("admin.notification_delete_text"), handleDelete, false)} className="btn btn-primary">{t("admin.delete")}</button>}
     </div>)
 }
 

@@ -13,7 +13,7 @@ import axios from "axios";
 import { getUser } from "../helpers/UserHelper"
 import { setLoading } from "./GeneralActions";
 import { getItemFromLocalStore } from "../helpers/Helpers"
-
+import i18n from "../main/i18n"
 export const locationFetch = async (query) => {
     let locations = [];
     try {
@@ -76,7 +76,7 @@ export const fetchLocations = (accepted, limitedFields = false, useCache = false
 }
 
 
-export const postFormData = (data, images, t) => (dispatch) => {
+export const postFormData = (data, images) => (dispatch) => {
     return new Promise(function (resolve, reject) {
         let stringifiedData = JSON.stringify(data);
         const formData = new FormData();
@@ -117,11 +117,11 @@ export const postFormData = (data, images, t) => (dispatch) => {
 
             }
             resolve(true)
-            window.alert(t("main.triplocation_success"))
+            window.alert(i18n.t("main.triplocation_success"))
 
         }).catch(error => {
             console.error(error);
-            window.alert(t("main.triplocation_fail"))
+            window.alert(i18n.t("main.triplocation_fail"))
             reject(false)
         });
     })
@@ -150,12 +150,12 @@ export const postEditData = (data, images) => (dispatch, getState) => {
             }
 
         }
-        window.alert("Retkipaikan muokkaus onnistui")
+        window.alert(i18n.t("admin.triplocation_edit_success"))
         dispatch(fetchLocations(true));
         dispatch(fetchLocations(false));
 
     }).catch(error => {
-        window.alert("Retkipaikan muokkaus epäonnistui")
+        window.alert(i18n.t("admin.triplocation_edit_fail"))
         console.error(error);
     });
 }
@@ -180,10 +180,11 @@ export const deleteLocation = (data) => (dispatch, getState) => {
         _API_PATH_ + "/Triplocations/deleteLocation?locationData=" + stringifiedData + "&access_token=" + accessToken
     ).then(async response => {
         await axios.delete(_API_PATH_ + "/Images/" + data.location_id + "?access_token=" + accessToken);
-        window.alert("Retkipaikan poisto onnistui");
+        window.alert(i18n.t("admin.triplocation_delete_success"))
         dispatch(fetchLocations(true));
         dispatch(fetchLocations(false));
     }).catch(error => {
+        window.alert(i18n.t("admin.triplocation_delete_fail"))
         console.error(error);
     });
 }

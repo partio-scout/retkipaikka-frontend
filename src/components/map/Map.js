@@ -80,7 +80,6 @@ class Map extends React.Component {
         this.setState({ markerRenderCount: val })
     }
 
-
     render() {
         const { results, filterTypes, selectedLoc, t, language } = this.props;
         const { selected, markerRenderCount } = this.state;
@@ -89,7 +88,7 @@ class Map extends React.Component {
         let windowWidth = window.screen.width;
         if (selectedLoc !== null) {
             center = selectedLoc.location_geo;
-            zoom = 11;
+            zoom = 15;
         }
         let splittedRes = results;
         if (markerRenderCount !== "all") {
@@ -112,7 +111,7 @@ class Map extends React.Component {
                         animate={true}
                         easeLinearity={0.35}
                         onClick={this.handleMapClick}
-                        onmouseover={() => window.scrollTo({ top: 250, behavior: 'smooth' })}
+                    //onmouseover={() => window.scrollTo({ top: 250, behavior: 'smooth' })}
                     >
                         <TileLayer
                             attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'

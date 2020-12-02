@@ -22,6 +22,7 @@ const InfoDialog = (props) => {
                 keepMounted
                 aria-labelledby="alert-dialog-slide-title"
                 aria-describedby="alert-dialog-slide-description"
+                onBackdropClick={handleClose}
             >
                 <DialogTitle id="alert-dialog-slide-title" style={{ minWidth: "250px" }}>{dialogTitle}
                     <button className="btn info-close-button" onClick={handleClose}>x</button>

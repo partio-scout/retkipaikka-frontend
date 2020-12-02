@@ -52,7 +52,7 @@ const AdminSettings = ({ t }) => {
             <tr key={obj.admin_id} onClick={(e) => setClickedObj(obj)}>
                 <th scope="row">{obj.admin_id}</th>
                 <td>{obj.email}</td>
-                <td>{t("settings.regions_" + obj.notifications)}</td>
+                <td>{t("admin.regions_" + obj.notifications)}</td>
                 <td>{obj.username}</td>
             </tr>
         )
@@ -63,9 +63,9 @@ const AdminSettings = ({ t }) => {
     const userEntries = () => {
         return [
             { id: "admin_id", t: "id" },
-            { id: "email", t: "settings.email" },
-            { id: "notifications", t: "settings.notifications_table" },
-            { id: "username", t: "settings.username" },
+            { id: "email", t: "admin.email" },
+            { id: "notifications", t: "admin.notifications_table" },
+            { id: "username", t: "admin.username" },
         ]
     }
 
@@ -74,7 +74,7 @@ const AdminSettings = ({ t }) => {
 
         return (<div className="user-table-container">
             <h3>
-                {t("settings.current_users")}
+                {t("admin.current_users")}
             </h3>
             <AdminTable t={t} getRowData={userRows} objEntries={userEntries()} data={currentUsers}></AdminTable>
         </div>)
@@ -83,7 +83,7 @@ const AdminSettings = ({ t }) => {
     const newUserNotifications = () => {
         return (<div className="user-table-container">
             <h3>
-                {t("settings.new_users")}
+                {t("admin.new_users")}
             </h3>
             <AdminTable t={t} getRowData={userRows} objEntries={userEntries()} data={newUsers}></AdminTable>
         </div>)
@@ -109,7 +109,7 @@ const AdminSettings = ({ t }) => {
             <SettingsChangeHelper t={t} />
             {listUsers()}
             {clickedObj !== null &&
-                <InfoDialog open={clickedObj !== null} dialogTitle={t("settings.user_edit")} handleClose={closeDialog} maxWidth={"sm"} dialogInfoText={t("settings.userdialog_info")}>
+                <InfoDialog open={clickedObj !== null} dialogTitle={t("admin.user_edit")} handleClose={closeDialog} maxWidth={"sm"} dialogInfoText={t("admin.userdialog_info")}>
                     <UserEditDialog
                         t={t}
                         data={clickedObj}

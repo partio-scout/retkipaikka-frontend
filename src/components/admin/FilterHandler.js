@@ -41,17 +41,18 @@ class FilterHandler extends React.Component {
     }
     handleSubmit = (e, value) => {
         e.preventDefault();
+        const { t } = this.props;
         let data = this.state[value];
         if (data) {
             let obj = {}
             switch (value) {
                 case "filter":
                     obj = this.generateObj(value)
-                    askForConfirmation("Haluatko tallentaa suodattimen " + data, "Suodattimen lisääminen", () => this.handlePost(obj), this.closeFunc)
+                    askForConfirmation(t("admin.filter_save_text") + data, t("admin.filter_save_title"), () => this.handlePost(obj), this.closeFunc)
                     break;
                 case "locationtype":
                     obj = this.generateObj(value);
-                    askForConfirmation("Haluatko tallentaa kategorian " + data, "Kategorian lisääminen", () => this.handlePost(obj), this.closeFunc)
+                    askForConfirmation(t("admin.category_save_text") + data, t("admin.category_save_title"), () => this.handlePost(obj), this.closeFunc)
                     break;
                 default:
                     break;
@@ -134,10 +135,10 @@ class FilterHandler extends React.Component {
             return (
                 <form onSubmit={(e) => this.handleSubmit(e, "filter")}>
                     <div className="form-row">
-                        <TextInput maxLength={64} handleChange={this.handleChange} id="filter" placeholder="Suomeksi" helper="Kirjoita lisättävän suodattimen nimi*" text="Suodatin" size="col-md-3" required={true} />
-                        <TextInput maxLength={64} handleChange={this.handleChange} id="filter_sv" placeholder="Ruotsiksi" helper="Kirjoita lisättävän suodattimen nimi" text="-" size="col-md-3" required={false} />
-                        <TextInput maxLength={64} handleChange={this.handleChange} id="filter_sa" placeholder="Saameksi" helper="Kirjoita lisättävän suodattimen nimi" text="-" size="col-md-3" required={false} />
-                        <TextInput maxLength={64} handleChange={this.handleChange} id="filter_en" placeholder="Englanniksi" helper="Kirjoita lisättävän suodattimen nimi*" text="-" size="col-md-3" required={false} />
+                        <TextInput maxLength={64} handleChange={this.handleChange} id="filter" placeholder={t("admin.finnish")} helper={t("admin.filter_helper")} text={t("admin.filter")} size="col-md-3" required={true} />
+                        <TextInput maxLength={64} handleChange={this.handleChange} id="filter_sv" placeholder={t("admin.swedish")} helper={t("admin.filter_helper")} text="-" size="col-md-3" required={false} />
+                        <TextInput maxLength={64} handleChange={this.handleChange} id="filter_sa" placeholder={t("admin.saame")} helper={t("admin.filter_helper")} text="-" size="col-md-3" required={false} />
+                        <TextInput maxLength={64} handleChange={this.handleChange} id="filter_en" placeholder={t("admin.english")} helper={t("admin.filter_helper")} text="-" size="col-md-3" required={false} />
                         <button className="btn btn-primary admin-filter-button">{t("admin.add")}</button>
                     </div>
                 </form>
@@ -153,10 +154,10 @@ class FilterHandler extends React.Component {
             return (
                 <form onSubmit={(e) => this.handleSubmit(e, "locationtype")}>
                     <div className="form-row">
-                        <TextInput maxLength={64} handleChange={this.handleChange} id="locationtype" placeholder="Suomeksi" helper="Kirjoita lisättävän kategorian nimi*" text="Kategoria" size="col-md-3" required={true} />
-                        <TextInput maxLength={64} handleChange={this.handleChange} id="locationtype_sv" placeholder="Ruotsiksi" helper="Kirjoita lisättävän kategorian nimi" text="-" size="col-md-3" required={false} />
-                        <TextInput maxLength={64} handleChange={this.handleChange} id="locationtype_sa" placeholder="Saameksi" helper="Kirjoita lisättävän kategorian nimi" text="-" size="col-md-3" required={false} />
-                        <TextInput maxLength={64} handleChange={this.handleChange} id="locationtype_en" placeholder="Englanniksi" helper="Kirjoita lisättävän kategorian nimi" text="-" size="col-md-3" required={false} />
+                        <TextInput maxLength={64} handleChange={this.handleChange} id="locationtype" placeholder={t("admin.finnish")} helper={t("admin.category_helper")} text={t("admin.category")} size="col-md-3" required={true} />
+                        <TextInput maxLength={64} handleChange={this.handleChange} id="locationtype_sv" placeholder={t("admin.swedish")} helper={t("admin.category_helper")} text="-" size="col-md-3" required={false} />
+                        <TextInput maxLength={64} handleChange={this.handleChange} id="locationtype_sa" placeholder={t("admin.saame")} helper={t("admin.category_helper")} text="-" size="col-md-3" required={false} />
+                        <TextInput maxLength={64} handleChange={this.handleChange} id="locationtype_en" placeholder={t("admin.english")} helper={t("admin.category_helper")} text="-" size="col-md-3" required={false} />
                         <button className="btn btn-primary admin-filter-button">{t("admin.add")}</button>
                     </div>
                 </form>

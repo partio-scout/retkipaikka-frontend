@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react"
 import { getItemFromLocalStore } from "./Helpers"
+import i18n from "../main/i18n"
 export const superRoleIds = [2];
 
 export const checkRoleValidity = () => {
@@ -25,7 +26,7 @@ export const login = async (dataObj) => {
             //     payload: res.data.id
             // })
         } else {
-            window.alert("Kirjautuminen epäonnistui!")
+            window.alert(i18n.t("admin.login_fail"))
 
         }
     }).catch((error) => {
@@ -51,10 +52,10 @@ export const changePassword = async (object) => {
         await axios.post(_API_PATH_ + "/Users/change-password?access_token=" + id, object).then(res => {
             if (res.status === 204) {
                 status = true;
-                window.alert("Salasana vaihdettu")
+                window.alert(i18n.t("admin.password_change"))
             }
         }).catch(e => {
-            window.alert("Salasanan vaihto epäonnistui")
+            window.alert(i18n.t("admin.password_change_fail"))
         })
     }
 
@@ -65,9 +66,9 @@ export const register = async (object) => {
     await axios.post(_API_PATH_ + "/Users/createUser", object).then(res => {
         if (res.status === 204) {
             status = true
-            window.alert("Käyttäjä luotu")
+            window.alert(i18n.t("admin.user_create"))
         } else {
-            window.alert("Käyttäjän luonti epäonnistui!")
+            window.alert(i18n.t("admin.user_create_fail"))
         }
 
     })
@@ -83,7 +84,7 @@ export const logOut = async () => {
                 status = true;
                 localStorage.removeItem('user')
             } else {
-                window.alert("Uloskirjautuminen epäonnistui!")
+                window.alert(i18n.t("admin.logout_fail"))
             }
         })
     }
@@ -101,11 +102,11 @@ export const modifyUserNotifications = async (notificationType, regions) => {
         userCopy.notifications = notificationType;
         let dataObj = { regions: regions, user: userCopy }
         await axios.patch(_API_PATH_ + "/Users/modifyUserNotifications?access_token=" + user.id, dataObj).then(res => {
-            window.alert("Tallennus onnistui")
+            window.alert(i18n.t("admin.notification_success"))
             status = true
         }).catch(err => {
             console.error(err);
-            window.alert("Tallennus epäonnistui")
+            window.alert(i18n.t("admin.notification_fail"))
 
         })
 
@@ -119,10 +120,10 @@ export const modifyUser = async (data) => {
     if (id) {
         await axios.patch(_API_PATH_ + "/Users/editUser?access_token=" + id, data).then(res => {
             status = true;
-            window.alert("Käyttäjän muokkaus onnistui")
+            window.alert(i18n.t("admin.user_edit_success"))
         }).catch((e) => {
             console.error(e);
-            window.alert("Käyttäjän muokkaus epäonnistui")
+            window.alert(i18n.t("admin.user_edit_fail"))
         })
     }
     return status;
@@ -138,11 +139,11 @@ export const deleteUser = async (data) => {
             }
             await axios.delete(_API_PATH_ + "/Users/" + data.admin_id + "?access_token=" + id).then(res => {
                 status = true;
-                window.alert("Käyttäjän poisto onnistui")
+                window.alert(i18n.t("admin.user_delete_success"))
             })
         }).catch((e) => {
             console.error(e);
-            window.alert("Käyttäjän poisto epäonnistui")
+            window.alert(i18n.t("admin.user_delete_fail"))
         })
     }
     return status;
@@ -154,10 +155,10 @@ export const modifyOwnSettings = async (data) => {
     if (id) {
         await axios.patch(_API_PATH_ + "/Users/updateSettings?access_token=" + id, data).then(res => {
             status = true;
-            window.alert("Tietojen tallennus onnistui")
+            window.alert(i18n.t("admin.notification_success"))
         }).catch((e) => {
             console.error(e);
-            window.alert("Tietojen tallennus epäonnistui")
+            window.alert(i18n.t("admin.notification_fail"))
         })
     }
     return status;

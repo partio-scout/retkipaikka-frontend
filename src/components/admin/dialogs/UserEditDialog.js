@@ -48,11 +48,11 @@ const UserEditDialog = (props) => {
 
     }
     const askForDelConfirmation = (title, message, obj) => {
-        askForConfirmation("Haluatko poistaa käyttäjän?", "Käyttäjän poistaminen", () => handleDelete(obj), false)
+        askForConfirmation(t("admin.delete_user_text"), t("admin.delete_user_title"), () => handleDelete(obj), false)
 
     };
     const askForEditConfirmation = (name, title, obj) => {
-        askForConfirmation("Haluatko tallentaa tekemäsi muokkaukset?", "Käyttäjän muokkaaminen", () => submitUserEdit(obj), false)
+        askForConfirmation(t("admin.edit_text"), t("admin.edit_user_title"), () => submitUserEdit(obj), false)
     };
 
     const getCheckBoxes = () => {
@@ -69,7 +69,7 @@ const UserEditDialog = (props) => {
     return (
         <div>
             <h4 className="move-handle">#{data.username}</h4>
-            <CheckBox key={data.username} handleChange={handleChange} text={"Kirjautuminen sallittu"} id={"userEnabled"} defaultChecked={!data.new_user} />
+            <CheckBox key={data.username} handleChange={handleChange} text={t("admin.login_allowed")} id={"userEnabled"} defaultChecked={!data.new_user} />
             <h4>Roolit:</h4>
             {getCheckBoxes()}
 

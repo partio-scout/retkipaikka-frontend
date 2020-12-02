@@ -13,7 +13,9 @@ import {
 
 import axios from "axios";
 import { getUser } from "../helpers/UserHelper"
-import { getCorrectTranslation } from "../helpers/Helpers"
+import { getCorrectTranslation, getItemFromLocalStore } from "../helpers/Helpers"
+import i18n from "../main/i18n"
+
 export const addFilter = (obj) => {
     let actionType = ""
     // handles the input form filters
@@ -71,15 +73,23 @@ export const removeFilter = (obj) => {
 export const fetchRegionsAndMunicipalities = () => async (dispatch) => {
     // http://localhost:3000/api/Regions
     let locations = { regions: [], municipalities: [] }
-    try {
-        const regionResponse = await axios.get(_API_PATH_ + "/Regions");
-        locations.regions = locations.regions.concat(regionResponse.data);
+    let geoList = getItemFromLocalStore("geoList", {});
+    if (geoList.regions && geoList.regions.length > 0) {
+        locations = geoList;
+    } else {
+        try {
+            const regionResponse = await axios.get(_API_PATH_ + "/Regions");
+            locations.regions = locations.regions.concat(regionResponse.data);
 
-        const municipalityResponse = await axios.get(_API_PATH_ + "/Municipalities");
-        locations.municipalities = locations.municipalities.concat(municipalityResponse.data);
-    } catch (error) {
-        console.error(error);
+            const municipalityResponse = await axios.get(_API_PATH_ + "/Municipalities");
+            locations.municipalities = locations.municipalities.concat(municipalityResponse.data);
+
+        } catch (error) {
+            console.error(error);
+        }
+        localStorage.setItem("geoList", JSON.stringify(locations))
     }
+
 
     // let locationTypeFilters = [{ category_id: 0, object_type: "nolocationtype", object_name: "Kaikki" }, { category_id: 1, object_type: "locationtype", object_name: "Laavu" }, { category_id: 2, object_type: "locationtype", object_name: "Kämppä" }, { category_id: 3, object_type: "locationtype", object_name: "Alue" }, { category_id: 4, object_type: "locationtype", object_name: "Venelaituri" }]
     // let commonFilters = [{ filter_id: 0, object_type: "nofilter", object_name: "Ei suodattimia" }, { filter_id: 1, object_type: "filter", object_name: "Sauna" }, { filter_id: 2, object_type: "filter", object_name: "Järvi lähellä" }, { filter_id: 3, object_type: "filter", object_name: "Laituri" }, { filter_id: 4, object_type: "filter", object_name: "Sisämajoitus" }, { filter_id: 5, object_type: "filter", object_name: "Sisävessa" },
@@ -99,10 +109,10 @@ export const postFilter = (data) => (dispatch, getState) => {
     axios.post(
         _API_PATH_ + "/Filters" + accessToken, data
     ).then(response => {
-        window.alert("Suodattimen lisäys onnistui")
+        window.alert(i18n.t("admin.filter_add_success"))
         dispatch(fetchFilters())
     }).catch(error => {
-        window.alert("Virhe suodattimen lisäämisessä")
+        window.alert(i18n.t("admin.filter_add_fail"))
     });
 }
 export const editFilter = (data) => (dispatch, getState) => {
@@ -112,10 +122,10 @@ export const editFilter = (data) => (dispatch, getState) => {
     axios.patch(
         _API_PATH_ + "/Filters/" + data.filter_id + accessToken, data
     ).then(response => {
-        window.alert("Suodattimen muokkaus onnistui")
+        window.alert(i18n.t("admin.filter_edit_success"))
         dispatch(fetchFilters())
     }).catch(error => {
-        window.alert("Virhe suodattimen muokkaamisessa")
+        window.alert(i18n.t("admin.filter_edit_fail"))
     });
 
 }
@@ -126,10 +136,10 @@ export const editCategory = (data) => (dispatch, getState) => {
     axios.patch(
         _API_PATH_ + "/Categories/" + data.category_id + accessToken, data
     ).then(response => {
-        window.alert("Kategorian muokkaus onnistui")
+        window.alert(i18n.t("admin.category_edit_success"))
         dispatch(fetchFilters())
     }).catch(error => {
-        window.alert("Virhe kategorian muokkaamisessa")
+        window.alert(i18n.t("admin.category_edit_fail"))
     });
 
 }
@@ -139,10 +149,10 @@ export const postCategory = (data) => (dispatch, getState) => {
     axios.post(
         _API_PATH_ + "/Categories" + accessToken, data
     ).then(response => {
-        window.alert("Kategorian lisäys onnistui")
+        window.alert(i18n.t("admin.category_add_success"))
         dispatch(fetchFilters())
     }).catch(error => {
-        window.alert("Virhe suodattimen lisäämisessä")
+        window.alert(i18n.t("admin.category_add_fail"))
     });
 }
 
@@ -154,15 +164,15 @@ export const deleteCategory = (data) => (dispatch, getState) => {
     ).then(response => {
         if (response.data.count === 0) {
             axios.delete(_API_PATH_ + "/Categories/" + data.category_id + accessToken).then(res => {
-                window.alert("Kategorian poisto onnistui")
+                window.alert(i18n.t("admin.category_delete_success"))
                 dispatch(fetchFilters())
             })
         } else {
-            window.alert("et voi poistaa kategoriaa joka on käytössä")
+            window.alert(i18n.t("admin.category_delete_fail1"))
         }
 
     }).catch(error => {
-        window.alert("Virhe poistamisessa")
+        window.alert(i18n.t("admin.category_delete_fail2"))
         console.error(error)
     });
 }
@@ -174,16 +184,16 @@ export const deleteFilter = (data) => (dispatch, getState) => {
     ).then(response => {
         if (response.data.count === 0) {
             axios.delete(_API_PATH_ + "/Filters/" + data.filter_id + accessToken).then(res => {
-                window.alert("Suodattimen poisto onnistui")
+                window.alert(i18n.t("admin.filter_delete_success"))
                 dispatch(fetchFilters())
             });
 
         } else {
-            window.alert("Et voi poistaa suodatinta joka on käytössä")
+            window.alert(i18n.t("admin.filter_delete_fail1"))
         }
 
     }).catch(error => {
-        window.alert("Virhe poistamisessa")
+        window.alert(i18n.t("admin.filter_delete_fail2"))
         console.error(error);
     });
 }

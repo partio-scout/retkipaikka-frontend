@@ -27,14 +27,14 @@ const UserNotifications = (props) => {
     return (
         <div>
             <h3>
-                {t("settings.new_user_notification")}
+                {t("admin.new_user_notification")}
             </h3>
             {["none", "all"].map((setting => {
-                return <RadioButton name={"radio_user_noti"} key={setting} handleChange={handleChange} text={t("settings.regions_" + setting)} value={setting} id={"user_notifications"} defaultChecked={newUserNotifications === setting} />
+                return <RadioButton name={"radio_user_noti"} key={setting} handleChange={handleChange} text={t("admin.regions_" + setting)} value={setting} id={"user_notifications"} defaultChecked={newUserNotifications === setting} />
             }))}
 
 
-            <button disabled={newUserNotifications == state.user_notifications} onClick={() => askForConfirmation("Haluatko tallentaa ilmoitusasetukset", "Salasanan vaihto", handleSubmit)} className="btn btn-primary">{t("admin.save")}</button>
+            <button disabled={newUserNotifications == state.user_notifications} onClick={() => askForConfirmation(t("admin.email_notification_text"), t("admin.email_notification_title"), handleSubmit)} className="btn btn-primary">{t("admin.save")}</button>
 
         </div>
 

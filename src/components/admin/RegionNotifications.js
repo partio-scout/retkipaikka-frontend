@@ -49,20 +49,20 @@ const RegionNotifications = (props) => {
     return (
         <div>
             <h3>
-                {t("settings.notification_title")}
+                {t("admin.notification_title")}
             </h3>
             {["none", "all", "select"].map((setting => {
-                return <RadioButton key={setting} handleChange={handleChange} text={t("settings.regions_" + setting)} value={setting} id={"notifications"} defaultChecked={userNotification === setting} />
+                return <RadioButton key={setting} handleChange={handleChange} text={t("admin.regions_" + setting)} value={setting} id={"notifications"} defaultChecked={userNotification === setting} />
             }))}
 
             {state.notifications === "select" &&
                 <>
-                    <AutoCompleteInput t={t} data={allRegions} applyFilter={handleSelection} id="object_location" customClassName="region-notification-select" title={t("settings.region_notifications")} required={true} />
+                    <AutoCompleteInput t={t} data={allRegions} applyFilter={handleSelection} id="object_location" customClassName="region-notification-select" title={t("admin.region_notifications")} required={true} />
                     <TagBar adminPage={true} useGlobalState={false} handleDelete={deleteTag} localTags={tags.tags} />
                 </>
 
             }
-            <button disabled={userNotification == state.notifications && !tags.tagsModified} onClick={() => askForConfirmation("Haluatko tallentaa ilmoitusasetukset", "Salasanan vaihto", handleSubmit)} className="btn btn-primary">{t("admin.save")}</button>
+            <button disabled={userNotification == state.notifications && !tags.tagsModified} onClick={() => askForConfirmation(t("admin.email_notification_text"), t("admin.email_notification_title"), handleSubmit)} className="btn btn-primary">{t("admin.save")}</button>
 
         </div>
 

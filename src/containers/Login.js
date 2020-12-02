@@ -58,7 +58,7 @@ const Login = (props) => {
         } else {
             let dataObj = { email, password, username, description }
             if (email === username) {
-                window.alert("Käyttäjänimi ei voi olla sama kuin sähköposti")
+                window.alert(t("admin.login_error"))
                 return;
             }
             let registerStatus = await register(dataObj);
@@ -88,10 +88,10 @@ const Login = (props) => {
         return (
             <div className="login-form">
                 <form className="needs-validation" noValidate>
-                    <TextInput handleChange={handleChange} id="email" placeholder="Sähköpostiosoite" helper="Kirjoita sähköpostiosoitteesi" text="Sähköposti" required={true} />
-                    <TextInput handleChange={handleChange} id="username" placeholder="Käyttäjänimi" helper="Kirjoita käyttäjänimesi" text="Käyttäjänimi" required={true} />
-                    <TextInput handleChange={handleChange} id="password" placeholder="Salasana" helper="Kirjoita salasana" text="Salasana" customType="password" required={true} />
-                    <TextArea handleChange={handleChange} id="description" text="Kuvaus itsestä" placeholder="Kuvaus" helper="Kirjoita jotain itsestäsi, jotta ylläpito tietää kuka olet" required={true} />
+                    <TextInput handleChange={handleChange} id="email" placeholder={t("admin.email")} helper={t("admin.email_desc")} text={t("admin.email")} required={true} />
+                    <TextInput handleChange={handleChange} id="username" placeholder={t("admin.username")} helper={t("admin.username_desc")} text={t("admin.username")} required={true} />
+                    <TextInput handleChange={handleChange} id="password" placeholder={t("admin.password")} helper={t("admin.password_desc")} text={t("admin.password")} customType="password" required={true} />
+                    <TextArea handleChange={handleChange} id="description" text={t("admin.self_description")} placeholder={t("admin.description")} helper={t("admin.self_description_helper")} required={true} />
                     <button onClick={(e) => handleFormSubmit(e, false)} type="submit" className="btn btn-primary">{t("main.register_button")}</button>
                     <div>{t("main.register_text")}</div>
                 </form>
@@ -104,8 +104,8 @@ const Login = (props) => {
         return (
             <div className="login-form">
                 <form className="needs-validation" noValidate>
-                    <TextInput handleChange={handleChange} id="email" placeholder="Sähköpostiosoite tai käyttäjänimi" helper="Kirjoita sähköpostiosoite tai käyttäjänimi" text="Kirjautumistunnus" required={true} />
-                    <TextInput handleChange={handleChange} id="password" placeholder="Salasana" helper="Kirjoita salasanasi" text="Salasana" customType="password" required={true} />
+                    <TextInput handleChange={handleChange} id="email" placeholder={t("admin.credential_placeholder")} helper={t("admin.credential_helper")} text={t("admin.credential")} required={true} />
+                    <TextInput handleChange={handleChange} id="password" placeholder={t("admin.password")} helper={t("admin.password_desc")} text={t("admin.password")} customType="password" required={true} />
                     <button onClick={(e) => handleFormSubmit(e, true)} type="submit" className="btn btn-primary">{t("main.login")}</button>
                 </form>
                 <div onClick={() => setRegisterForm(true)} className="login-register-text">{t("main.register")}</div>

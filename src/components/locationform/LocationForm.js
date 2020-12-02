@@ -129,7 +129,8 @@ class LocationForm extends React.Component {
 
 
     askForConfirmation = (obj) => {
-        askForConfirmation('Haluatko tallentaa tekemäsi muokkaukset?', "Retkipaikan muokkaaminen", () => this.submitForm(obj, true), () => { })
+        const { t } = this.props;
+        askForConfirmation(t("admin.edit_text"), t("admin.location_edit_title"), () => this.submitForm(obj, true), () => { })
     };
     checkDeleteImgs = (fromState, fromObj) => {
         if (fromState.length === fromObj.length) {
@@ -152,7 +153,7 @@ class LocationForm extends React.Component {
             handleClose();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         } else {
-            postFormData(data, imgArray, t).then(res => {
+            postFormData(data, imgArray).then(res => {
                 if (res) {
                     handleClose()
                 }

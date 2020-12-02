@@ -95,7 +95,7 @@ const LocationEditDialog = (props) => {
     }
 
     const handleDelete = (obj) => {
-        askForConfirmation('Haluatko varmasti poistaa retkipaikan ' + obj.location_name + "?", "Retkipaikan poistaminen", () => submitDelete(obj), false)
+        askForConfirmation(t("admin.location_delete_text") + obj.location_name + "?", t("admin.location_delete_title"), () => submitDelete(obj), false)
     };
 
 

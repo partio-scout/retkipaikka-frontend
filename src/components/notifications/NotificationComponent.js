@@ -22,7 +22,7 @@ const useStyles = makeStyles({
         marginBottom: 12,
     },
     text: {
-        wordBreak: "break-all"
+        wordWrap: "break-word"
     },
     disabledCard: {
         backgroundColor: "lightgray"
@@ -57,7 +57,7 @@ const NotificationComponent = (props) => {
                 </Typography>
             </CardContent>
             {linkUrl && <CardActions>
-                <Button onClick={() => window.location = linkUrl} size="small">{linkText}</Button>
+                <a href={linkUrl}><Button >{linkText}</Button></a>
             </CardActions>}
         </Card>
     );

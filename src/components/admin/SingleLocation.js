@@ -35,7 +35,7 @@ const SingleLocation = (props) => {
         }
 
     }, [])
-    return (<div className="single-location-container">{data.location_id != null ? <LocationEditDialog data={data} t={t} /> : "Retkipaikkaa ei löydy"}</div>)
+    return (<div className="single-location-container">{data.location_id != null ? <LocationEditDialog data={data} t={t} /> : t("admin.triplocation_not_found")}</div>)
 
 }
 
