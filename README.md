@@ -12,7 +12,10 @@ npm install
 muuta package.json tiedostoon oma ip
 
 luo .env tiedosto johon sisällöksi (korvaa ip backendin osoitteella)
+```
 API_PATH=http://192.168.1.155:3000/api
+```
+
 
 Käynnistä komennolla,
  ```
