@@ -1,6 +1,6 @@
 .tag{
     width: auto;
-    min-width: 115px;
+    min-width: fit-content;
     height: 30px;
     position:relative;
     margin-right:5px;
